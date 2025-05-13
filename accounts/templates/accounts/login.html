@@ -1,0 +1,103 @@
+{% load static %}
+{% load widget_tweaks %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login - SkyBank</title>
+  <link href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+</head>
+
+<!-- Favicons -->
+<link href="{% static 'img/favicon.png' %}" rel="icon">
+<link href="{% static 'img/apple-touch-icon.png' %}" rel="apple-touch-icon">
+
+<body style="background-color: #f8f9fa; font-family: 'Roboto', sans-serif;">
+
+  <div style="display: flex; justify-content: center; align-items: center; height: 100vh; background-image: url('{% static 'images/login-background.jpg' %}'); background-size: cover; background-position: center;">
+    <div style="background-color: #fff; border-radius: 10px; padding: 30px; width: 100%; max-width: 400px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
+      <h2 style="text-align: center; font-weight: bold; color: #333; margin-bottom: 20px;">Login to SkyBank</h2>
+
+      <!-- Display Success/Error Messages -->
+      {% if messages %}
+      <div>
+        {% for message in messages %}
+        <div class="alert alert-{{ message.tags }}" role="alert">
+          {{ message }}
+        </div>
+        {% endfor %}
+      </div>
+      {% endif %}
+
+      <!-- Display Error Messages -->
+      {% if error %}
+      <div class="alert alert-danger">{{ error }}</div>
+      {% endif %}
+
+      <form id="loginForm" method="post" novalidate>
+        {% csrf_token %}
+
+        <!-- Username Field -->
+        <div class="form-group mb-3">
+          <label for="username" style="font-weight: bold;">Username</label>
+          {{ form.username|add_class:"form-control" }}
+          <div class="invalid-feedback" style="color: red; font-size: 0.9em;">Please enter your username.</div>
+        </div>
+
+        <!-- Password Field -->
+        <div class="form-group mb-3">
+          <label for="password" style="font-weight: bold;">Password</label>
+          {{ form.password|add_class:"form-control" }}
+          <div class="invalid-feedback" style="color: red; font-size: 0.9em;">Please enter your password.</div>
+        </div>
+
+        <!-- Submit Button -->
+        <div style="display: grid;">
+          <button type="submit" class="btn btn-primary" style="background-color: #007bff; border-color: #007bff; transition: background-color 0.3s ease;">Login</button>
+        </div>
+      </form>
+
+      <div style="text-align: center; margin-top: 15px;">
+        <p>Don't have an account? <a href="{% url 'register' %}" style="color: #007bff; text-decoration: none;">Register</a></p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const loginForm = document.getElementById("loginForm");
+
+      loginForm.addEventListener("submit", function (event) {
+        let isValid = true;
+
+        // Validate Username
+        const usernameField = loginForm.querySelector("#id_username");
+        if (!usernameField.value.trim()) {
+          usernameField.classList.add("is-invalid");
+          isValid = false;
+        } else {
+          usernameField.classList.remove("is-invalid");
+        }
+
+        // Validate Password
+        const passwordField = loginForm.querySelector("#id_password");
+        if (!passwordField.value.trim()) {
+          passwordField.classList.add("is-invalid");
+          isValid = false;
+        } else {
+          passwordField.classList.remove("is-invalid");
+        }
+
+        // Prevent form submission if validation fails
+        if (!isValid) {
+          event.preventDefault();
+        }
+      });
+    });
+  </script>
+
+</body>
+
+</html>
