@@ -7,21 +7,22 @@ from django.core.mail import send_mail
 from django.db import transaction
 from django.core.paginator import Paginator
 import logging
+
 from .forms import UserRegistrationForm, MessageForm
 from .models import BankAccount, Message, VerificationToken, Transaction, CardRequest, User
 
 # Logger setup
 logger = logging.getLogger(__name__)
 
-# Index
+
 def index(request):
     logger.debug(f"Index page accessed by user: {request.user}")
     return render(request, 'accounts/index.html')
 
-# Registration
+
 def register(request):
     if request.user.is_authenticated:
-        return redirect('dashboard')  # Redirect authenticated users to the dashboard
+        return redirect('dashboard')
 
     if request.method == 'POST':
         form = UserRegistrationForm(request.POST)
@@ -35,46 +36,45 @@ def register(request):
 
             user = form.save(commit=False)
             user.set_password(form.cleaned_data['password'])
-            user.is_active = False  # Disable login until email is verified
+            user.is_active = False
             user.save()
 
-            # Create a bank account for the user
             try:
                 BankAccount.objects.create(user=user)
             except Exception as e:
                 logger.error(f"Error creating bank account for user {user.username}: {e}")
-                user.delete()  # Rollback user creation if bank account creation fails
+                user.delete()
                 messages.error(request, "Error creating bank account. Please try again.")
                 return redirect('register')
 
-            # Send verification email
             try:
                 send_verification_email(user)
                 messages.success(request, "Registration successful! Please check your email to verify your account.")
             except Exception as e:
                 logger.error(f"Error sending verification email: {e}")
+                user.delete()
                 messages.error(request, "Error sending verification email. Please try again.")
-                user.delete()  # Rollback user creation if email fails
                 return redirect('register')
 
             return redirect('login')
     else:
         form = UserRegistrationForm()
+
     return render(request, 'accounts/register.html', {'form': form})
 
-# Send Verification Email
+
 def send_verification_email(user):
-    token, created = VerificationToken.objects.get_or_create(user=user)
+    token, _ = VerificationToken.objects.get_or_create(user=user)
     verification_link = f"http://127.0.0.1:8000/accounts/verify/{token.token}/"
     send_mail(
         'Verify Your Email',
         f'Hi {user.first_name},\n\nPlease click the link below to verify your email:\n{verification_link}\n\nThank you!',
-        'EMAIL_HOST',
+        'noreply@onlinebanking.com',
         [user.email],
         fail_silently=False,
     )
 
-# Verify Email
+
 def verify_email(request, token):
     try:
         verification_token = VerificationToken.objects.get(token=token)
@@ -89,10 +89,10 @@ def verify_email(request, token):
         messages.error(request, "Invalid or expired verification link.")
         return redirect('index')
 
-# Login
+
 def login_view(request):
     if request.user.is_authenticated:
-        return redirect('dashboard')  # Redirect authenticated users to the dashboard
+        return redirect('dashboard')
 
     if request.method == 'POST':
         form = AuthenticationForm(data=request.POST)
@@ -101,24 +101,22 @@ def login_view(request):
             if not user.email_verified:
                 return render(request, 'accounts/login.html', {'form': form, 'error': 'Please verify your email before logging in.'})
             login(request, user)
-
-            # Check if the user has a bank account
             if not BankAccount.objects.filter(user=user).exists():
                 messages.error(request, "Bank account not found. Please contact support.")
                 return redirect('index')
-
             return redirect('dashboard')
     else:
         form = AuthenticationForm()
+
     return render(request, 'accounts/login.html', {'form': form})
 
-# Logout
+
 def logout_view(request):
     logout(request)
     messages.success(request, "You have been logged out successfully.")
     return redirect('index')
 
-# Dashboard
+
 @login_required
 def dashboard(request):
     try:
@@ -127,36 +125,29 @@ def dashboard(request):
         messages.error(request, "Bank account not found. Please contact support.")
         return redirect('index')
 
-    # Fetch the user's messages
-    messages_list = Message.objects.filter(user=request.user).order_by('-created_at')[:5]  # Latest 5 messages
-
-    # Fetch the user's transaction history (latest 10 transactions)
+    messages_list = Message.objects.filter(user=request.user).order_by('-created_at')[:5]
     transactions = Transaction.objects.filter(account=account).order_by('-date')[:10]
 
-    # Handle withdrawal request
-    if request.method == 'POST' and 'withdraw' in request.POST:
-        account.is_frozen = True  # Freeze the account
-        account.save()
-        logger.info(f"Account {account.account_number} has been frozen for withdrawal by {request.user.username}.")
-        messages.success(request, "Your account has been frozen for withdrawal.")
-        return redirect('dashboard')
+    if request.method == 'POST':
+        if 'withdraw' in request.POST:
+            account.is_frozen = True
+            account.save()
+            logger.info(f"Account {account.account_number} has been frozen for withdrawal by {request.user.username}.")
+            messages.success(request, "Your account has been frozen for withdrawal.")
+            return redirect('dashboard')
+        if 'request_card' in request.POST:
+            CardRequest.objects.create(user=request.user, status='Pending')
+            logger.info(f"Card request submitted by {request.user.username}.")
+            messages.success(request, "Your card request has been submitted.")
+            return redirect('dashboard')
 
-    # Handle card request
-    if request.method == 'POST' and 'request_card' in request.POST:
-        CardRequest.objects.create(user=request.user, status='Pending')
-        logger.info(f"Card request submitted by {request.user.username}.")
-        messages.success(request, "Your card request has been submitted.")
-        return redirect('dashboard')
-
-    # Context for the template
-    context = {
+    return render(request, 'accounts/dashboard.html', {
         'account': account,
         'messages': messages_list,
         'transactions': transactions,
-    }
-    return render(request, 'accounts/dashboard.html', context)
+    })
 
-# Transfer Money
+
 @login_required
 def transfer_money(request):
     if request.method == 'POST':
@@ -183,14 +174,12 @@ def transfer_money(request):
             sender_account.save()
             receiver_account.save()
 
-        # Send email notification to the user
         send_mail(
             subject="Transfer Notification",
             message=(
                 f"Dear {request.user.first_name},\n\n"
                 f"You have successfully transferred ${amount:.2f} to account {receiver_account_number}.\n\n"
-                "Thank you for using our services.\n\n"
-                "Best regards,\nYour Bank"
+                "Thank you for using our services.\n\nBest regards,\nYour Bank"
             ),
             from_email="noreply@onlinebanking.com",
             recipient_list=[request.user.email],
@@ -200,18 +189,19 @@ def transfer_money(request):
         logger.info(f"User {request.user.username} transferred ${amount:.2f} to account {receiver_account_number}.")
         messages.success(request, "Transfer successful!")
         return redirect('dashboard')
+
     return render(request, 'accounts/transfer.html')
 
-# User Messages
+
 @login_required
 def user_messages(request):
     messages_list = Message.objects.filter(user=request.user).order_by('-created_at')
-    paginator = Paginator(messages_list, 10)  # Paginate messages
+    paginator = Paginator(messages_list, 10)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
     return render(request, 'accounts/messages.html', {'page_obj': page_obj})
 
-# Send Message
+
 @login_required
 def send_message(request):
     if request.method == 'POST':
@@ -228,34 +218,34 @@ def send_message(request):
         form = MessageForm()
     return render(request, 'accounts/send_message.html', {'form': form})
 
-# Top-Up
+
 @login_required
 def top_up(request):
     if request.method == 'POST':
-        # Logic for top-up
+        # Top-up logic here
         messages.success(request, "Your account has been topped up successfully.")
         return redirect('dashboard')
     return render(request, 'accounts/top_up.html')
 
-# Deposit
+
 @login_required
 def deposit(request):
     if request.method == 'POST':
-        # Logic for deposit
+        # Deposit logic here
         messages.success(request, "Deposit successful.")
         return redirect('dashboard')
     return render(request, 'accounts/deposit.html')
 
-# Transaction History
+
 @login_required
 def transaction_history(request):
     account = BankAccount.objects.get(user=request.user)
     transactions = Transaction.objects.filter(account=account).order_by('-date')
-    paginator = Paginator(transactions, 10)  # Paginate transactions
+    paginator = Paginator(transactions, 10)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
     return render(request, 'accounts/transaction_history.html', {'page_obj': page_obj})
 
-# Privacy Policy
+
 def privacy_policy(request):
     return render(request, 'accounts/privacy_policy.html')
