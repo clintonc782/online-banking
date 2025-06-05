@@ -7,6 +7,10 @@ from django.core.mail import send_mail
 from django.db import transaction
 from django.core.paginator import Paginator
 import logging
+from django.core.mail import EmailMessage
+from django.template.loader import render_to_string
+
+
 
 from .forms import UserRegistrationForm, MessageForm
 from .models import BankAccount, Message, VerificationToken, Transaction, CardRequest, User
@@ -66,13 +70,19 @@ def register(request):
 def send_verification_email(user):
     token, _ = VerificationToken.objects.get_or_create(user=user)
     verification_link = f"http://127.0.0.1:8000/accounts/verify/{token.token}/"
-    send_mail(
-        'Verify Your Email',
-        f'Hi {user.first_name},\n\nPlease click the link below to verify your email:\n{verification_link}\n\nThank you!',
-        'noreply@onlinebanking.com',
+    subject = 'Verify Your Email'
+    html_message = render_to_string('accounts/email_verification.html', {
+        'user': user,
+        'verification_link': verification_link,
+    })
+    email = EmailMessage(
+        subject,
+        html_message,
+        'skybank604@gmail.com',
         [user.email],
-        fail_silently=False,
     )
+    email.content_subtype = 'html'  # This sends the email as HTML
+    email.send(fail_silently=False)
 
 
 def verify_email(request, token):
