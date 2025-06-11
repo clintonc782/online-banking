@@ -6,7 +6,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Login - SkyBank</title>
+  <title>Login - Starlink Bank</title>
   <link href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
 </head>
 
@@ -16,9 +16,18 @@
 
 <body style="background-color: #f8f9fa; font-family: 'Roboto', sans-serif;">
 
+  <div class="page-title">
+  <div class="container d-lg-flex justify-content-between align-items-center">
+    <h1 class="mb-1 mb-sm-0">
+      <a href="/" class="text-decoration-none text-muted small">Home</a>
+    </h1>
+  </div>
+</div>
+
+
   <div style="display: flex; justify-content: center; align-items: center; height: 100vh; background-image: url('{% static 'images/login-background.jpg' %}'); background-size: cover; background-position: center;">
     <div style="background-color: #fff; border-radius: 10px; padding: 30px; width: 100%; max-width: 400px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
-      <h2 style="text-align: center; font-weight: bold; color: #333; margin-bottom: 20px;">Login to SkyBank</h2>
+      <h2 style="text-align: center; font-weight: bold; color: #333; margin-bottom: 20px;">Login to Starlink Bank</h2>
 
       <!-- Display Success/Error Messages -->
       {% if messages %}
