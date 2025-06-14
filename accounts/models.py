@@ -11,7 +11,7 @@ class User(AbstractUser):
     last_name = models.CharField(max_length=100)
     other_names = models.CharField(max_length=100, blank=True, null=True)
     email = models.EmailField(unique=True)
-    phone_number = models.CharField(max_length=15, unique=True)  # Ensure phone numbers are unique
+    phone_number = models.CharField(max_length=15, unique=False)  # Ensure phone numbers are unique
     gender = models.CharField(max_length=10, choices=[('Male', 'Male'), ('Female', 'Female')])
     date_of_birth = models.DateField(null=True, blank=True)
     street = models.CharField(max_length=255)
@@ -111,6 +111,7 @@ class Message(models.Model):
     subject = models.CharField(max_length=100, blank=True, null=True)  # Added subject field
     content = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
+    parent = models.ForeignKey('self', null=True, blank=True, on_delete=models.CASCADE, related_name='replies')
 
     def __str__(self):
         return f"Message from {self.sender} to {self.user.username} at {self.created_at}"

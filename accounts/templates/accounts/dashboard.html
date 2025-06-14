@@ -6,70 +6,31 @@
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
   <title>Dashboard - Starlink Bank</title>
-  <meta name="description" content="">
-  <meta name="keywords" content="">
 
-  <!-- Favicons -->
   <link href="{% static 'img/favicon2.ico' %}" rel="icon">
   <link href="{% static 'img/apple-touch-icon.png' %}" rel="apple-touch-icon">
-
-  <!-- Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
-
-  <!-- Vendor CSS Files -->
   <link href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
   <link href="{% static 'vendor/bootstrap-icons/bootstrap-icons.css' %}" rel="stylesheet">
-
-  <!-- Main CSS File -->
   <link href="{% static 'css/main.css' %}" rel="stylesheet">
 
   <style>
-    body {
-      background-color: #f4f6fa;
-      font-family: 'Roboto', sans-serif;
-    }
-    .sidebar {
-      height: 100vh;
-      background-color: #fff;
-      padding: 20px;
-      border-right: 1px solid #ddd;
-    }
-    .nav-link {
-      color: #333;
-    }
-    .account-box {
-      background: #007bff;
-      color: #fff;
-      padding: 25px;
-      border-radius: 10px;
-    }
-    .action-buttons .btn {
-      margin-right: 10px;
-    }
-    .quick-info {
-      background: #fff;
-      padding: 15px;
-      border-radius: 10px;
-    }
-    .feature-box {
-      background: #fff;
-      padding: 20px;
-      border-radius: 10px;
-      text-align: center;
-    }
+    body { background-color: #f4f6fa; font-family: 'Roboto', sans-serif; }
+    .sidebar { height: 100vh; background-color: #fff; padding: 20px; border-right: 1px solid #ddd; }
+    .nav-link { color: #333; }
+    .account-box { background: #007bff; color: #fff; padding: 25px; border-radius: 10px; }
+    .action-buttons .btn { margin-right: 10px; }
+    .feature-box, .quick-info { background: #fff; padding: 20px; border-radius: 10px; text-align: center; }
   </style>
 </head>
 
 <body class="dashboard-page">
-
   <!-- Header -->
   <header id="header" class="header d-flex align-items-center sticky-top">
     <div class="container-fluid position-relative d-flex align-items-center justify-content-between">
       <a href="{% url 'index' %}" class="logo d-flex align-items-center me-auto me-xl-0">
-        <h1 class="sitename">Starlink Bank</h1>
-        <span>.</span>
+        <h1 class="sitename">Starlink Bank</h1><span>.</span>
       </a>
-
       <nav id="navmenu" class="navmenu">
         <ul>
           <li><a href="{% url 'index' %}" class="active">Home</a></li>
@@ -80,7 +41,6 @@
         </ul>
         <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
       </nav>
-
       <a class="btn-getstarted" href="{% url 'logout' %}">Logout</a>
     </div>
   </header>
@@ -107,10 +67,20 @@
 
       <!-- Main Dashboard -->
       <div class="col-md-10 p-4">
+        <!-- Account Summary -->
         <div class="account-box mb-4">
           <h5>Available Balance</h5>
           <h2>${{ account.balance|floatformat:2 }} USD</h2>
           <p>Account Number: <strong>{{ account.account_number }}</strong> <span class="badge bg-light text-dark">{{ account.status }}</span></p>
+
+          <!-- Account Freezing Warning -->
+          {% if not request.user.is_active %}
+            <div class="alert alert-danger mt-3">
+              ⚠️ Your account is currently <strong>frozen</strong>. Please contact support to resolve this.
+            </div>
+          {% endif %}
+
+          <!-- Buttons -->
           <div class="action-buttons mt-3">
             <form method="POST">
               {% csrf_token %}
@@ -126,39 +96,88 @@
         </div>
 
         <!-- Transaction History -->
-        <div class="row">
-          <div class="col-lg-12">
-            <div class="card">
-              <div class="card-body">
-                <h4>Transaction History</h4>
-                {% if transactions %}
-                  <table class="table table-striped">
-                    <thead>
-                      <tr>
-                        <th>Date</th>
-                        <th>Description</th>
-                        <th>Amount</th>
-                        <th>Type</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {% for transaction in transactions %}
-                        <tr>
-                          <td>{{ transaction.date|date:"M d, Y H:i" }}</td>
-                          <td>{{ transaction.description }}</td>
-                          <td>${{ transaction.amount|floatformat:2 }}</td>
-                          <td>{{ transaction.get_type_display }}</td>
-                        </tr>
-                      {% endfor %}
-                    </tbody>
-                  </table>
-                {% else %}
-                  <p>No transactions found.</p>
-                {% endif %}
-              </div>
-            </div>
+        <div class="card mb-4">
+          <div class="card-body">
+            <h4>Transaction History</h4>
+            {% if transactions %}
+              <table class="table table-striped">
+                <thead>
+                  <tr><th>Date</th><th>Description</th><th>Amount</th><th>Type</th></tr>
+                </thead>
+                <tbody>
+                  {% for transaction in transactions %}
+                    <tr>
+                      <td>{{ transaction.date|date:"M d, Y H:i" }}</td>
+                      <td>{{ transaction.description }}</td>
+                      <td>${{ transaction.amount|floatformat:2 }}</td>
+                      <td>{{ transaction.get_type_display }}</td>
+                    </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            {% else %}
+              <p>No transactions found.</p>
+            {% endif %}
           </div>
         </div>
+
+        <!-- Card Requests -->
+        <div class="card mb-4">
+          <div class="card-body">
+            <h4>Card Request Status</h4>
+            {% if card_requests %}
+              <table class="table">
+                <thead><tr><th>Date</th><th>Status</th></tr></thead>
+                <tbody>
+                  {% for card in card_requests %}
+                    <tr>
+                      <td>{{ card.date_requested|date:"M d, Y" }}</td>
+                      <td>
+                        {% if card.status == 'approved' %}
+                          <span class="badge bg-success">Approved</span>
+                        {% elif card.status == 'pending' %}
+                          <span class="badge bg-warning text-dark">Pending</span>
+                        {% else %}
+                          <span class="badge bg-danger">Rejected</span>
+                        {% endif %}
+                      </td>
+                    </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            {% else %}
+              <p>No card requests found.</p>
+            {% endif %}
+          </div>
+        </div>
+
+        <!-- User Messages -->
+        <div class="card mb-4">
+          <div class="card-body">
+            <h4>Messages</h4>
+            {% if messages %}
+              <ul class="list-group">
+                {% for msg in messages %}
+                  <li class="list-group-item">
+                    <strong>{{ msg.sender }}:</strong> {{ msg.content }} <br>
+                    <small class="text-muted">{{ msg.created_at|date:"M d, Y H:i" }}</small>
+                    {% if not msg.is_reply %}
+                      <form method="POST" class="mt-2">
+                        {% csrf_token %}
+                        <input type="hidden" name="reply_to" value="{{ msg.id }}">
+                        <textarea name="reply_content" class="form-control" placeholder="Reply..."></textarea>
+                        <button type="submit" class="btn btn-sm btn-primary mt-1">Send Reply</button>
+                      </form>
+                    {% endif %}
+                  </li>
+                {% endfor %}
+              </ul>
+            {% else %}
+              <p>No messages yet.</p>
+            {% endif %}
+          </div>
+        </div>
+
       </div>
     </div>
   </div>
@@ -173,8 +192,7 @@
               <span class="sitename">Starlink Bank Official Website</span>
             </a>
             <div class="footer-contact pt-3">
-              <p>A108 Adam Street</p>
-              <p>New York, NY 535022</p>
+              <p>A108 Adam Street</p><p>New York, NY 535022</p>
               <p class="mt-3"><strong>Phone:</strong> <span>+1 5589 55488 55</span></p>
               <p><strong>Email:</strong> <span>info@starlinkbank.com</span></p>
             </div>
@@ -219,8 +237,6 @@
     </div>
   </footer>
 
-  <!-- Vendor JS Files -->
   <script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
 </body>
-
 </html>

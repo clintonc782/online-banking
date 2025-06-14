@@ -135,26 +135,53 @@ def dashboard(request):
         messages.error(request, "Bank account not found. Please contact support.")
         return redirect('index')
 
-    messages_list = Message.objects.filter(user=request.user).order_by('-created_at')[:5]
+    # Fetch latest messages, transactions, card requests
+    messages_list = Message.objects.filter(user=request.user).order_by('-created_at')[:10]
     transactions = Transaction.objects.filter(account=account).order_by('-date')[:10]
+    card_requests = CardRequest.objects.filter(user=request.user).order_by('-date_requested')
 
     if request.method == 'POST':
         if 'withdraw' in request.POST:
-            account.is_frozen = True
-            account.save()
-            logger.info(f"Account {account.account_number} has been frozen for withdrawal by {request.user.username}.")
+            with transaction.atomic():
+                account.is_frozen = True
+                account.save()
+            logger.info(f"Account {account.account_number} frozen by {request.user.username}.")
             messages.success(request, "Your account has been frozen for withdrawal.")
             return redirect('dashboard')
-        if 'request_card' in request.POST:
-            CardRequest.objects.create(user=request.user, status='Pending')
+
+        elif 'request_card' in request.POST:
+            CardRequest.objects.create(user=request.user, status='pending')
             logger.info(f"Card request submitted by {request.user.username}.")
             messages.success(request, "Your card request has been submitted.")
+            return redirect('dashboard')
+
+        elif 'reply_to' in request.POST:
+            reply_to_id = request.POST.get('reply_to')
+            reply_content = request.POST.get('reply_content')
+
+            if reply_to_id and reply_content:
+                try:
+                    parent_message = Message.objects.get(id=reply_to_id, user=request.user)
+                    Message.objects.create(
+                        user=request.user,
+                        sender=request.user.username,  # Use actual username
+                        content=reply_content,
+                        is_reply=True,
+                        parent=parent_message  # Link reply to original message
+                    )
+                    logger.info(f"User {request.user.username} replied to message ID {reply_to_id}.")
+                    messages.success(request, "Reply sent.")
+                except Message.DoesNotExist:
+                    messages.error(request, "Original message not found.")
+            else:
+                messages.error(request, "Reply failed. Content missing.")
             return redirect('dashboard')
 
     return render(request, 'accounts/dashboard.html', {
         'account': account,
         'messages': messages_list,
         'transactions': transactions,
+        'card_requests': card_requests,
     })
 
 
