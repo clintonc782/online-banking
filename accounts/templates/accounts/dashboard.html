@@ -51,7 +51,7 @@
       <!-- Sidebar -->
       <div class="col-md-2 sidebar">
         <h4 class="mb-4">Starlink Bank</h4>
-        <p><strong>{{ request.user.first_name }} {{ request.user.last_name }}</strong><br>ID: {{ account.account_number }}<br>
+        <p><strong>{{ request.user.first_name }} {{ request.user.last_name }}</strong><br># {{ account.account_number }}<br>
           <span class="badge bg-success">KYC Verified</span>
         </p>
         <a href="{% url 'logout' %}" class="btn btn-outline-danger btn-sm mb-3">Logout</a>

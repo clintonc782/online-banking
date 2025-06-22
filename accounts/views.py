@@ -218,7 +218,7 @@ def transfer_money(request):
                 f"You have successfully transferred ${amount:.2f} to account {receiver_account_number}.\n\n"
                 "Thank you for using our services.\n\nBest regards,\nYour Bank"
             ),
-            from_email="noreply@onlinebanking.com",
+            from_email="skybank604@gmail.com",
             recipient_list=[request.user.email],
             fail_silently=False,
         )
@@ -258,20 +258,62 @@ def send_message(request):
 
 @login_required
 def top_up(request):
+    account = BankAccount.objects.get(user=request.user)
     if request.method == 'POST':
-        # Top-up logic here
-        messages.success(request, "Your account has been topped up successfully.")
+        try:
+            amount = float(request.POST.get('amount'))
+            if amount <= 0:
+                raise ValueError("Invalid amount")
+        except (ValueError, TypeError):
+            messages.error(request, "Invalid top-up amount.")
+            return redirect('top_up')
+
+        account.balance += amount
+        account.save()
+
+        Transaction.objects.create(
+            account=account,
+            amount=amount,
+            type='credit',
+            description='Top-up from external source'
+        )
+
+        messages.success(request, f"${amount:.2f} has been added to your account via top-up.")
         return redirect('dashboard')
-    return render(request, 'accounts/top_up.html')
+
+    return render(request, 'accounts/top_up.html', {'account': account})
+
+
 
 
 @login_required
 def deposit(request):
+    account = BankAccount.objects.get(user=request.user)
     if request.method == 'POST':
-        # Deposit logic here
-        messages.success(request, "Deposit successful.")
+        try:
+            amount = float(request.POST.get('amount'))
+            if amount <= 0:
+                raise ValueError("Invalid amount")
+        except (ValueError, TypeError):
+            messages.error(request, "Invalid deposit amount.")
+            return redirect('deposit')
+
+        account.balance += amount
+        account.save()
+
+        Transaction.objects.create(
+            account=account,
+            amount=amount,
+            type='credit',
+            description='Cash deposit'
+        )
+
+        messages.success(request, f"${amount:.2f} has been deposited to your account.")
         return redirect('dashboard')
-    return render(request, 'accounts/deposit.html')
+
+    return render(request, 'accounts/deposit.html', {'account': account})
+
+
 
 
 @login_required
