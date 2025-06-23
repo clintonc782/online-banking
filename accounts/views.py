@@ -9,6 +9,10 @@ from django.core.paginator import Paginator
 import logging
 from django.core.mail import EmailMessage
 from django.template.loader import render_to_string
+from django.conf import settings
+from django.urls import reverse
+
+
 
 
 
@@ -19,8 +23,10 @@ from .models import BankAccount, Message, VerificationToken, Transaction, CardRe
 logger = logging.getLogger(__name__)
 
 
+
 def index(request):
     logger.debug(f"Index page accessed by user: {request.user}")
+    logger.info(f"{request.user.username} did X from IP: {request.META.get('REMOTE_ADDR')}")
     return render(request, 'accounts/index.html')
 
 
@@ -52,7 +58,7 @@ def register(request):
                 return redirect('register')
 
             try:
-                send_verification_email(user)
+                send_verification_email(request, user)
                 messages.success(request, "Registration successful! Please check your email to verify your account.")
             except Exception as e:
                 logger.error(f"Error sending verification email: {e}")
@@ -67,9 +73,9 @@ def register(request):
     return render(request, 'accounts/register.html', {'form': form})
 
 
-def send_verification_email(user):
+def send_verification_email(request, user):
     token, _ = VerificationToken.objects.get_or_create(user=user)
-    verification_link = f"http://127.0.0.1:8000/accounts/verify/{token.token}/"
+    verification_link = request.build_absolute_uri(reverse('verify_email', args=[token.token]))
     subject = 'Verify Your Email'
     html_message = render_to_string('accounts/email_verification.html', {
         'user': user,
@@ -78,7 +84,7 @@ def send_verification_email(user):
     email = EmailMessage(
         subject,
         html_message,
-        'skybank604@gmail.com',
+        settings.DEFAULT_FROM_EMAIL,
         [user.email],
     )
     email.content_subtype = 'html'  # This sends the email as HTML
@@ -258,7 +264,11 @@ def send_message(request):
 
 @login_required
 def top_up(request):
-    account = BankAccount.objects.get(user=request.user)
+    try:
+        account = BankAccount.objects.get(user=request.user)
+    except BankAccount.DoesNotExist:
+        messages.error(request, "Bank account not found. Please contact support.")
+        return redirect('index')
     if request.method == 'POST':
         try:
             amount = float(request.POST.get('amount'))
@@ -288,7 +298,11 @@ def top_up(request):
 
 @login_required
 def deposit(request):
-    account = BankAccount.objects.get(user=request.user)
+    try:
+        account = BankAccount.objects.get(user=request.user)
+    except BankAccount.DoesNotExist:
+        messages.error(request, "Bank account not found. Please contact support.")
+        return redirect('index')
     if request.method == 'POST':
         try:
             amount = float(request.POST.get('amount'))
@@ -318,7 +332,11 @@ def deposit(request):
 
 @login_required
 def transaction_history(request):
-    account = BankAccount.objects.get(user=request.user)
+    try:
+        account = BankAccount.objects.get(user=request.user)
+    except BankAccount.DoesNotExist:
+        messages.error(request, "Bank account not found. Please contact support.")
+        return redirect('index')
     transactions = Transaction.objects.filter(account=account).order_by('-date')
     paginator = Paginator(transactions, 10)
     page_number = request.GET.get('page')

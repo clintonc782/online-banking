@@ -26,12 +26,14 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-+s=a5rp(#^71vs7z=$#%gf7i&&pc5d)u)v78i-s%5duro1@bq9'
+SECRET_KEY = config("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='').split(',')
+
+ALLOWED_HOSTS += ['127.0.0.1', 'localhost']
 
 
 # Application definition
@@ -154,25 +156,25 @@ LOGOUT_REDIRECT_URL = '/index/'            # after logout (or wherever your home
 
 # Email Setting
 # EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-EMAIL_HOST_USER = config("EMAIL_HOST")
-EMAIL_HOST_PASSWORD = config("EMAIL_PASSWORD")
-DEFAULT_FROM_EMAIL = config("EMAIL_HOST")
+EMAIL_HOST_USER = config("EMAIL_HOST_USER")
+EMAIL_HOST_PASSWORD = config("EMAIL_HOST_PASSWORD")
+DEFAULT_FROM_EMAIL = config("EMAIL_HOST_USER")
 
 
 # settings.py
-# SECURE_SSL_REDIRECT = True  # Redirect all HTTP traffic to HTTPS
-# SESSION_COOKIE_SECURE = True  # Use secure cookies
-# CSRF_COOKIE_SECURE = True  # Use secure CSRF cookies
-# SECURE_HSTS_SECONDS = 31536000  # Enable HTTP Strict Transport Security (HSTS)
-# SECURE_HSTS_INCLUDE_SUBDOMAINS = True
-# SECURE_HSTS_PRELOAD = True
-# SECURE_BROWSER_XSS_FILTER = True
-# SECURE_CONTENT_TYPE_NOSNIFF = True
-# X_FRAME_OPTIONS = 'DENY'  # Prevent clickjacking
+SECURE_SSL_REDIRECT = True  # Redirect all HTTP traffic to HTTPS
+SESSION_COOKIE_SECURE = True  # Use secure cookies
+CSRF_COOKIE_SECURE = True  # Use secure CSRF cookies
+SECURE_HSTS_SECONDS = 31536000  # Enable HTTP Strict Transport Security (HSTS)
+SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+SECURE_HSTS_PRELOAD = True
+SECURE_BROWSER_XSS_FILTER = True
+SECURE_CONTENT_TYPE_NOSNIFF = True
+X_FRAME_OPTIONS = 'DENY'  # Prevent clickjacking
 
 
 LOGGING = {
