@@ -50,7 +50,7 @@ def register(request):
             user.save()
 
             try:
-                BankAccount.objects.create(user=user)
+                BankAccount.objects.create(user=user, is_frozen=False)
             except Exception as e:
                 logger.error(f"Error creating bank account for user {user.username}: {e}")
                 user.delete()
@@ -120,16 +120,31 @@ def login_view(request):
         if form.is_valid():
             user = form.get_user()
             if not user.email_verified:
-                return render(request, 'accounts/login.html', {'form': form, 'error': 'Please verify your email before logging in.'})
+                return render(request, 'accounts/login.html', {
+                    'form': form,
+                    'error': 'Please verify your email before logging in.'
+                })
+
             login(request, user)
-            if not BankAccount.objects.filter(user=user).exists():
+
+            # Check if bank account exists
+            try:
+                bank_account = BankAccount.objects.get(user=user)
+            except BankAccount.DoesNotExist:
                 messages.error(request, "Bank account not found. Please contact support.")
                 return redirect('index')
+
+            # Notify user if account is frozen, but allow login
+            if bank_account.is_frozen:
+                messages.warning(request, "Your account is currently frozen. Some features may be restricted.")
+
             return redirect('dashboard')
+
     else:
         form = AuthenticationForm()
 
     return render(request, 'accounts/login.html', {'form': form})
+
 
 
 def logout_view(request):
