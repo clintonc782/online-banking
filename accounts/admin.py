@@ -7,17 +7,33 @@ class UserAdmin(admin.ModelAdmin):
     list_display = ('username', 'email', 'is_active', 'email_verified', 'date_of_birth', 'phone_number')
     list_filter = ('is_active', 'email_verified', 'gender', 'date_of_birth', 'country')
     search_fields = ('username', 'email', 'phone_number', 'social_security_number')
-    actions = ['freeze_accounts', 'unfreeze_accounts']
+    actions = ['freeze_bank_accounts', 'unfreeze_bank_accounts']
 
-    def freeze_accounts(self, request, queryset):
-        queryset.update(is_active=False)
-        self.message_user(request, "Selected accounts have been frozen.")
-    freeze_accounts.short_description = "Freeze selected accounts"
+    def freeze_bank_accounts(self, request, queryset):
+        count = 0
+        for user in queryset:
+            try:
+                account = BankAccount.objects.get(user=user)
+                account.is_frozen = True
+                account.save()
+                count += 1
+            except BankAccount.DoesNotExist:
+                pass
+        self.message_user(request, f"{count} bank accounts have been frozen.")
+    freeze_bank_accounts.short_description = "Freeze selected users' bank accounts"
 
-    def unfreeze_accounts(self, request, queryset):
-        queryset.update(is_active=True)
-        self.message_user(request, "Selected accounts have been unfrozen.")
-    unfreeze_accounts.short_description = "Unfreeze selected accounts"
+    def unfreeze_bank_accounts(self, request, queryset):
+        count = 0
+        for user in queryset:
+            try:
+                account = BankAccount.objects.get(user=user)
+                account.is_frozen = False
+                account.save()
+                count += 1
+            except BankAccount.DoesNotExist:
+                pass
+        self.message_user(request, f"{count} bank accounts have been unfrozen.")
+    unfreeze_bank_accounts.short_description = "Unfreeze selected users' bank accounts"
 
 
 @admin.register(BankAccount)
