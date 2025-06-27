@@ -74,21 +74,26 @@ def register(request):
 
 
 def send_verification_email(request, user):
-    token, _ = VerificationToken.objects.get_or_create(user=user)
-    verification_link = request.build_absolute_uri(reverse('verify_email', args=[token.token]))
-    subject = 'Verify Your Email'
-    html_message = render_to_string('accounts/email_verification.html', {
-        'user': user,
-        'verification_link': verification_link,
-    })
-    email = EmailMessage(
-        subject,
-        html_message,
-        settings.DEFAULT_FROM_EMAIL,
-        [user.email],
-    )
-    email.content_subtype = 'html'  # This sends the email as HTML
-    email.send(fail_silently=False)
+    try:
+        token, _ = VerificationToken.objects.get_or_create(user=user)
+        verification_link = request.build_absolute_uri(reverse('verify_email', args=[token.token]))
+        subject = 'Verify Your Email'
+        html_message = render_to_string('accounts/email_verification.html', {
+            'user': user,
+            'verification_link': verification_link,
+        })
+        email = EmailMessage(
+            subject,
+            html_message,
+            settings.DEFAULT_FROM_EMAIL,
+            [user.email],
+        )
+        email.content_subtype = 'html'
+        email.send(fail_silently=False)
+    except Exception as e:
+        logger.error(f"Failed to send email to {user.email}: {e}", exc_info=True)
+        raise e  # re-raise to be caught in register view
+
 
 
 def verify_email(request, token):
