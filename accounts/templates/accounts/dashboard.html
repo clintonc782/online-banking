@@ -1,242 +1,354 @@
 {% load static %}
+{% load humanize %}
+{% load widget_tweaks %}
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
   <title>Dashboard - Starlink Bank</title>
 
   <link href="{% static 'img/favicon2.ico' %}" rel="icon">
-  <link href="{% static 'img/apple-touch-icon.png' %}" rel="apple-touch-icon">
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
   <link href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
   <link href="{% static 'vendor/bootstrap-icons/bootstrap-icons.css' %}" rel="stylesheet">
   <link href="{% static 'css/main.css' %}" rel="stylesheet">
 
   <style>
-    body { background-color: #f4f6fa; font-family: 'Roboto', sans-serif; }
-    .sidebar { height: 100vh; background-color: #fff; padding: 20px; border-right: 1px solid #ddd; }
-    .nav-link { color: #333; }
-    .account-box { background: #007bff; color: #fff; padding: 25px; border-radius: 10px; }
-    .action-buttons .btn { margin-right: 10px; }
-    .feature-box, .quick-info { background: #fff; padding: 20px; border-radius: 10px; text-align: center; }
+    :root {
+      --brand: #0ea2bd;
+      --accent-dark: #0b94a5;
+      --muted: #6c757d;
+      --card-bg: #ffffff;
+    }
+
+    body {
+      background-color: #f4f6fa;
+      font-family: 'Roboto', sans-serif;
+    }
+
+    /* Header */
+    .header {
+      background-color: var(--brand);
+      color: #fff;
+    }
+    .header .sitename { font-weight: 700; margin: 0; color: #fff; }
+
+    /* Top controls */
+    .top-controls .btn { margin-left: 0.5rem; }
+
+    /* Sidebar */
+    .sidebar {
+      background-color: #fff;
+      border-right: 1px solid #e9ecef;
+      padding: 20px;
+      min-height: 100vh;
+    }
+    .sidebar .nav-link { color: #333; transition: all .2s; border-radius: 6px; padding: .5rem .75rem; }
+    .sidebar .nav-link:hover { background-color: #f8f9fa; }
+
+    /* Account box */
+    .account-box {
+      background: linear-gradient(90deg, var(--brand), var(--accent-dark));
+      color: #fff;
+      padding: 20px 22px;  /* Slightly reduced padding to bring mini cards closer */
+      border-radius: 12px;
+      box-shadow: 0 6px 18px rgba(14,162,189,0.08);
+    }
+    .account-box h5 { color: rgba(255,255,255,0.9); margin-bottom: .25rem; }
+    .account-box h2 { font-size: 2.2rem; margin: 0.25rem 0 0.5rem; }
+
+    /* Action buttons */
+    .action-buttons {
+      margin-top: 0.75rem;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 0.5rem;
+    }
+    .action-buttons .btn { border-radius: 8px; flex: 1 1 140px; } /* responsive min width */
+    .action-buttons .btn.disabled { opacity: .7; pointer-events: none; }
+
+    /* Mini cards */
+    .mini-card { background: var(--card-bg); border-radius: 8px; padding: 12px; box-shadow: 0 2px 6px rgba(0,0,0,0.03); }
+
+    /* Mini chat */
+    .mini-chat {
+      min-height: 150px;
+      max-height: 220px;
+      overflow-y: auto;
+      padding: 12px;
+      border-radius: 8px;
+      background: linear-gradient(180deg,#fafafa,#fff);
+    }
+    .chat-bubble {
+      display: inline-block;
+      max-width: 78%;
+      padding: 10px 14px;
+      border-radius: 18px;
+      margin-bottom: 10px;
+      word-wrap: break-word;
+      font-size: .95rem;
+      position: relative;
+      line-height: 1.3;
+      clear: both;
+    }
+    .chat-bubble.user {
+      background: var(--brand);
+      color: #fff;
+      float: right;
+      border-bottom-right-radius: 4px;
+      text-align: right;
+    }
+    .chat-bubble.admin {
+      background: #f1f3f5;
+      color: #212529;
+      float: left;
+      border-bottom-left-radius: 4px;
+      text-align: left;
+    }
+    .chat-meta { display: block; font-size: .75rem; color: var(--muted); margin-top: 6px; }
+
+    /* Chat badge */
+    .chat-badge {
+      position: absolute;
+      top: -6px;
+      right: -8px;
+      font-size: .65rem;
+      padding: .35rem .45rem;
+      border-radius: 999px;
+    }
+
+    /* Footer */
+    .footer { font-size: .9rem; }
+
+    /* Responsive */
+    @media (max-width: 991px) { .sidebar { display: none; } }
+    @media (max-width: 576px) {
+      .account-box h2 { font-size: 1.5rem; }
+      .chat-bubble { max-width: 90%; }
+      .action-buttons { justify-content: center; }
+    }
   </style>
 </head>
 
 <body class="dashboard-page">
+
   <!-- Header -->
-  <header id="header" class="header d-flex align-items-center sticky-top">
-    <div class="container-fluid position-relative d-flex align-items-center justify-content-between">
-      <a href="{% url 'index' %}" class="logo d-flex align-items-center me-auto me-xl-0">
-        <h1 class="sitename">Starlink Bank</h1><span>.</span>
-      </a>
-      <nav id="navmenu" class="navmenu">
-        <ul>
-          <li><a href="{% url 'index' %}" class="active">Home</a></li>
-          <li><a href="{% url 'index' %}#about">About</a></li>
-          <li><a href="{% url 'index' %}#services">Services</a></li>
-          <li><a href="{% url 'index' %}#faq">FAQs</a></li>
-          <li><a href="{% url 'index' %}#contact">Contact</a></li>
-        </ul>
-        <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
-      </nav>
-      <a class="btn-getstarted" href="{% url 'logout' %}">Logout</a>
+  <header class="header py-3 sticky-top shadow-sm">
+    <div class="container-fluid d-flex justify-content-between align-items-center">
+      <div class="d-flex align-items-center">
+        <button class="btn btn-outline-light d-lg-none me-3" id="menuToggle">
+          <i class="bi bi-list fs-4"></i>
+        </button>
+        <h1 class="sitename mb-0"><a style="color:white" href="{% url 'index' %}">Starlink Bank</a></h1>
+      </div>
+
+      <div class="d-flex align-items-center top-controls">
+        <span class="me-3 d-none d-sm-inline">Hello, <strong>{{ request.user.first_name }}</strong> 👋</span>
+
+        <div style="position:relative;">
+          <a href="{% url 'user_messages' %}" class="btn btn-outline-light btn-sm d-flex align-items-center">
+            <i class="bi bi-chat-dots me-2"></i> Chat Support
+          </a>
+          {% if unread_messages %}
+            <span id="message-badge" class="badge bg-danger chat-badge">{{ unread_messages }}</span>
+          {% endif %}
+        </div>
+
+        <a class="btn btn-light btn-sm ms-3" href="{% url 'logout' %}">Logout</a>
+      </div>
     </div>
   </header>
 
-  <!-- Main Content -->
+  <!-- Main content -->
   <div class="container-fluid">
-    <div class="row">
+    <div class="row gx-4 py-4">
+
       <!-- Sidebar -->
-      <div class="col-md-2 sidebar">
-        <h4 class="mb-4">Starlink Bank</h4>
-        <p><strong>{{ request.user.first_name }} {{ request.user.last_name }}</strong><br># {{ account.account_number }}<br>
-          <span class="badge bg-success">KYC Verified</span>
-        </p>
-        <a href="{% url 'logout' %}" class="btn btn-outline-danger btn-sm mb-3">Logout</a>
-        <hr>
+      <aside class="col-lg-2 sidebar d-none d-lg-block">
+        <div class="mini-card text-center mb-3">
+          <strong>{{ request.user.first_name }} {{ request.user.last_name }}</strong><br>
+          <small class="text-muted">Customer</small>
+          <div class="mt-2"><span class="badge bg-success">KYC Verified</span></div>
+        </div>
+
         <nav class="nav flex-column">
           <a class="nav-link" href="#">Dashboard</a>
-          <a class="nav-link" href="#">Transactions</a>
+          <a class="nav-link" href="{% url 'transaction_history' %}">Transactions</a>
           <a class="nav-link" href="#">Cards</a>
           <a class="nav-link" href="#">Local Transfer</a>
           <a class="nav-link" href="#">International Wire</a>
         </nav>
-      </div>
+      </aside>
 
-      <!-- Main Dashboard -->
-      <div class="col-md-10 p-4">
-        <!-- Account Summary -->
-        <div class="account-box mb-4">
-          <h5>Available Balance</h5>
-          <h2>${{ account.balance|floatformat:2 }} USD</h2>
-          <p>Account Number: <strong>{{ account.account_number }}</strong> <span class="badge bg-light text-dark">{{ account.status }}</span></p>
+      <!-- Main panel -->
+      <main class="col-lg-10">
 
-          <!-- Account Freezing Warning -->
-          {% if not request.user.is_active %}
-            <div class="alert alert-danger mt-3">
-              ⚠️ Your account is currently <strong>frozen</strong>. Please contact support to resolve this.
+        <!-- Account box -->
+        <div class="account-box mb-3">
+          <div class="d-sm-flex justify-content-between align-items-start">
+            <div>
+              <h5>Available Balance</h5>
+              <h2>${{ account.balance|floatformat:2|intcomma }} USD</h2>
+              <p class="mb-0">Account Number: <strong>{{ account.account_number }}</strong></p>
+              <p class="mb-0 mt-1"><span class="badge bg-light text-dark">{{ account.status }}</span></p>
             </div>
-          {% endif %}
 
-          <!-- Buttons -->
-          <div class="action-buttons mt-3">
-            <form method="POST">
-              {% csrf_token %}
-              <button type="submit" name="transactions" class="btn btn-light">Transactions</button>
-              <button type="submit" name="top_up" class="btn btn-light">Top Up</button>
-              <button type="submit" name="send_money" class="btn btn-primary">Send Money</button>
-              <button type="submit" name="deposit" class="btn btn-success">Deposit</button>
-              <button type="submit" name="history" class="btn btn-light">History</button>
-              <button type="submit" name="withdraw" class="btn btn-danger">Withdraw</button>
-              <button type="submit" name="request_card" class="btn btn-primary">Request a Card</button>
-            </form>
+            <div class="mt-3 mt-sm-0 text-sm-end">
+              {% if not request.user.is_active %}
+                <div class="alert alert-danger mb-2">
+                  ⚠ Your account is currently <strong>frozen</strong>. Please contact support.
+                </div>
+              {% endif %}
+
+              <div class="action-buttons">
+                {% if account.status == 'Frozen' %}
+                  <div class="alert alert-danger text-center p-3 rounded shadow-sm  mb-2">
+                    ⚠ Your account is currently <strong>FROZEN.</strong>.<br>
+                    <a href="{% url 'user_messages' %}" class="btn btn-outline-light mt-2 px-4">
+                      Contact Customer Care
+                    </a>
+                  </div>
+
+                  <a class="btn btn-primary disabled" href="#"><i class="bi bi-arrow-left-right me-1"></i> Transfer</a>
+                  <a class="btn btn-success disabled" href="#"><i class="bi bi-wallet2 me-1"></i> Deposit</a>
+                  <a class="btn btn-warning disabled" href="#"><i class="bi bi-cash-coin me-1"></i> Apply for loan</a>
+                {% else %}
+                  <a href="{% url 'transfer_money' %}" class="btn btn-primary"><i class="bi bi-arrow-left-right me-1"></i> Transfer</a>
+                  <a href="{% url 'deposit' %}" class="btn btn-success"><i class="bi bi-wallet2 me-1"></i> Deposit</a>
+                  <a href="#" class="btn btn-light"><i class="bi bi-plus-circle me-1"></i> Apply for loan</a>
+                {% endif %}
+
+                <a href="#" class="btn btn-warning"><i class="bi bi-credit-card me-1"></i> Request Card</a>
+                <a href="{% url 'set_transaction_pin' %}" class="btn btn-primary btn-pin"><i class="bi bi-key me-1"></i> Set / Change Transaction PIN</a>
+              </div>
+            </div>
           </div>
         </div>
 
-        <!-- Transaction History -->
-        <div class="card mb-4">
-          <div class="card-body">
-            <h4>Transaction History</h4>
-            {% if transactions %}
-              <table class="table table-striped">
-                <thead>
-                  <tr><th>Date</th><th>Description</th><th>Amount</th><th>Type</th></tr>
-                </thead>
-                <tbody>
-                  {% for transaction in transactions %}
-                    <tr>
-                      <td>{{ transaction.date|date:"M d, Y H:i" }}</td>
-                      <td>{{ transaction.description }}</td>
-                      <td>${{ transaction.amount|floatformat:2 }}</td>
-                      <td>{{ transaction.get_type_display }}</td>
-                    </tr>
-                  {% endfor %}
-                </tbody>
-              </table>
-            {% else %}
-              <p>No transactions found.</p>
-            {% endif %}
-          </div>
-        </div>
+        <!-- Mini cards row -->
+        <div class="row g-3 mb-4">
 
-        <!-- Card Requests -->
-        <div class="card mb-4">
-          <div class="card-body">
-            <h4>Card Request Status</h4>
-            {% if card_requests %}
-              <table class="table">
-                <thead><tr><th>Date</th><th>Status</th></tr></thead>
-                <tbody>
-                  {% for card in card_requests %}
-                    <tr>
-                      <td>{{ card.date_requested|date:"M d, Y" }}</td>
-                      <td>
-                        {% if card.status == 'approved' %}
-                          <span class="badge bg-success">Approved</span>
-                        {% elif card.status == 'pending' %}
-                          <span class="badge bg-warning text-dark">Pending</span>
-                        {% else %}
-                          <span class="badge bg-danger">Rejected</span>
-                        {% endif %}
-                      </td>
-                    </tr>
-                  {% endfor %}
-                </tbody>
-              </table>
-            {% else %}
-              <p>No card requests found.</p>
-            {% endif %}
+          <!-- Recent transactions -->
+          <div class="col-md-6 col-lg-4">
+            <div class="mini-card">
+              <h6 class="mb-1">Recent transactions</h6>
+              <p class="mb-0 text-muted">Latest 5 transactions</p>
+              <hr>
+              {% for t in transactions|slice:":5" %}
+                <div class="d-flex justify-content-between small py-1">
+                  <div>{{ t.description|truncatechars:30 }}</div>
+                  <div class="text-end">${{ t.amount|floatformat:2|intcomma }}</div>
+                </div>
+              {% empty %}
+                <p class="text-muted small mb-0">No recent transactions</p>
+              {% endfor %}
+              <div class="mt-2"><a href="{% url 'transaction_history' %}" class="small">View all</a></div>
+            </div>
           </div>
-        </div>
 
-        <!-- User Messages -->
-        <div class="card mb-4">
-          <div class="card-body">
-            <h4>Messages</h4>
-            {% if messages %}
-              <ul class="list-group">
-                {% for msg in messages %}
-                  <li class="list-group-item">
-                    <strong>{{ msg.sender }}:</strong> {{ msg.content }} <br>
-                    <small class="text-muted">{{ msg.created_at|date:"M d, Y H:i" }}</small>
-                    {% if not msg.is_reply %}
-                      <form method="POST" class="mt-2">
-                        {% csrf_token %}
-                        <input type="hidden" name="reply_to" value="{{ msg.id }}">
-                        <textarea name="reply_content" class="form-control" placeholder="Reply..."></textarea>
-                        <button type="submit" class="btn btn-sm btn-primary mt-1">Send Reply</button>
-                      </form>
+          <!-- Card requests -->
+          <div class="col-md-6 col-lg-4">
+            <div class="mini-card">
+              <h6 class="mb-1">Card requests</h6>
+              <p class="mb-0 text-muted">Latest requests</p>
+              <hr>
+              {% for c in card_requests|slice:":5" %}
+                <div class="d-flex justify-content-between small py-1">
+                  <div>{{ c.date_requested|date:"M d" }}</div>
+                  <div>
+                    {% if c.status == 'approved' %}
+                      <span class="badge bg-success">Approved</span>
+                    {% elif c.status == 'pending' %}
+                      <span class="badge bg-warning text-dark">Pending</span>
+                    {% else %}
+                      <span class="badge bg-danger">Rejected</span>
                     {% endif %}
-                  </li>
-                {% endfor %}
-              </ul>
-            {% else %}
-              <p>No messages yet.</p>
-            {% endif %}
+                  </div>
+                </div>
+              {% empty %}
+                <p class="text-muted small mb-0">No card requests</p>
+              {% endfor %}
+            </div>
           </div>
-        </div>
 
-      </div>
+          <!-- Mini chat -->
+          <div class="col-md-12 col-lg-4">
+            <div class="mini-card">
+              <div class="d-flex justify-content-between align-items-center mb-2">
+                <div>
+                  <h6 class="mb-0">Messages</h6>
+                  <small class="text-muted">Recent conversation</small>
+                </div>
+                <a class="view-all-messages" href="{% url 'user_messages' %}">View all →</a>
+              </div>
+
+              <div class="mini-chat" id="miniChat">
+                {% for msg in messages|slice:":5" %}
+                  {% if msg.sender == 'User' %}
+                    <div class="chat-bubble user">
+                      {{ msg.content|linebreaksbr }}
+                      <span class="chat-meta">{{ msg.created_at|date:"M d, H:i" }}</span>
+                    </div>
+                  {% else %}
+                    <div class="chat-bubble admin">
+                      {{ msg.content|linebreaksbr }}
+                      <span class="chat-meta">{{ msg.created_at|date:"M d, H:i" }}</span>
+                    </div>
+                  {% endif %}
+                {% empty %}
+                  <p class="text-muted small mb-0">No messages yet. Use Chat Support to contact us.</p>
+                {% endfor %}
+              </div>
+
+              <div class="mt-2 text-end">
+                <a href="{% url 'user_messages' %}" class="btn btn-sm btn-outline-primary">Open Chat</a>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </main>
     </div>
   </div>
 
   <!-- Footer -->
-  <footer id="footer" class="footer dark-background">
-    <div class="footer-top">
-      <div class="container">
-        <div class="row gy-4">
-          <div class="col-lg-4 col-md-6 footer-about">
-            <a href="{% url 'index' %}" class="logo d-flex align-items-center">
-              <span class="sitename">Starlink Bank Official Website</span>
-            </a>
-            <div class="footer-contact pt-3">
-              <p>A108 Adam Street</p><p>New York, NY 535022</p>
-              <p class="mt-3"><strong>Phone:</strong> <span>+1 5589 55488 55</span></p>
-              <p><strong>Email:</strong> <span>info@starlinkbank.com</span></p>
-            </div>
-          </div>
-
-          <div class="col-lg-2 col-md-3 footer-links">
-            <h4>Useful Links</h4>
-            <ul>
-              <li><a href="{% url 'index' %}">Home</a></li>
-              <li><a href="{% url 'index' %}#about">About us</a></li>
-              <li><a href="{% url 'index' %}#services">Services</a></li>
-              <li><a href="{% url 'register' %}">Open an Account</a></li>
-              <li><a href="#">Privacy policy</a></li>
-            </ul>
-          </div>
-
-          <div class="col-lg-2 col-md-3 footer-links">
-            <h4>Our Services</h4>
-            <ul>
-              <li><a href="{% url 'login' %}">Personal Banking</a></li>
-              <li><a href="{% url 'login' %}">Corporate Banking</a></li>
-              <li><a href="{% url 'login' %}">Business Banking</a></li>
-              <li><a href="{% url 'login' %}">Wealth Management</a></li>
-            </ul>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="copyright text-center">
-      <div class="container d-flex flex-column flex-lg-row justify-content-center justify-content-lg-between align-items-center">
-        <div class="d-flex flex-column align-items-center align-items-lg-start">
-          <div>© Copyright <strong><span>Starlink Bank</span></strong>. All Rights Reserved</div>
-        </div>
-        <div class="social-links order-first order-lg-last mb-3 mb-lg-0">
-          <a href="#"><i class="bi bi-twitter"></i></a>
-          <a href="#"><i class="bi bi-facebook"></i></a>
-          <a href="#"><i class="bi bi-instagram"></i></a>
-          <a href="#"><i class="bi bi-linkedin"></i></a>
-        </div>
-      </div>
+  <footer class="footer bg-dark text-light text-center py-3 mt-4">
+    <div class="container">
+      <p class="mb-0">© {{ now|date:"Y" }} Starlink Bank. All Rights Reserved</p>
     </div>
   </footer>
 
+  <audio id="newMessageSound" src="{% static 'audio/notification.mp3' %}" preload="auto"></audio>
+
   <script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+  <script>
+    const menuToggle = document.getElementById("menuToggle");
+    const mobileSidebar = document.getElementById("mobileSidebar");
+    const overlay = document.getElementById("overlay");
+    const closeSidebar = document.getElementById("closeSidebar");
+    if(menuToggle) menuToggle.addEventListener("click",()=>{mobileSidebar.classList.toggle("active");overlay.classList.toggle("active");});
+    if(overlay) overlay.addEventListener("click",()=>{mobileSidebar.classList.remove("active");overlay.classList.remove("active");});
+    if(closeSidebar) closeSidebar.addEventListener("click",()=>{mobileSidebar.classList.remove("active");overlay.classList.remove("active");});
+
+    const badge = document.getElementById('message-badge');
+    let lastUnread = badge ? parseInt(badge.textContent || '0',10) : 0;
+    async function checkNewMessages() {
+      if(!badge) return;
+      try {
+        const res = await fetch("{% url 'unread_messages_count' %}");
+        if(!res.ok) return;
+        const data = await res.json();
+        const count = data.unread_count || 0;
+        badge.textContent = count > 0 ? count : '';
+        badge.style.display = count>0?'inline-block':'none';
+        if(count>lastUnread) document.getElementById('newMessageSound').play().catch(()=>{});
+        lastUnread = count;
+      } catch(e){ console.warn(e); }
+    }
+    setInterval(checkNewMessages,10000);
+  </script>
+
 </body>
 </html>

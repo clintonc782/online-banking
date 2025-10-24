@@ -12,8 +12,10 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 
 from pathlib import Path
 import os
-from decouple import config
+from decouple import config, Csv
 import dj_database_url
+
+
 
 
 
@@ -31,9 +33,7 @@ SECRET_KEY = config("SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='').split(',')
-
-ALLOWED_HOSTS += ['127.0.0.1', 'localhost']
+ALLOWED_HOSTS = config('ALLOWED_HOSTS', cast=Csv())
 
 
 # Application definition
@@ -46,7 +46,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'accounts',
-    'widget_tweaks'
+    'widget_tweaks',
+    'django.contrib.humanize',
 ]
 
 MIDDLEWARE = [
@@ -166,7 +167,7 @@ DEFAULT_FROM_EMAIL = config("EMAIL_HOST_USER")
 
 
 # settings.py
-SECURE_SSL_REDIRECT = True  # Redirect all HTTP traffic to HTTPS
+SECURE_SSL_REDIRECT = False  # Redirect all HTTP traffic to HTTPS
 SESSION_COOKIE_SECURE = True  # Use secure cookies
 CSRF_COOKIE_SECURE = True  # Use secure CSRF cookies
 SECURE_HSTS_SECONDS = 31536000  # Enable HTTP Strict Transport Security (HSTS)

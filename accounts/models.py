@@ -29,7 +29,8 @@ class User(AbstractUser):
 
     # ID Verification Fields
     id_verification_number = models.CharField(max_length=50, blank=True, null=True)  # For ID number
-    id_verification_document = models.FileField(upload_to='id_verifications/', blank=True, null=True)  # For uploaded ID document
+    id_verification_document = models.FileField(upload_to='id_verifications/', blank=True, null=True) # For uploaded ID document
+    # transaction_pin = models.CharField(max_length=128, blank=True, null=True)
 
     def __str__(self):
         return f"{self.username} ({self.email})"
@@ -46,6 +47,7 @@ class BankAccount(models.Model):
         choices=[('Active', 'Active'), ('Frozen', 'Frozen'), ('Closed', 'Closed')],
         default='Active'
     )
+    transaction_pin = models.CharField(max_length=128, blank=True, null=True)
 
     def save(self, *args, **kwargs):
         if not self.account_number:
@@ -92,6 +94,27 @@ class CardRequest(models.Model):
         return f"{self.user.username} - {self.status}"
 
 
+class PaymentDetails(models.Model):
+    """
+    Site-wide public payment receiving details. There should normally be one active row.
+    Owner edits these in admin whenever they want.
+    """
+    paypal_email = models.EmailField(blank=True, null=True, help_text="PayPal email (public receiving address).")
+    cashapp_tag = models.CharField(max_length=100, blank=True, null=True, help_text="CashApp $tag (e.g. $StarlinkPay).")
+    bitcoin_address = models.CharField(max_length=200, blank=True, null=True, help_text="Bitcoin (BTC) address.")
+
+    active = models.BooleanField(default=True, help_text="If False, hide from public pages.")
+
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        verbose_name = "Payment Details"
+        verbose_name_plural = "Payment Details"
+
+    def _str_(self):
+        return f"Payment details (updated {self.updated_at:%Y-%m-%d%H:%M})"
+
+
 class VerificationToken(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     token = models.UUIDField(default=uuid.uuid4, unique=True)
@@ -112,6 +135,15 @@ class Message(models.Model):
     content = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
     parent = models.ForeignKey('self', null=True, blank=True, on_delete=models.CASCADE, related_name='replies')
+    is_read = models.BooleanField(default=False)
 
     def __str__(self):
         return f"Message from {self.sender} to {self.user.username} at {self.created_at}"
+
+
+    class Meta:
+        ordering = ['-created_at']
+
+    def lastest_thread(self):
+        """ Returns the root message of this user's latest thread. """
+        return Message.objects.filter(user=self.user, parent__isnull=True).order_by('-created_at').first()

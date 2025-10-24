@@ -47,6 +47,9 @@ class UserRegistrationForm(forms.ModelForm):
 
         return cleaned_data
 
+
+
+
     def clean_id_verification_document(self):
         document = self.cleaned_data.get('id_verification_document')
 
@@ -57,11 +60,53 @@ class UserRegistrationForm(forms.ModelForm):
                 raise forms.ValidationError("Only PDF, JPG, and PNG files are allowed.")
         return document
 
+
+
+
+
+class TransferForm(forms.Form):
+    recipient_account_number = forms.CharField(max_length=12, label="Recipient Account Number")
+    amount = forms.DecimalField(max_digits=10, decimal_places=2, label="Amount")
+    description = forms.CharField(max_length=225, required=False)
+
 # Message Form
 class MessageForm(forms.ModelForm):
     class Meta:
         model = Message
-        fields = ['content']
+        fields = ['subject', 'content']
         widgets = {
-            'content': forms.Textarea(attrs={'placeholder': 'Type your message here...', 'rows': 4}),
+            'subject': forms.TextInput(attrs={'class':'form-control', 'placeholder': 'Subject'}),
+            'content': forms.Textarea(attrs={'class':'form-control', 'placeholder': 'Type your message here...', 'rows': 3, }),
         }
+
+
+class TransactionPinForm(forms.Form):
+    current_pin = forms.CharField(
+        max_length=6,
+        required=False,
+        widget=forms.PasswordInput(attrs={'placeholder': 'Current PIN (leave blank if none)'}),
+        label="Current PIN"
+    )
+    new_pin = forms.CharField(
+        max_length=6,
+        widget=forms.PasswordInput(attrs={'placeholder': 'Enter new 4-6 digit PIN'}),
+        label="New PIN"
+    )
+    confirm_pin = forms.CharField(
+        max_length=6,
+        widget=forms.PasswordInput(attrs={'placeholder': 'Confirm new PIN'}),
+        label="Confirm New PIN"
+    )
+
+    def clean(self):
+        cleaned_data = super().clean()
+        new_pin = cleaned_data.get('new_pin')
+        confirm_pin = cleaned_data.get('confirm_pin')
+
+        if new_pin != confirm_pin:
+            raise forms.ValidationError("New PIN and confirmation PIN do not match.")
+
+        if not new_pin.isdigit() or not (4 <= len(new_pin) <= 6):
+            raise forms.ValidationError("PIN must be 4 to 6 digits only.")
+
+        return cleaned_data

@@ -1,13 +1,10 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
   <title>Messages - Starlink Bank</title>
-  <meta name="description" content="">
-  <meta name="keywords" content="">
 
   <!-- Favicons -->
   <link href="{% static 'img/favicon2.ico' %}" rel="icon">
@@ -16,127 +13,219 @@
   <!-- Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
 
-  <!-- Vendor CSS Files -->
+  <!-- Bootstrap -->
   <link href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
   <link href="{% static 'vendor/bootstrap-icons/bootstrap-icons.css' %}" rel="stylesheet">
 
-  <!-- Main CSS File -->
+  <!-- Main CSS -->
   <link href="{% static 'css/main.css' %}" rel="stylesheet">
+
+  <style>
+    body {
+      background: #f0f2f5;
+      font-family: 'Roboto', sans-serif;
+    }
+
+    .chat-wrapper {
+      max-width: 850px;
+      margin: 40px auto;
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 0 12px rgba(0,0,0,0.1);
+      overflow: hidden;
+    }
+
+    .chat-header {
+      background: #0d6efd;
+      color: white;
+      padding: 15px 20px;
+      font-size: 1.2rem;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .chat-body {
+      height: 70vh;
+      overflow-y: auto;
+      padding: 20px;
+      background: #e5ddd5;
+    }
+
+    .message {
+      padding: 10px 15px;
+      border-radius: 18px;
+      margin-bottom: 12px;
+      display: inline-block;
+      max-width: 75%;
+      word-wrap: break-word;
+      font-size: 0.95rem;
+      position: relative;
+      animation: fadeIn 0.2s ease-in-out;
+    }
+
+    .message.user {
+      background-color: #0d6efd;
+      color: #fff;
+      float: right;
+      clear: both;
+      border-bottom-right-radius: 4px;
+    }
+
+    .message.admin {
+      background-color: #ffffff;
+      color: #212529;
+      float: left;
+      clear: both;
+      border-bottom-left-radius: 4px;
+    }
+
+    .message-time {
+      display: block;
+      font-size: 0.7rem;
+      color: rgba(255,255,255,0.8);
+      margin-top: 4px;
+      text-align: right;
+    }
+
+    .message.admin .message-time {
+      color: #6c757d;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(5px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .chat-footer {
+      border-top: 1px solid #ccc;
+      padding: 10px;
+      background: #fff;
+    }
+
+    textarea.form-control {
+      resize: none;
+      border-radius: 20px;
+    }
+
+    button.btn-send {
+      border-radius: 50%;
+      padding: 10px 14px;
+      background: #0d6efd;
+      color: white;
+      border: none;
+    }
+
+    .new-message-alert {
+      position: fixed;
+      bottom: 100px;
+      right: 20px;
+      background: #0d6efd;
+      color: white;
+      padding: 10px 16px;
+      border-radius: 20px;
+      font-size: 0.9rem;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+      z-index: 9999;
+      animation: fadeInOut 4s ease-in-out;
+    }
+
+    @keyframes fadeInOut {
+      0% { opacity: 0; transform: translateY(10px); }
+      10%, 90% { opacity: 1; transform: translateY(0); }
+      100% { opacity: 0; transform: translateY(10px); }
+    }
+
+    @media (max-width: 768px) {
+      .chat-body { height: 65vh; padding: 15px; }
+    }
+  </style>
 </head>
+<body>
 
-<body class="dashboard-page">
-
-  <!-- Header -->
-  <header id="header" class="header d-flex align-items-center sticky-top">
-    <div class="container-fluid position-relative d-flex align-items-center justify-content-between">
-      <a href="{% url 'index' %}" class="logo d-flex align-items-center me-auto me-xl-0">
-        <h1 class="sitename">Starlink Bank</h1>
-        <span>.</span>
-      </a>
-
-      <nav id="navmenu" class="navmenu">
-        <ul>
-          <li><a href="{% url 'index' %}" class="active">Home</a></li>
-          <li><a href="{% url 'index' %}#about">About</a></li>
-          <li><a href="{% url 'index' %}#services">Services</a></li>
-          <li><a href="{% url 'index' %}#faq">FAQs</a></li>
-          <li><a href="{% url 'index' %}#contact">Contact</a></li>
-        </ul>
-        <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
-      </nav>
-
-      <a class="btn-getstarted" href="{% url 'logout' %}">Logout</a>
-    </div>
-  </header>
-
-  <!-- Main Content -->
-  <div class="container mt-5">
-    <h2>Messages</h2>
-    {% if page_obj %}
-      <ul class="list-group">
-        {% for message in page_obj %}
-          <li class="list-group-item">
-            <strong>{{ message.sender }}:</strong> {{ message.content }}
-            <span class="text-muted float-end">{{ message.created_at|date:"M d, Y H:i" }}</span>
-          </li>
-        {% endfor %}
-      </ul>
-      <div class="mt-3">
-        <nav>
-          <ul class="pagination">
-            {% if page_obj.has_previous %}
-              <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}">Previous</a></li>
-            {% endif %}
-            <li class="page-item active"><span class="page-link">{{ page_obj.number }}</span></li>
-            {% if page_obj.has_next %}
-              <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}">Next</a></li>
-            {% endif %}
-          </ul>
-        </nav>
-      </div>
-    {% else %}
-      <p>No messages found.</p>
-    {% endif %}
+<div class="chat-wrapper">
+  <div class="chat-header">
+    <span>💬 Chat with Support</span>
+    <a href="{% url 'dashboard' %}" class="text-white text-decoration-none small">← Back to Account Dashboard</a>
   </div>
 
-  <!-- Footer -->
-  <footer id="footer" class="footer dark-background">
-    <div class="footer-top">
-      <div class="container">
-        <div class="row gy-4">
-          <div class="col-lg-4 col-md-6 footer-about">
-            <a href="{% url 'index' %}" class="logo d-flex align-items-center">
-              <span class="sitename">Starlink Bank Official Website</span>
-            </a>
-            <div class="footer-contact pt-3">
-              <p>A108 Adam Street</p>
-              <p>New York, NY 535022</p>
-              <p class="mt-3"><strong>Phone:</strong> <span>+1 5589 55488 55</span></p>
-              <p><strong>Email:</strong> <span>info@starlinkbank.com</span></p>
-            </div>
-          </div>
-
-          <div class="col-lg-2 col-md-3 footer-links">
-            <h4>Useful Links</h4>
-            <ul>
-              <li><a href="{% url 'index' %}">Home</a></li>
-              <li><a href="{% url 'index' %}#about">About us</a></li>
-              <li><a href="{% url 'index' %}#services">Services</a></li>
-              <li><a href="{% url 'register' %}">Open an Account</a></li>
-              <li><a href="#">Privacy policy</a></li>
-            </ul>
-          </div>
-
-          <div class="col-lg-2 col-md-3 footer-links">
-            <h4>Our Services</h4>
-            <ul>
-              <li><a href="{% url 'login' %}">Personal Banking</a></li>
-              <li><a href="{% url 'login' %}">Corporate Banking</a></li>
-              <li><a href="{% url 'login' %}">Business Banking</a></li>
-              <li><a href="{% url 'login' %}">Wealth Management</a></li>
-            </ul>
-          </div>
-        </div>
+  <div class="chat-body" id="chat">
+    {% for message in page_obj %}
+      <div class="message {% if message.sender == 'User' %}user{% else %}admin{% endif %}">
+        {{ message.content }}
+        <span class="message-time">{{ message.created_at|date:"M d, H:i" }}</span>
       </div>
-    </div>
+    {% empty %}
+      <p class="text-center text-muted mt-5">No messages yet. Start the conversation below!</p>
+    {% endfor %}
+  </div>
 
-    <div class="copyright text-center">
-      <div class="container d-flex flex-column flex-lg-row justify-content-center justify-content-lg-between align-items-center">
-        <div class="d-flex flex-column align-items-center align-items-lg-start">
-          <div>© Copyright <strong><span>Starlink Bank</span></strong>. All Rights Reserved</div>
-        </div>
-        <div class="social-links order-first order-lg-last mb-3 mb-lg-0">
-          <a href="#"><i class="bi bi-twitter"></i></a>
-          <a href="#"><i class="bi bi-facebook"></i></a>
-          <a href="#"><i class="bi bi-instagram"></i></a>
-          <a href="#"><i class="bi bi-linkedin"></i></a>
-        </div>
+  <div class="chat-footer">
+    <form method="post" id="sendMessageForm">
+      {% csrf_token %}
+      <div class="input-group">
+        <textarea name="content" class="form-control" placeholder="Type your message..." required></textarea>
+        <button type="submit" class="btn-send"><i class="bi bi-send"></i></button>
       </div>
-    </div>
-  </footer>
+    </form>
+  </div>
+</div>
 
-  <!-- Vendor JS Files -->
-  <script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+<script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+<script>
+  const chatContainer = document.getElementById('chat');
+  const form = document.getElementById('sendMessageForm');
+  let lastMessageCount = {{ page_obj|length }};
+  let firstLoad = true;
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const formData = new FormData(form);
+
+    const response = await fetch("{% url 'user_messages' %}", {
+      method: "POST",
+      headers: { "X-CSRFToken": formData.get('csrfmiddlewaretoken') },
+      body: formData
+    });
+
+    if (response.ok) {
+      fetchMessages(true);
+      form.reset();
+    }
+  });
+
+  async function fetchMessages(forceScroll = false) {
+    const response = await fetch("{% url 'user_messages' %}?ajax=1");
+    const data = await response.text();
+    const oldHeight = chatContainer.scrollHeight;
+    chatContainer.innerHTML = data;
+    const messageCount = chatContainer.querySelectorAll('.message').length;
+
+    if (!firstLoad && messageCount > lastMessageCount) {
+      const lastMsg = chatContainer.lastElementChild;
+      if (lastMsg && lastMsg.classList.contains('admin')) showNewMessageAlert();
+    }
+
+    if (forceScroll || messageCount > lastMessageCount) {
+      chatContainer.scrollTop = chatContainer.scrollHeight;
+    }
+
+    lastMessageCount = messageCount;
+    firstLoad = false;
+  }
+
+  function showNewMessageAlert() {
+    if (document.querySelector('.new-message-alert')) return;
+    const alert = document.createElement('div');
+    alert.className = 'new-message-alert';
+    alert.textContent = '💬 New message from admin';
+    document.body.appendChild(alert);
+    setTimeout(() => alert.remove(), 4000);
+  }
+
+  setInterval(fetchMessages, 5000);
+  chatContainer.scrollTop = chatContainer.scrollHeight;
+</script>
 </body>
-
 </html>

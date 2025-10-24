@@ -1,4 +1,4 @@
-{% load static %}
+{% load static humanize %}
 <!DOCTYPE html>
 <html lang="en">
 
@@ -6,8 +6,6 @@
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
   <title>Transaction History - Starlink Bank</title>
-  <meta name="description" content="">
-  <meta name="keywords" content="">
 
   <!-- Favicons -->
   <link href="{% static 'img/favicon2.ico' %}" rel="icon">
@@ -22,6 +20,145 @@
 
   <!-- Main CSS File -->
   <link href="{% static 'css/main.css' %}" rel="stylesheet">
+
+  <style>
+    .transaction-container {
+      margin-top: 70px;
+      margin-bottom: 100px;
+    }
+
+    /* Summary cards */
+    .summary-section {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      justify-content: center;
+      margin-bottom: 30px;
+    }
+
+    .summary-card {
+      flex: 1 1 250px;
+      background: #fff;
+      border-radius: 15px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+      padding: 20px;
+      text-align: center;
+      transition: all 0.3s ease;
+    }
+
+    .summary-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 6px 25px rgba(0, 0, 0, 0.12);
+    }
+
+    .summary-icon {
+      font-size: 2rem;
+      margin-bottom: 10px;
+    }
+
+    .summary-title {
+      font-size: 0.95rem;
+      color: #6c757d;
+      margin-bottom: 10px;
+    }
+
+    .summary-value {
+      font-weight: 700;
+      font-size: 1.3rem;
+    }
+
+    .credit-value {
+      color: #198754;
+    }
+
+    .debit-value {
+      color: #dc3545;
+    }
+
+    .balance-value {
+      color: #012970;
+    }
+
+    /* Transaction list */
+    .transaction-card {
+      border-radius: 15px;
+      background: #fff;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+      padding: 25px;
+      transition: all 0.3s ease;
+    }
+
+    .transaction-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 6px 25px rgba(0, 0, 0, 0.12);
+    }
+
+    .transaction-header {
+      font-weight: 700;
+      font-size: 1.4rem;
+      margin-bottom: 25px;
+      color: #012970;
+      text-align: center;
+    }
+
+    .transaction-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid #e9ecef;
+      padding: 15px 0;
+    }
+
+    .transaction-item:last-child {
+      border-bottom: none;
+    }
+
+    .transaction-type {
+      font-weight: 600;
+      font-size: 0.9rem;
+      text-transform: uppercase;
+    }
+
+    .transaction-type.credit {
+      color: #198754;
+    }
+
+    .transaction-type.debit {
+      color: #dc3545;
+    }
+
+    .transaction-desc {
+      flex: 1;
+      margin-left: 10px;
+      color: #333;
+      font-size: 0.95rem;
+    }
+
+    .transaction-date {
+      font-size: 0.85rem;
+      color: #6c757d;
+    }
+
+    .transaction-amount {
+      font-weight: 700;
+      font-size: 1rem;
+    }
+
+    @media (max-width: 768px) {
+      .transaction-item {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .transaction-amount {
+        margin-top: 5px;
+      }
+
+      .transaction-date {
+        font-size: 0.8rem;
+      }
+    }
+  </style>
 </head>
 
 <body class="dashboard-page">
@@ -36,7 +173,7 @@
 
       <nav id="navmenu" class="navmenu">
         <ul>
-          <li><a href="{% url 'index' %}" class="active">Home</a></li>
+          <li><a href="{% url 'index' %}">Home</a></li>
           <li><a href="{% url 'index' %}#about">About</a></li>
           <li><a href="{% url 'index' %}#services">Services</a></li>
           <li><a href="{% url 'index' %}#faq">FAQs</a></li>
@@ -49,37 +186,72 @@
     </div>
   </header>
 
-  <!-- Main Content -->
-  <div class="container mt-5">
-    <h2>Transaction History</h2>
-    {% if transactions %}
-      <table class="table table-striped">
-        <thead>
-          <tr>
-            <th>Date</th>
-            <th>Description</th>
-            <th>Amount</th>
-            <th>Type</th>
-          </tr>
-        </thead>
-        <tbody>
-          {% for transaction in transactions %}
-            <tr>
-              <td>{{ transaction.date|date:"M d, Y H:i" }}</td>
-              <td>{{ transaction.description }}</td>
-              <td>${{ transaction.amount|floatformat:2 }}</td>
-              <td>{{ transaction.get_type_display }}</td>
-            </tr>
-          {% endfor %}
-        </tbody>
-      </table>
-    {% else %}
-      <p>No transactions found.</p>
-    {% endif %}
+  <!-- Transactions Section -->
+  <div class="container transaction-container">
+
+    <!-- Summary Section -->
+    <div class="summary-section">
+      <div class="summary-card">
+        <div class="summary-icon text-success"><i class="bi bi-arrow-down-circle-fill"></i></div>
+        <div class="summary-title">Total Credit</div>
+        <div class="summary-value credit-value">
+          ₦{{ total_credit|floatformat:2|intcomma }}
+        </div>
+      </div>
+
+      <div class="summary-card">
+        <div class="summary-icon text-danger"><i class="bi bi-arrow-up-circle-fill"></i></div>
+        <div class="summary-title">Total Debit</div>
+        <div class="summary-value debit-value">
+          ₦{{ total_debit|floatformat:2|intcomma }}
+        </div>
+      </div>
+
+      <div class="summary-card">
+        <div class="summary-icon text-primary"><i class="bi bi-wallet2"></i></div>
+        <div class="summary-title">Current Balance</div>
+        <div class="summary-value balance-value">
+          ₦{{ account.balance|floatformat:2|intcomma }}
+        </div>
+      </div>
+    </div>
+
+    <!-- Transaction List -->
+    <div class="transaction-card">
+      <h2 class="transaction-header">Transaction History</h2>
+
+      {% if transactions %}
+        {% for transaction in transactions %}
+          <div class="transaction-item">
+            <div>
+              <div class="transaction-type {{ transaction.type }}">
+                {% if transaction.type == "credit" %}
+                  <i class="bi bi-arrow-down-circle text-success"></i>
+                {% else %}
+                  <i class="bi bi-arrow-up-circle text-danger"></i>
+                {% endif %}
+                {{ transaction.get_type_display }}
+              </div>
+              <div class="transaction-desc">
+                {{ transaction.description }}
+              </div>
+              <div class="transaction-date">
+                {{ transaction.date|date:"M d, Y H:i" }}
+              </div>
+            </div>
+            <div class="transaction-amount {% if transaction.type == 'credit' %}text-success{% else %}text-danger{% endif %}">
+              ₦{{ transaction.amount|floatformat:2|intcomma }}
+            </div>
+          </div>
+        {% endfor %}
+      {% else %}
+        <p class="text-center text-muted mt-4">No transactions found.</p>
+      {% endif %}
+    </div>
   </div>
 
   <!-- Footer -->
-  <footer id="footer" class="footer dark-background">
+  <footer id="footer" class="footer dark-background mt-5">
     <div class="footer-top">
       <div class="container">
         <div class="row gy-4">

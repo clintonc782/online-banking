@@ -1,0 +1,162 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <title>Set Transaction PIN - Starlink Bank</title>
+  <meta name="description" content="Set your secure transaction PIN for transfers and deposits">
+  <meta name="keywords" content="banking, pin, security">
+
+  <!-- Favicons -->
+  <link href="{% static 'img/favicon2.ico' %}" rel="icon">
+  <link href="{% static 'img/apple-touch-icon.png' %}" rel="apple-touch-icon">
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+
+  <!-- Vendor CSS Files -->
+  <link href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+  <link href="{% static 'vendor/bootstrap-icons/bootstrap-icons.css' %}" rel="stylesheet">
+
+  <!-- Main CSS File -->
+  <link href="{% static 'css/main.css' %}" rel="stylesheet">
+</head>
+
+<body class="dashboard-page">
+
+  <!-- Header -->
+  <header id="header" class="header d-flex align-items-center sticky-top">
+    <div class="container-fluid position-relative d-flex align-items-center justify-content-between">
+      <a href="{% url 'index' %}" class="logo d-flex align-items-center me-auto me-xl-0">
+        <h1 class="sitename">Starlink Bank</h1><span>.</span>
+      </a>
+
+      <nav id="navmenu" class="navmenu">
+        <ul>
+          <li><a href="{% url 'index' %}" class="active">Home</a></li>
+          <li><a href="{% url 'index' %}#about">About</a></li>
+          <li><a href="{% url 'index' %}#services">Services</a></li>
+          <li><a href="{% url 'index' %}#faq">FAQs</a></li>
+          <li><a href="{% url 'index' %}#contact">Contact</a></li>
+        </ul>
+        <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
+      </nav>
+
+      <a class="btn-getstarted" href="{% url 'logout' %}">Logout</a>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <div class="container mt-5">
+    <h2 class="mb-4 text-center">Set Your Transaction PIN</h2>
+
+    <div class="alert alert-info text-center">
+      <i class="bi bi-shield-lock-fill"></i>
+      Create a 6-digit secure PIN used for transfers and deposits.
+    </div>
+
+    {% if messages %}
+      <div class="mb-3">
+        {% for message in messages %}
+          <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+          </div>
+        {% endfor %}
+      </div>
+    {% endif %}
+
+    <form method="POST" class="p-4 bg-light rounded shadow-sm">
+      {% csrf_token %}
+
+      <div class="mb-3">
+        <label for="pin" class="form-label">Enter New PIN</label>
+        <input type="password" class="form-control" id="pin" name="pin" maxlength="6" minlength="6"
+               pattern="\d{6}" placeholder="Enter 6-digit PIN" required>
+      </div>
+
+      <div class="mb-3">
+        <label for="confirm_pin" class="form-label">Confirm PIN</label>
+        <input type="password" class="form-control" id="confirm_pin" name="confirm_pin" maxlength="6" minlength="6"
+               pattern="\d{6}" placeholder="Re-enter PIN" required>
+      </div>
+
+      <button type="submit" class="btn btn-success w-100 mt-2">Save PIN</button>
+    </form>
+  </div>
+
+  <!-- Footer -->
+  <footer id="footer" class="footer dark-background mt-5">
+    <div class="footer-top">
+      <div class="container">
+        <div class="row gy-4">
+          <div class="col-lg-4 col-md-6 footer-about">
+            <a href="{% url 'index' %}" class="logo d-flex align-items-center">
+              <span class="sitename">Starlink Bank Official Website</span>
+            </a>
+            <div class="footer-contact pt-3">
+              <p>A108 Adam Street</p>
+              <p>New York, NY 535022</p>
+              <p class="mt-3"><strong>Phone:</strong> <span>+1 5589 55488 55</span></p>
+              <p><strong>Email:</strong> <span>info@starlinkbank.com</span></p>
+            </div>
+          </div>
+
+          <div class="col-lg-2 col-md-3 footer-links">
+            <h4>Useful Links</h4>
+            <ul>
+              <li><a href="{% url 'index' %}">Home</a></li>
+              <li><a href="{% url 'index' %}#about">About us</a></li>
+              <li><a href="{% url 'index' %}#services">Services</a></li>
+              <li><a href="{% url 'register' %}">Open an Account</a></li>
+              <li><a href="#">Privacy policy</a></li>
+            </ul>
+          </div>
+
+          <div class="col-lg-2 col-md-3 footer-links">
+            <h4>Our Services</h4>
+            <ul>
+              <li><a href="{% url 'login' %}">Personal Banking</a></li>
+              <li><a href="{% url 'login' %}">Corporate Banking</a></li>
+              <li><a href="{% url 'login' %}">Business Banking</a></li>
+              <li><a href="{% url 'login' %}">Wealth Management</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="copyright text-center">
+      <div class="container d-flex flex-column flex-lg-row justify-content-center justify-content-lg-between align-items-center">
+        <div class="d-flex flex-column align-items-center align-items-lg-start">
+          <div>© Copyright <strong><span>Starlink Bank</span></strong>. All Rights Reserved</div>
+        </div>
+        <div class="social-links order-first order-lg-last mb-3 mb-lg-0">
+          <a href="#"><i class="bi bi-twitter"></i></a>
+          <a href="#"><i class="bi bi-facebook"></i></a>
+          <a href="#"><i class="bi bi-instagram"></i></a>
+          <a href="#"><i class="bi bi-linkedin"></i></a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+
+  <script>
+    // Basic client-side PIN match validation
+    const form = document.querySelector("form");
+    form.addEventListener("submit", (e) => {
+      const pin = document.getElementById("pin").value.trim();
+      const confirmPin = document.getElementById("confirm_pin").value.trim();
+      if (pin !== confirmPin) {
+        e.preventDefault();
+        alert("PINs do not match. Please re-enter.");
+      }
+    });
+  </script>
+
+</body>
+</html>

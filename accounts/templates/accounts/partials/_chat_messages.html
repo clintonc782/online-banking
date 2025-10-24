@@ -1,0 +1,6 @@
+{% for message in messages_list %}
+  <div class="message {% if message.sender == 'User' %}user{% else %}admin{% endif %}">
+    {{ message.content }}
+    <span class="message-time">{{ message.created_at|date:"M d, H:i" }}</span>
+  </div>
+{% endfor %}
