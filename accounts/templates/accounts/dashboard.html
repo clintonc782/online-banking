@@ -129,6 +129,12 @@
       .chat-bubble { max-width: 90%; }
       .action-buttons { justify-content: center; }
     }
+    @media (max-width: 576px) {
+    .header { padding: 0.5rem 1rem; }
+  .header .sitename {
+    font-size: 1.2rem; /* smaller on mobile */
+      }
+    }
   </style>
 </head>
 
@@ -136,28 +142,28 @@
 
   <!-- Header -->
   <header class="header py-3 sticky-top shadow-sm">
-    <div class="container-fluid d-flex justify-content-between align-items-center">
+    <div class="container-fluid d-flex flex-wrap justify-content-between align-items-center">
       <div class="d-flex align-items-center">
         <button class="btn btn-outline-light d-lg-none me-3" id="menuToggle">
           <i class="bi bi-list fs-4"></i>
         </button>
-        <h1 class="sitename mb-0"><a style="color:white" href="{% url 'index' %}">Starlink Bank</a></h1>
+        <h1 class="sitename mb-2 mb-sm-0"><a style="color:white" href="{% url 'index' %}">Starlink Bank</a></h1>
       </div>
 
-      <div class="d-flex align-items-center top-controls">
-        <span class="me-3 d-none d-sm-inline">Hello, <strong>{{ request.user.first_name }}</strong> 👋</span>
+      <div class="d-flex flex-wrap align-items-center">
+  <div class="me-3 mb-2 mb-sm-0">Hello, <strong>{{ request.user.first_name }}</strong> 👋</div>
 
-        <div style="position:relative;">
-          <a href="{% url 'user_messages' %}" class="btn btn-outline-light btn-sm d-flex align-items-center">
-            <i class="bi bi-chat-dots me-2"></i> Chat Support
-          </a>
-          {% if unread_messages %}
-            <span id="message-badge" class="badge bg-danger chat-badge">{{ unread_messages }}</span>
-          {% endif %}
-        </div>
+  <div class="position-relative me-2 mb-2 mb-sm-0">
+    <a href="{% url 'user_messages' %}" class="btn btn-outline-light btn-sm d-flex align-items-center">
+      <i class="bi bi-chat-dots me-2"></i> Chat Support
+    </a>
+    {% if unread_messages %}
+      <span id="message-badge" class="badge bg-danger chat-badge">{{ unread_messages }}</span>
+    {% endif %}
+  </div>
 
-        <a class="btn btn-light btn-sm ms-3" href="{% url 'logout' %}">Logout</a>
-      </div>
+  <a class="btn btn-light btn-sm ms-0 ms-sm-3 mb-2 mb-sm-0" href="{% url 'logout' %}">Logout</a>
+</div>
     </div>
   </header>
 
