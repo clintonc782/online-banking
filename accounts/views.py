@@ -238,12 +238,10 @@ def transfer_money(request):
 
             # ✅ 2. Transaction PIN verification
             entered_pin = request.POST.get("pin")
-
             if not entered_pin:
                 messages.error(request, "Please enter your transaction PIN.")
                 return redirect("transfer_money")
 
-            # Check the entered PIN against the hashed one in the database
             if not check_password(entered_pin, sender_account.transaction_pin):
                 messages.error(request, "Incorrect transaction PIN. Please try again.")
                 return redirect("transfer_money")
@@ -295,30 +293,36 @@ def transfer_money(request):
                     description=f'Transfer from {sender_account.account_number} - {description}'
                 )
 
-            # ✅ 6. Notify sender via email
-            send_mail(
-                subject="Transfer Notification",
-                message=(
-                    f"Dear {request.user.first_name},\n\n"
-                    f"You have successfully transferred ₦{amount:.2f} "
-                    f"to account {receiver_account_number}.\n\n"
-                    "Thank you for using our services.\n\nBest regards,\nStarlink Bank"
-                ),
-                from_email="skybank604@gmail.com",
-                recipient_list=[request.user.email],
-                fail_silently=True,
-            )
+            # ✅ 6. Notify sender via email — made completely fail-safe
+            try:
+                send_mail(
+                    subject="Transfer Notification",
+                    message=(
+                        f"Dear {request.user.first_name},\n\n"
+                        f"You have successfully transferred ₦{amount:.2f} "
+                        f"to account {receiver_account_number}.\n\n"
+                        "Thank you for using our services.\n\nBest regards,\nStarlink Bank"
+                    ),
+                    from_email="skybank604@gmail.com",
+                    recipient_list=[request.user.email],
+                    fail_silently=True,
+                )
+            except Exception as e:
+                # Log but don't stop execution
+                logger.error(f"Email sending failed for user {request.user.username}: {e}")
 
+            # ✅ 7. Finish transfer
             messages.success(request, f"₦{amount:.2f} successfully transferred to {receiver_account.user.first_name}.")
             logger.info(f"User {request.user.username} transferred ₦{amount:.2f} to {receiver_account_number}.")
             return redirect('dashboard')
+
     else:
         form = TransferForm()
 
-    # ✅ Include account for template display
     return render(request, 'accounts/transfer.html', {
         'form': form,
-        'account': sender_account,})
+        'account': sender_account,
+    })
 
 
 
