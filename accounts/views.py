@@ -293,23 +293,23 @@ def transfer_money(request):
                     description=f'Transfer from {sender_account.account_number} - {description}'
                 )
 
-            # ✅ 6. Notify sender via email — made completely fail-safe
-            try:
-                send_mail(
-                    subject="Transfer Notification",
-                    message=(
-                        f"Dear {request.user.first_name},\n\n"
-                        f"You have successfully transferred ₦{amount:.2f} "
-                        f"to account {receiver_account_number}.\n\n"
-                        "Thank you for using our services.\n\nBest regards,\nStarlink Bank"
-                    ),
-                    from_email="skybank604@gmail.com",
-                    recipient_list=[request.user.email],
-                    fail_silently=True,
-                )
-            except Exception as e:
-                # Log but don't stop execution
-                logger.error(f"Email sending failed for user {request.user.username}: {e}")
+            # # ✅ 6. Notify sender via email — made completely fail-safe
+            # try:
+            #     send_mail(
+            #         subject="Transfer Notification",
+            #         message=(
+            #             f"Dear {request.user.first_name},\n\n"
+            #             f"You have successfully transferred ₦{amount:.2f} "
+            #             f"to account {receiver_account_number}.\n\n"
+            #             "Thank you for using our services.\n\nBest regards,\nStarlink Bank"
+            #         ),
+            #         from_email="skybank604@gmail.com",
+            #         recipient_list=[request.user.email],
+            #         fail_silently=True,
+            #     )
+            # except Exception as e:
+            #     # Log but don't stop execution
+            #     logger.error(f"Email sending failed for user {request.user.username}: {e}")
 
             # ✅ 7. Finish transfer
             messages.success(request, f"₦{amount:.2f} successfully transferred to {receiver_account.user.first_name}.")
