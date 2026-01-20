@@ -41,6 +41,8 @@ class BankAccount(models.Model):
     account_number = models.CharField(max_length=12, unique=True, blank=True)
     account_type = models.CharField(max_length=50, choices=[('Savings', 'Savings'), ('Checking', 'Checking')])
     balance = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
+    currency_symbol = models.CharField(max_length=5, default='$')
+    currency_code = models.CharField(max_length=5, default='USD')
     created_at = models.DateTimeField(auto_now_add=True)  # Track when the account was created
     status = models.CharField(
         max_length=20,
@@ -111,7 +113,7 @@ class PaymentDetails(models.Model):
         verbose_name = "Payment Details"
         verbose_name_plural = "Payment Details"
 
-    def _str_(self):
+    def __str__(self):
         return f"Payment details (updated {self.updated_at:%Y-%m-%d%H:%M})"
 
 

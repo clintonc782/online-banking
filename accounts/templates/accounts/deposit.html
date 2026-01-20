@@ -84,7 +84,7 @@
     <!-- Balance Card -->
     <div class="card card-custom balance-card mb-4 p-3">
       <div>Current Balance</div>
-      <div class="fs-3">${{ account.balance|floatformat:2|intcomma }}</div>
+      <div class="fs-3">{{ account.currency_symbol }}{{ account.balance|floatformat:2|intcomma }}</div>
     </div>
 
     <!-- Payment Methods Card -->

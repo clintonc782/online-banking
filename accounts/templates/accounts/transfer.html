@@ -57,7 +57,7 @@
 
     <!-- Available Balance -->
     <div class="alert alert-info text-center">
-      <strong>Available Balance:</strong> ${{ account.balance|floatformat:2|intcomma }}
+      <strong>Available Balance:</strong> {{ account.currency_symbol }}{{ account.balance|floatformat:2|intcomma }}
     </div>
 
 

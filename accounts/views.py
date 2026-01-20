@@ -13,7 +13,7 @@ from django.conf import settings
 from django.urls import reverse
 from .forms import UserRegistrationForm, MessageForm, TransferForm, TransactionPinForm
 from .models import BankAccount, Message, VerificationToken, Transaction, CardRequest, User, PaymentDetails
-from .utils import process_transaction
+from .utils import process_transaction, get_currency_from_country
 from django.core.exceptions import ValidationError
 from decimal import Decimal
 from django.http import JsonResponse
@@ -54,9 +54,10 @@ def register(request):
             user.set_password(form.cleaned_data['password'])
             user.is_active = True
             user.save()
+            symbol, code = get_currency_from_country(user.country)
 
             try:
-                BankAccount.objects.create(user=user, account_type='savings', balance=0.00)
+                BankAccount.objects.create(user=user, account_type='Savings', balance=0.00, currency_symbol=symbol, currency_code=code)
             except Exception as e:
                 logger.error(f"Error creating bank account for user {user.username}: {e}")
                 user.delete()

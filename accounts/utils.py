@@ -37,3 +37,50 @@ def process_transaction(account, amount, transaction_type, description):
         )
 
     return account
+
+
+
+COUNTRY_CURRENCY = {
+    "Nigeria": ("₦", "NGN"),
+    "United States": ("$", "USD"),
+    "United Kingdom": ("£", "GBP"),
+    "Germany": ("€", "EUR"),
+    "Canada": ("$", "CAD"),
+    "Australia": ("$", "AUD"),
+    "Japan": ("¥", "JPY"),
+    "India": ("₹", "INR"),
+    "South Africa": ("R", "ZAR"),
+    "Brazil": ("R$", "BRL"),
+    "France": ("€", "EUR"),
+    "Italy": ("€", "EUR"),
+    "Spain": ("€", "EUR"),
+    "Mexico": ("$", "MXN"),
+    "China": ("¥", "CNY"),
+    "Russia": ("₽", "RUB"),
+    "Switzerland": ("CHF", "CHF"),
+    "Sweden": ("kr", "SEK"),
+    "Norway": ("kr", "NOK"),
+    "Denmark": ("kr", "DKK"),
+    "South Korea": ("₩", "KRW"),
+    "Turkey": ("₺", "TRY"),
+    "Saudi Arabia": ("﷼", "SAR"),
+    "United Arab Emirates": ("د.إ", "AED"),
+    "Indonesia": ("Rp", "IDR"),
+    "Malaysia": ("RM", "MYR"),
+    "Bulgaria": ("лв", "BGN"),
+    "Botswana": ("P", "BWP"),
+    "Thailand": ("฿", "THB"),
+    "Philippines": ("₱", "PHP"),
+
+
+}
+
+
+
+
+
+def get_currency_from_country(country):
+    """
+    Returns (currency_symbol, currency_code)
+    """
+    return COUNTRY_CURRENCY.get(country, ("$", "USD"))

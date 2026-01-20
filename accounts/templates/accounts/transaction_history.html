@@ -195,7 +195,7 @@
         <div class="summary-icon text-success"><i class="bi bi-arrow-down-circle-fill"></i></div>
         <div class="summary-title">Total Credit</div>
         <div class="summary-value credit-value">
-          ₦{{ total_credit|floatformat:2|intcomma }}
+          {{ account.currency_symbol }}{{ total_credit|floatformat:2|intcomma }}
         </div>
       </div>
 
@@ -203,7 +203,7 @@
         <div class="summary-icon text-danger"><i class="bi bi-arrow-up-circle-fill"></i></div>
         <div class="summary-title">Total Debit</div>
         <div class="summary-value debit-value">
-          ₦{{ total_debit|floatformat:2|intcomma }}
+          {{ account.currency_symbol }}{{ total_debit|floatformat:2|intcomma }}
         </div>
       </div>
 
@@ -211,7 +211,7 @@
         <div class="summary-icon text-primary"><i class="bi bi-wallet2"></i></div>
         <div class="summary-title">Current Balance</div>
         <div class="summary-value balance-value">
-          ₦{{ account.balance|floatformat:2|intcomma }}
+          {{ account.currency_symbol }}{{ account.balance|floatformat:2|intcomma }}
         </div>
       </div>
     </div>
@@ -240,7 +240,7 @@
               </div>
             </div>
             <div class="transaction-amount {% if transaction.type == 'credit' %}text-success{% else %}text-danger{% endif %}">
-              ₦{{ transaction.amount|floatformat:2|intcomma }}
+              {{ account.currency_symbol }}{{ transaction.amount|floatformat:2|intcomma }}
             </div>
           </div>
         {% endfor %}
