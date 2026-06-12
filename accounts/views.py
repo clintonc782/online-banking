@@ -19,6 +19,8 @@ from decimal import Decimal
 from django.http import JsonResponse
 from django.contrib.auth.hashers import make_password, check_password
 from django.db.models import Sum
+from django.utils import translation
+from django.http import HttpResponse
 
 
 
@@ -583,3 +585,10 @@ def get_recipient_name(request):
 
 def privacy_policy(request):
     return render(request, 'accounts/privacy_policy.html')
+
+
+
+
+def test_es(request):
+    translation.activate('es')
+    return HttpResponse("Hello")

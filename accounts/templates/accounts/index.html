@@ -1,16 +1,24 @@
+{% load i18n %}
+{% trans "Hello" %}
+{% load static %}
+
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
-  <title>Starlink banking</title>
+  <title>TrustBank.Plc</title>
   <meta name="description" content="">
   <meta name="keywords" content="">
 
   <!-- Favicons -->
-  <link href="assets/img/favicon2.ico" rel="icon">
-  <link href="assets/img/favicon2.ico" rel="apple-touch-icon">
+  <link rel="apple-touch-icon" sizes="180x180" href="{% static 'assets/img/apple-touch-icon.png' %}">
+  <link rel="icon" type="image/png" sizes="32x32" href="{% static 'assets/img/favicon-32x32.png' %}">
+  <link rel="icon" type="image/png" sizes="16x16" href="{% static 'assets/img/favicon-16x16.png' %}">
+  <link rel="manifest" href="{% static 'assets/img/site.webmanifest' %}">
+  <link rel="icon" href="{% static 'assets/img/favicon.ico' %}">
+  <!--  <link href="assets/img/favicon2.ico" rel="apple-touch-icon">-->
 
   <!-- Fonts -->
   <link href="https://fonts.googleapis.com" rel="preconnect">
@@ -44,7 +52,7 @@
       <a href="{% url 'index' %}" class="logo d-flex align-items-center me-auto me-xl-0">
         <!-- Uncomment the line below if you also wish to use an image logo -->
         <!-- <img src="assets/img/logo.png" alt=""> -->
-        <h1 class="sitename">Starlink Bank</h1>
+        <h1 class="sitename">TrustBank.Plc</h1>
         <span>.</span>
       </a>
 
@@ -99,7 +107,7 @@
 
       <div class="container d-flex flex-column justify-content-center align-items-center text-center position-relative" data-aos="zoom-out">
         <img src="assets/img/bank6.avif" class="img-fluid animated" alt="">
-        <h1>Welcome to <span>Starlink Bank</span></h1>
+        <h1>Welcome to <span>TrustBank.Plc</span></h1>
         <p>Your trusted partner in secure, smart and convenient online banking. we're here to help you manage your finances with ease and confidence.</p>
         <div class="d-flex justify-content-center gap-3">
           <a href="{% url 'register' %}" class="btn-get-started scrollto">Open Account</a>
@@ -120,7 +128,7 @@
             <div class="service-item position-relative">
               <div class="icon"><i class="bi bi-activity icon"></i></div>
               <h4><a href="{% url 'register' %}" class="stretched-link">Savings Account</a></h4>
-              <p>Starlink Bank Savings Account is specially Designed for residents and Non-residents to offer a seamless local and international banking solution</p>
+              <p>TrustBank.Plc Savings Account is specially Designed for residents and Non-residents to offer a seamless local and international banking solution</p>
             </div>
           </div><!-- End Service Item -->
 
@@ -128,7 +136,7 @@
             <div class="service-item position-relative">
               <div class="icon"><i class="bi bi-bounding-box-circles icon"></i></div>
               <h4><a href="{% url 'register' %}" class="stretched-link">Banking Solutions</a></h4>
-              <p>Access Your money and use it when and how you like. Starlink Bank removes the obstacles, so you can make your dreams real. </p>
+              <p>Access Your money and use it when and how you like. TrustBank.Plc removes the obstacles, so you can make your dreams real. </p>
             </div>
           </div><!-- End Service Item -->
 
@@ -160,7 +168,7 @@
       <!-- Section Title -->
       <div class="container section-title" data-aos="fade-up">
         <h2>About Us</h2>
-        <p>Starlink Bank has worked to make a difference in our customers Lives in ways  that matter most to them </p>
+        <p>TrustBank.Plc has worked to make a difference in our customers Lives in ways  that matter most to them </p>
       </div><!-- End Section Title -->
 
       <div class="container" data-aos="fade-up">
@@ -218,7 +226,7 @@
                   <i class="bi bi-check2"></i>
                   <h4>The right features</h4>
                 </div>
-                <p>Including a $0 Liability Guarantee that helps cover you from unauthorized transactions.Get started with a Starlink Bank Checking Account</p>
+                <p>Including a $0 Liability Guarantee that helps cover you from unauthorized transactions.Get started with a TrustBank.Plc Checking Account</p>
 
               </div><!-- End Tab 1 Content -->
 
@@ -275,7 +283,7 @@
                   <i class="bi bi-check2"></i>
                   <h4>Hard work</h4>
                 </div>
-                <p>We are dedicated to go above and beyond with commitment to consistently provide the Starlink Bank difference.</p>
+                <p>We are dedicated to go above and beyond with commitment to consistently provide the TrustBank.Plc difference.</p>
 
               </div><!-- End Tab 3 Content -->
 
@@ -334,7 +342,7 @@
         <div class="row g-5">
 
           <div class="col-lg-8 col-md-6 content d-flex flex-column justify-content-center order-last order-md-first">
-            <h3>At <em>Starlink Bank</em> We value Customers satisfaction.</h3>
+            <h3>At <em>TrustBank.Plc</em> We value Customers satisfaction.</h3>
             <p> Our Digital banking involves the digitization of all traditional banking products, processes and activities to serve customers through online channels!.</p>
             <a class="cta-btn align-self-start" href="{% url 'register' %}">Open Account</a>
           </div>
@@ -636,7 +644,7 @@
               <h3><span>Frequently Asked </span><strong>Questions</strong></h3>
               <p>
                 Have Questions? We’ve Got Answers!</p>
-                 <p> Explore our Frequently Asked Questions to find quick answers to common inquiries. Whether you're curious about our services, support, or processes, this section is here to help you get the information you need—fast and hassle-free.
+                 <p> Explore our Frequently Asked Questions to find quick answers to common inquiries. Whether you're curious about our services, support, or processes, this section is here to help you get the information you need fast and hassle free.
               </p>
             </div>
 
@@ -644,7 +652,7 @@
 
               <div class="faq-item faq-active">
                 <i class="faq-icon bi bi-question-circle"></i>
-                <h3>How do I open an account with Starlink Bank online?</h3>
+                <h3>How do I open an account with TrustBank.Plc online?</h3>
                 <div class="faq-content">
                   <p>You can open an account online by visiting our website and selecting the type of account you'd like to open (savings, checking, etc.). You’ll need to provide basic information, such as your name, address, and social security number. You’ll also need to submit identification documents like a driver’s license or passport. You can complete the process in a few simple steps and start banking right away!.</p>
                 </div>
@@ -822,7 +830,7 @@
                 <i class="bi bi-envelope flex-shrink-0"></i>
                 <div>
                   <h4>Email:</h4>
-                  <p>info@starlinkbank.com</p>
+                  <p>info@trustbankplc.com</p>
                 </div>
               </div><!-- End Info Item -->
 
@@ -878,13 +886,13 @@
         <div class="row gy-4">
           <div class="col-lg-4 col-md-6 footer-about">
             <a href="{% url 'index' %}" class="logo d-flex align-items-center">
-              <span class="sitename">Starlink Bank Official Web site</span>
+              <span class="sitename">TrustBank.Plc Official Web site</span>
             </a>
             <div class="footer-contact pt-3">
               <p>A108 Adam Street</p>
               <p>New York, NY 535022</p>
               <p class="mt-3"><strong>Phone:</strong> <span>+1 5589 55488 55</span></p>
-              <p><strong>Email:</strong> <span>info@starlinkbank.com</span></p>
+              <p><strong>Email:</strong> <span>info@trustbankplc.com</span></p>
             </div>
           </div>
 
@@ -918,7 +926,7 @@
 
         <div class="d-flex flex-column align-items-center align-items-lg-start">
           <div>
-            © Copyright <strong><span>Starlink Bank</span></strong>. All Rights Reserved
+            © Copyright <strong><span>TrustBank.Plc</span></strong>. All Rights Reserved
         </div>
 
         <div class="social-links order-first order-lg-last mb-3 mb-lg-0">
