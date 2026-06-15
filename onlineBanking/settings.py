@@ -153,6 +153,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
 
 STATIC_URL = '/assets/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')  # ← ALWAYS set this
 
 if DEBUG:
     # Development: serve directly from assets folder
@@ -160,10 +161,8 @@ if DEBUG:
         os.path.join(BASE_DIR, 'assets'),
     ]
     STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.StaticFilesStorage'
-    # DO NOT set STATIC_ROOT in development
 else:
     # Production: use staticfiles folder and WhiteNoise
-    STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
     STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 # Default primary key field type
