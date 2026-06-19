@@ -1,0 +1,1366 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-06-19 09:19+0100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: de\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+#: .\accounts\templates\accounts\dashboard.html:11
+#: .\accounts\templates\accounts\dashboard.html:137
+msgid "Dashboard"
+msgstr "Dashboard"
+
+#: .\accounts\templates\accounts\dashboard.html:68
+#: .\accounts\templates\accounts\dashboard.html:114
+msgid "Profile"
+msgstr "Profil"
+
+#: .\accounts\templates\accounts\dashboard.html:76
+#, python-format
+msgid "Hello, <strong>%(name)s</strong>"
+msgstr "Hallo, <strong>%(name)s</strong>"
+
+#: .\accounts\templates\accounts\dashboard.html:81
+msgid "Chat Support"
+msgstr "Chat-Support"
+
+#: .\accounts\templates\accounts\dashboard.html:100
+#: .\accounts\templates\accounts\deposit.html:61
+#: .\accounts\templates\accounts\set_transaction_pin.html:58
+#: .\accounts\templates\accounts\top_up.html:59
+#: .\accounts\templates\accounts\transaction_history.html:83
+#: .\accounts\templates\accounts\transfer.html:59
+msgid "Logout"
+msgstr "Abmelden"
+
+#: .\accounts\templates\accounts\dashboard.html:122
+msgid "Change photo"
+msgstr "Foto ändern"
+
+#: .\accounts\templates\accounts\dashboard.html:133
+msgid "Customer"
+msgstr "Kunde"
+
+#: .\accounts\templates\accounts\dashboard.html:138
+msgid "Transactions"
+msgstr "Transaktionen"
+
+#: .\accounts\templates\accounts\dashboard.html:139
+msgid "Cards"
+msgstr "Karten"
+
+#: .\accounts\templates\accounts\dashboard.html:140
+msgid "Local Transfer"
+msgstr "Lokale Überweisung"
+
+#: .\accounts\templates\accounts\dashboard.html:141
+msgid "International Wire"
+msgstr "Internationale Überweisung"
+
+#: .\accounts\templates\accounts\dashboard.html:152
+msgid "Available Balance"
+msgstr "Verfügbares Guthaben"
+
+#: .\accounts\templates\accounts\dashboard.html:154
+msgid "Account Number:"
+msgstr "Kontonummer:"
+
+#: .\accounts\templates\accounts\dashboard.html:161
+msgid "Your account is currently frozen. Please contact support."
+msgstr "Ihr Konto ist derzeit gesperrt. Bitte kontaktieren Sie den Support."
+
+#: .\accounts\templates\accounts\dashboard.html:168
+msgid "Your account is currently FROZEN."
+msgstr "Ihr Konto ist derzeit GESPERRT."
+
+#: .\accounts\templates\accounts\dashboard.html:170
+msgid "Contact Customer Care"
+msgstr "Kundendienst kontaktieren"
+
+#: .\accounts\templates\accounts\dashboard.html:173
+#: .\accounts\templates\accounts\dashboard.html:177
+#: .\accounts\templates\accounts\transfer.html:105
+msgid "Transfer"
+msgstr "Überweisung"
+
+#: .\accounts\templates\accounts\dashboard.html:174
+#: .\accounts\templates\accounts\dashboard.html:178
+#: .\accounts\templates\accounts\deposit.html:11
+#: .\accounts\templates\accounts\deposit.html:106
+msgid "Deposit"
+msgstr "Einzahlung"
+
+#: .\accounts\templates\accounts\dashboard.html:175
+#: .\accounts\templates\accounts\dashboard.html:179
+msgid "Apply for loan"
+msgstr "Kredit beantragen"
+
+#: .\accounts\templates\accounts\dashboard.html:182
+msgid "Request Card"
+msgstr "Karte anfordern"
+
+#: .\accounts\templates\accounts\dashboard.html:183
+msgid "Set / Change Transaction PIN"
+msgstr "PIN setzen / ändern"
+
+#: .\accounts\templates\accounts\dashboard.html:195
+msgid "Recent transactions"
+msgstr "Letzte Transaktionen"
+
+#: .\accounts\templates\accounts\dashboard.html:196
+msgid "Latest 5 transactions"
+msgstr "Letzte 5 Transaktionen"
+
+#: .\accounts\templates\accounts\dashboard.html:204
+msgid "No recent transactions"
+msgstr "Keine aktuellen Transaktionen"
+
+#: .\accounts\templates\accounts\dashboard.html:206
+#: .\accounts\templates\accounts\dashboard.html:243
+msgid "View all"
+msgstr "Alle anzeigen"
+
+#: .\accounts\templates\accounts\dashboard.html:213
+msgid "Card requests"
+msgstr "Kartenanfragen"
+
+#: .\accounts\templates\accounts\dashboard.html:214
+msgid "Latest requests"
+msgstr "Letzte Anfragen"
+
+#: .\accounts\templates\accounts\dashboard.html:221
+msgid "Approved"
+msgstr "Genehmigt"
+
+#: .\accounts\templates\accounts\dashboard.html:223
+msgid "Pending"
+msgstr "Ausstehend"
+
+#: .\accounts\templates\accounts\dashboard.html:225
+msgid "Rejected"
+msgstr "Abgelehnt"
+
+#: .\accounts\templates\accounts\dashboard.html:230
+msgid "No card requests"
+msgstr "Keine Kartenanfragen"
+
+#: .\accounts\templates\accounts\dashboard.html:240
+#: .\accounts\templates\accounts\messages.html:9
+msgid "Messages"
+msgstr "Nachrichten"
+
+#: .\accounts\templates\accounts\dashboard.html:241
+msgid "Recent conversation"
+msgstr "Letzte Unterhaltung"
+
+#: .\accounts\templates\accounts\dashboard.html:260
+msgid "No messages yet. Use Chat Support to contact us."
+msgstr "Noch keine Nachrichten. Nutzen Sie den Chat-Support."
+
+#: .\accounts\templates\accounts\dashboard.html:265
+msgid "Open Chat"
+msgstr "Chat öffnen"
+
+#: .\accounts\templates\accounts\dashboard.html:278
+#: .\accounts\templates\accounts\deposit.html:123
+#: .\accounts\templates\accounts\index.html:632
+#: .\accounts\templates\accounts\privacy_policy.html:177
+#: .\accounts\templates\accounts\register.html:329
+#: .\accounts\templates\accounts\set_transaction_pin.html:145
+#: .\accounts\templates\accounts\top_up.html:121
+#: .\accounts\templates\accounts\transaction_history.html:195
+#: .\accounts\templates\accounts\transfer.html:161
+msgid "All Rights Reserved"
+msgstr "Alle Rechte vorbehalten"
+
+#: .\accounts\templates\accounts\deposit.html:42
+#: .\accounts\templates\accounts\index.html:49
+#: .\accounts\templates\accounts\index.html:608
+#: .\accounts\templates\accounts\login.html:27
+#: .\accounts\templates\accounts\privacy_policy.html:41
+#: .\accounts\templates\accounts\privacy_policy.html:155
+#: .\accounts\templates\accounts\register.html:45
+#: .\accounts\templates\accounts\register.html:96
+#: .\accounts\templates\accounts\register.html:305
+#: .\accounts\templates\accounts\set_transaction_pin.html:37
+#: .\accounts\templates\accounts\set_transaction_pin.html:121
+#: .\accounts\templates\accounts\top_up.html:40
+#: .\accounts\templates\accounts\transaction_history.html:62
+#: .\accounts\templates\accounts\transaction_history.html:171
+#: .\accounts\templates\accounts\transfer.html:38
+#: .\accounts\templates\accounts\transfer.html:137
+msgid "Home"
+msgstr "Startseite"
+
+#: .\accounts\templates\accounts\deposit.html:43
+#: .\accounts\templates\accounts\index.html:50
+#: .\accounts\templates\accounts\privacy_policy.html:42
+#: .\accounts\templates\accounts\register.html:46
+#: .\accounts\templates\accounts\set_transaction_pin.html:38
+#: .\accounts\templates\accounts\top_up.html:41
+#: .\accounts\templates\accounts\transaction_history.html:63
+#: .\accounts\templates\accounts\transfer.html:39
+msgid "About"
+msgstr "Über uns"
+
+#: .\accounts\templates\accounts\deposit.html:44
+#: .\accounts\templates\accounts\index.html:51
+#: .\accounts\templates\accounts\index.html:610
+#: .\accounts\templates\accounts\privacy_policy.html:43
+#: .\accounts\templates\accounts\privacy_policy.html:157
+#: .\accounts\templates\accounts\register.html:47
+#: .\accounts\templates\accounts\register.html:307
+#: .\accounts\templates\accounts\set_transaction_pin.html:39
+#: .\accounts\templates\accounts\set_transaction_pin.html:123
+#: .\accounts\templates\accounts\top_up.html:42
+#: .\accounts\templates\accounts\transaction_history.html:64
+#: .\accounts\templates\accounts\transaction_history.html:173
+#: .\accounts\templates\accounts\transfer.html:40
+#: .\accounts\templates\accounts\transfer.html:139
+msgid "Services"
+msgstr "Dienstleistungen"
+
+#: .\accounts\templates\accounts\deposit.html:45
+#: .\accounts\templates\accounts\index.html:52
+#: .\accounts\templates\accounts\privacy_policy.html:44
+#: .\accounts\templates\accounts\register.html:48
+#: .\accounts\templates\accounts\set_transaction_pin.html:40
+#: .\accounts\templates\accounts\top_up.html:43
+#: .\accounts\templates\accounts\transaction_history.html:65
+#: .\accounts\templates\accounts\transfer.html:41
+msgid "FAQs"
+msgstr "FAQs"
+
+#: .\accounts\templates\accounts\deposit.html:46
+#: .\accounts\templates\accounts\index.html:68
+#: .\accounts\templates\accounts\index.html:531
+#: .\accounts\templates\accounts\privacy_policy.html:62
+#: .\accounts\templates\accounts\register.html:66
+#: .\accounts\templates\accounts\set_transaction_pin.html:41
+#: .\accounts\templates\accounts\top_up.html:44
+#: .\accounts\templates\accounts\transaction_history.html:66
+#: .\accounts\templates\accounts\transfer.html:42
+msgid "Contact"
+msgstr "Kontakt"
+
+#: .\accounts\templates\accounts\deposit.html:67
+msgid "Deposit Funds"
+msgstr "Geld einzahlen"
+
+#: .\accounts\templates\accounts\deposit.html:71
+#: .\accounts\templates\accounts\top_up.html:69
+#: .\accounts\templates\accounts\transaction_history.html:110
+msgid "Current Balance"
+msgstr "Aktueller Kontostand"
+
+#: .\accounts\templates\accounts\deposit.html:78
+#: .\accounts\templates\accounts\top_up.html:76
+msgid "Payment Options"
+msgstr "Zahlungsoptionen"
+
+#: .\accounts\templates\accounts\deposit.html:82
+#: .\accounts\templates\accounts\deposit.html:87
+#: .\accounts\templates\accounts\deposit.html:92
+#: .\accounts\templates\accounts\top_up.html:80
+#: .\accounts\templates\accounts\top_up.html:85
+#: .\accounts\templates\accounts\top_up.html:90
+msgid "Copy"
+msgstr "Kopieren"
+
+#: .\accounts\templates\accounts\deposit.html:90
+#: .\accounts\templates\accounts\top_up.html:88
+msgid "Bitcoin (BTC):"
+msgstr "Bitcoin (BTC):"
+
+#: .\accounts\templates\accounts\deposit.html:102
+#: .\accounts\templates\accounts\top_up.html:100
+#: .\accounts\templates\accounts\transfer.html:89
+msgid "Amount"
+msgstr "Betrag"
+
+#: .\accounts\templates\accounts\deposit.html:104
+msgid "Enter amount to deposit"
+msgstr "Einzahlungsbetrag eingeben"
+
+#: .\accounts\templates\accounts\deposit.html:135
+#: .\accounts\templates\accounts\top_up.html:133
+msgid "Nothing to copy"
+msgstr "Nichts zum Kopieren"
+
+#: .\accounts\templates\accounts\deposit.html:138
+#: .\accounts\templates\accounts\top_up.html:136
+msgid "Copied"
+msgstr "Kopiert"
+
+#: .\accounts\templates\accounts\deposit.html:140
+#: .\accounts\templates\accounts\top_up.html:138
+msgid "Copy failed — please copy manually."
+msgstr "Kopieren fehlgeschlagen — bitte manuell kopieren."
+
+#: .\accounts\templates\accounts\email_verification.html:3
+#: .\accounts\templates\accounts\partials\_chat_messages.html:3
+#: .\accounts\templates\accounts\send_message.html:3
+msgid "Hello"
+msgstr "Hallo"
+
+#: .\accounts\templates\accounts\index.html:53
+#: .\accounts\templates\accounts\privacy_policy.html:46
+#: .\accounts\templates\accounts\register.html:50
+msgid "Internet Banking"
+msgstr "Online-Banking"
+
+#: .\accounts\templates\accounts\index.html:55
+#: .\accounts\templates\accounts\index.html:619
+#: .\accounts\templates\accounts\privacy_policy.html:48
+#: .\accounts\templates\accounts\privacy_policy.html:165
+#: .\accounts\templates\accounts\register.html:52
+#: .\accounts\templates\accounts\register.html:316
+#: .\accounts\templates\accounts\set_transaction_pin.html:132
+#: .\accounts\templates\accounts\transaction_history.html:182
+#: .\accounts\templates\accounts\transfer.html:148
+msgid "Personal Banking"
+msgstr "Privatkundenbank"
+
+#: .\accounts\templates\accounts\index.html:56
+#: .\accounts\templates\accounts\privacy_policy.html:50
+#: .\accounts\templates\accounts\register.html:54
+msgid "Bank with Us"
+msgstr "Bankieren bei uns"
+
+#: .\accounts\templates\accounts\index.html:58
+#: .\accounts\templates\accounts\login.html:88
+#: .\accounts\templates\accounts\privacy_policy.html:52
+#: .\accounts\templates\accounts\register.html:10
+#: .\accounts\templates\accounts\register.html:56
+#: .\accounts\templates\accounts\register.html:275
+msgid "Register"
+msgstr "Registrieren"
+
+#: .\accounts\templates\accounts\index.html:59
+#: .\accounts\templates\accounts\index.html:86
+#: .\accounts\templates\accounts\index.html:113
+#: .\accounts\templates\accounts\login.html:11
+#: .\accounts\templates\accounts\login.html:83
+#: .\accounts\templates\accounts\privacy_policy.html:53
+#: .\accounts\templates\accounts\privacy_policy.html:80
+#: .\accounts\templates\accounts\register.html:57
+#: .\accounts\templates\accounts\register.html:84
+msgid "Login"
+msgstr "Anmelden"
+
+#: .\accounts\templates\accounts\index.html:62
+#: .\accounts\templates\accounts\index.html:620
+#: .\accounts\templates\accounts\privacy_policy.html:56
+#: .\accounts\templates\accounts\privacy_policy.html:166
+#: .\accounts\templates\accounts\register.html:60
+#: .\accounts\templates\accounts\register.html:317
+#: .\accounts\templates\accounts\set_transaction_pin.html:133
+#: .\accounts\templates\accounts\transaction_history.html:183
+#: .\accounts\templates\accounts\transfer.html:149
+msgid "Corporate Banking"
+msgstr "Firmenkundenbank"
+
+#: .\accounts\templates\accounts\index.html:63
+#: .\accounts\templates\accounts\index.html:304
+#: .\accounts\templates\accounts\privacy_policy.html:57
+#: .\accounts\templates\accounts\register.html:61
+msgid "Credit Card"
+msgstr "Kreditkarte"
+
+#: .\accounts\templates\accounts\index.html:64
+#: .\accounts\templates\accounts\index.html:621
+#: .\accounts\templates\accounts\privacy_policy.html:58
+#: .\accounts\templates\accounts\privacy_policy.html:167
+#: .\accounts\templates\accounts\register.html:62
+#: .\accounts\templates\accounts\register.html:318
+#: .\accounts\templates\accounts\set_transaction_pin.html:134
+#: .\accounts\templates\accounts\transaction_history.html:184
+#: .\accounts\templates\accounts\transfer.html:150
+msgid "Business Banking"
+msgstr "Geschäftsbankgeschäft"
+
+#: .\accounts\templates\accounts\index.html:65
+#: .\accounts\templates\accounts\index.html:622
+#: .\accounts\templates\accounts\privacy_policy.html:59
+#: .\accounts\templates\accounts\privacy_policy.html:168
+#: .\accounts\templates\accounts\register.html:63
+#: .\accounts\templates\accounts\register.html:319
+#: .\accounts\templates\accounts\set_transaction_pin.html:135
+#: .\accounts\templates\accounts\transaction_history.html:185
+#: .\accounts\templates\accounts\transfer.html:151
+msgid "Wealth Management"
+msgstr "Vermögensverwaltung"
+
+#: .\accounts\templates\accounts\index.html:69
+#: .\accounts\templates\accounts\index.html:612
+#: .\accounts\templates\accounts\privacy_policy.html:10
+#: .\accounts\templates\accounts\privacy_policy.html:63
+#: .\accounts\templates\accounts\privacy_policy.html:159
+#: .\accounts\templates\accounts\register.html:67
+#: .\accounts\templates\accounts\register.html:309
+#: .\accounts\templates\accounts\set_transaction_pin.html:125
+#: .\accounts\templates\accounts\transaction_history.html:175
+#: .\accounts\templates\accounts\transfer.html:141
+msgid "Privacy Policy"
+msgstr "Datenschutzrichtlinie"
+
+#: .\accounts\templates\accounts\index.html:109
+msgid "Welcome to"
+msgstr "Willkommen bei"
+
+#: .\accounts\templates\accounts\index.html:110
+msgid ""
+"Your trusted partner in secure, smart and convenient online banking. We're "
+"here to help you manage your finances with ease and confidence."
+msgstr ""
+
+#: .\accounts\templates\accounts\index.html:112
+#: .\accounts\templates\accounts\index.html:248
+msgid "Open Account"
+msgstr "Konto eröffnen"
+
+#: .\accounts\templates\accounts\index.html:125
+msgid "Savings Account"
+msgstr "Sparkonto"
+
+#: .\accounts\templates\accounts\index.html:126
+msgid ""
+"TrustBank.Plc Savings Account is specially designed for residents and non-"
+"residents to offer a seamless local and international banking solution."
+msgstr ""
+
+#: .\accounts\templates\accounts\index.html:133
+#: .\accounts\templates\accounts\index.html:266
+msgid "Banking Solutions"
+msgstr "Banklösungen"
+
+#: .\accounts\templates\accounts\index.html:134
+#: .\accounts\templates\accounts\index.html:267
+msgid ""
+"Access your money and use it when and how you like. TrustBank.Plc removes "
+"the obstacles, so you can make your dreams real."
+msgstr ""
+
+#: .\accounts\templates\accounts\index.html:141
+msgid "Financial Solutions"
+msgstr "Finanzlösungen"
+
+#: .\accounts\templates\accounts\index.html:142
+msgid ""
+"As your business grows and opportunities arise, we deliver the right finance "
+"solutions rather than simply handing you an off-the-shelf package."
+msgstr ""
+
+#: .\accounts\templates\accounts\index.html:149
+msgid "Loan Solutions"
+msgstr "Kreditlösungen"
+
+#: .\accounts\templates\accounts\index.html:150
+msgid ""
+"We offer a variety of loan solutions to your business ideas with small or no "
+"collateral needed."
+msgstr ""
+
+#: .\accounts\templates\accounts\index.html:160
+msgid "About Us"
+msgstr "Über Uns"
+
+#: .\accounts\templates\accounts\index.html:161
+msgid ""
+"TrustBank.Plc has worked to make a difference in our customers' lives in "
+"ways that matter most to them."
+msgstr ""
+
+#: .\accounts\templates\accounts\index.html:173
+msgid "We solve your financial problems"
+msgstr ""
+
+#: .\accounts\templates\accounts\index.html:176
+msgid "Our Mission"
+msgstr "Unsere Mission"
+
+#: .\accounts\templates\accounts\index.html:177
+msgid "Our Vision"
+msgstr "Unsere Vision"
+
+#: .\accounts\templates\accounts\index.html:178
+msgid "Our Core Values"
+msgstr "Unsere Kernwerte"
+
+#: .\accounts\templates\accounts\index.html:183
+msgid ""
+"We provide you with budget tools to keep track of your spending. We empower "
+"our users with loans of different levels with super friendly interest rates."
+msgstr ""
+
+#: .\accounts\templates\accounts\index.html:184
+msgid "Grow Your Wealth"
+msgstr ""
+
+#: .\accounts\templates\accounts\index.html:185
+msgid "Take advantage of our wealth management scheme."
+msgstr ""
+
+#: .\accounts\templates\accounts\index.html:187
+msgid "Track your spending."
+msgstr ""
+
+#: .\accounts\templates\accounts\index.html:188
+msgid "Offer investment programs."
+msgstr ""
+
+#: .\accounts\templates\accounts\index.html:189
+msgid "Provide financial analysis."
+msgstr ""
+
+#: .\accounts\templates\accounts\index.html:191
+msgid "Great Cashback"
+msgstr ""
+
+#: .\accounts\templates\accounts\index.html:192
+#, python-format
+msgid ""
+"Get up to 5%% cash back on your first funding. Enjoy up to 20%% annual "
+"interest on your savings account. T&C Applies."
+msgstr ""
+
+#: .\accounts\templates\accounts\index.html:193
+msgid "Invest your way"
+msgstr ""
+
+#: .\accounts\templates\accounts\index.html:194
+msgid ""
+"We have tools, the people and the insights to help you create a personalized "
+"strategy to pursue your goals."
+msgstr ""
+
+#: .\accounts\templates\accounts\index.html:195
+msgid "The right features"
+msgstr ""
+
+#: .\accounts\templates\accounts\index.html:196
+msgid ""
+"Including a $0 Liability Guarantee that helps cover you from unauthorized "
+"transactions. Get started with a TrustBank.Plc Checking Account."
+msgstr ""
+
+#: .\accounts\templates\accounts\index.html:200
+msgid ""
+"To empower our customers to succeed in every aspect of their financial "
+"lives. Our community driven culture and ongoing commitment to superior "
+"service, innovative connectivity and intuitive technology will expand our "
+"relationships for generations to come."
+msgstr ""
+
+#: .\accounts\templates\accounts\index.html:201
+msgid "Money Savings"
+msgstr ""
+
+#: .\accounts\templates\accounts\index.html:202
+#, python-format
+msgid ""
+"We offer up to 0.40%% APY and 0.60%% APY with minimum balance of $0 and "
+"$1000 respectively."
+msgstr ""
+
+#: .\accounts\templates\accounts\index.html:203
+msgid "Online Shopping"
+msgstr ""
+
+#: .\accounts\templates\accounts\index.html:204
+msgid ""
+"Shop at any merchant online or in-store with no payment barrier both locally "
+"and internationally."
+msgstr ""
+
+#: .\accounts\templates\accounts\index.html:205
+msgid "Credit / Debit Cards"
+msgstr ""
+
+#: .\accounts\templates\accounts\index.html:206
+msgid ""
+"We offer various debit and credit cards based on your request for seamless "
+"electronic transactions on POS, ATMs and web POS."
+msgstr ""
+
+#: .\accounts\templates\accounts\index.html:210
+msgid "Integrity and Honesty"
+msgstr ""
+
+#: .\accounts\templates\accounts\index.html:211
+msgid ""
+"We will always take the high road by practicing the utmost ethical "
+"standards, and by honoring our commitments."
+msgstr ""
+
+#: .\accounts\templates\accounts\index.html:212
+msgid "Relationship"
+msgstr ""
+
+#: .\accounts\templates\accounts\index.html:213
+msgid ""
+"We seek to establish mutually beneficial, caring relationships based on "
+"trust and the desire for mutual success."
+msgstr ""
+
+#: .\accounts\templates\accounts\index.html:214
+msgid "Loyalty"
+msgstr ""
+
+#: .\accounts\templates\accounts\index.html:215
+msgid ""
+"With pride and dedication, we are committed to staying together through "
+"thick and thin. We are a family that cares for each other."
+msgstr ""
+
+#: .\accounts\templates\accounts\index.html:216
+msgid "Respect"
+msgstr ""
+
+#: .\accounts\templates\accounts\index.html:217
+msgid "We consistently seek to treat others as we want to be treated."
+msgstr ""
+
+#: .\accounts\templates\accounts\index.html:218
+msgid "Hard Work"
+msgstr ""
+
+#: .\accounts\templates\accounts\index.html:219
+msgid ""
+"We are dedicated to go above and beyond with commitment to consistently "
+"provide the TrustBank.Plc difference."
+msgstr ""
+
+#: .\accounts\templates\accounts\index.html:246
+msgid "At TrustBank.Plc we value customer satisfaction."
+msgstr ""
+
+#: .\accounts\templates\accounts\index.html:247
+msgid ""
+"Our digital banking involves the digitization of all traditional banking "
+"products, processes and activities to serve customers through online "
+"channels."
+msgstr ""
+
+#: .\accounts\templates\accounts\index.html:269
+msgid "Smooth and fast registration process."
+msgstr ""
+
+#: .\accounts\templates\accounts\index.html:270
+msgid "Savings account for your money."
+msgstr ""
+
+#: .\accounts\templates\accounts\index.html:271
+msgid "Easy and fast withdrawal process."
+msgstr ""
+
+#: .\accounts\templates\accounts\index.html:273
+msgid "Create Account"
+msgstr "Konto Erstellen"
+
+#: .\accounts\templates\accounts\index.html:283
+#: .\accounts\templates\accounts\index.html:617
+#: .\accounts\templates\accounts\privacy_policy.html:163
+#: .\accounts\templates\accounts\register.html:314
+#: .\accounts\templates\accounts\set_transaction_pin.html:130
+#: .\accounts\templates\accounts\transaction_history.html:180
+#: .\accounts\templates\accounts\transfer.html:146
+msgid "Our Services"
+msgstr "Unsere Dienstleistungen"
+
+#: .\accounts\templates\accounts\index.html:293
+msgid "Business Consulting"
+msgstr "Unternehmensberatung"
+
+#: .\accounts\templates\accounts\index.html:294
+msgid ""
+"We help our customers identify, address, and overcome obstacles to meeting "
+"their business goals."
+msgstr ""
+
+#: .\accounts\templates\accounts\index.html:305
+msgid ""
+"We offer free credit scores, purchase protection, fraud protection, and "
+"above all convenience while using your credit cards."
+msgstr ""
+
+#: .\accounts\templates\accounts\index.html:315
+msgid "Income Monitoring"
+msgstr "Einkommensüberwachung"
+
+#: .\accounts\templates\accounts\index.html:316
+msgid ""
+"Helping you monitor your expenditures against income is our priority as we "
+"take the financial welfare of our customers seriously."
+msgstr ""
+
+#: .\accounts\templates\accounts\index.html:326
+msgid "Insurance Consulting"
+msgstr "Versicherungsberatung"
+
+#: .\accounts\templates\accounts\index.html:327
+msgid ""
+"Whether a business or an individual, we have a team of highly experienced "
+"professionals that will develop your insurance plans."
+msgstr ""
+
+#: .\accounts\templates\accounts\index.html:337
+msgid "Financial Investment"
+msgstr "Finanzinvestition"
+
+#: .\accounts\templates\accounts\index.html:338
+msgid ""
+"With our connections across the globe, we provide you with stock and bond "
+"deals to maximize your revenue."
+msgstr ""
+
+#: .\accounts\templates\accounts\index.html:348
+msgid "Financial Management"
+msgstr "Finanzverwaltung"
+
+#: .\accounts\templates\accounts\index.html:349
+msgid ""
+"We help our customers plan, organise and control their financial activities "
+"while boosting their financial health."
+msgstr ""
+
+#: .\accounts\templates\accounts\index.html:360
+msgid "Testimonials"
+msgstr "Testimonials"
+
+#: .\accounts\templates\accounts\index.html:361
+msgid "Our good and effective work speaks for us."
+msgstr ""
+
+#: .\accounts\templates\accounts\index.html:376
+msgid "Software Engineer"
+msgstr "Softwareingenieur"
+
+#: .\accounts\templates\accounts\index.html:378
+msgid ""
+"Their online banking tools are fast, easy to use, and always reliable. I "
+"handle everything from my phone now — saves me so much time."
+msgstr ""
+
+#: .\accounts\templates\accounts\index.html:385
+msgid "Small Business Owner"
+msgstr "Kleinunternehmer"
+
+#: .\accounts\templates\accounts\index.html:387
+msgid ""
+"The support I received when opening my business checking account was "
+"phenomenal. They really understand what entrepreneurs need!"
+msgstr ""
+
+#: .\accounts\templates\accounts\index.html:394
+msgid "College Student"
+msgstr "Student"
+
+#: .\accounts\templates\accounts\index.html:396
+msgid ""
+"As a student, budgeting was tough — until I opened my account here. Their "
+"budgeting tips and savings tools helped me stay on track."
+msgstr ""
+
+#: .\accounts\templates\accounts\index.html:403
+msgid "Investor"
+msgstr "Investor"
+
+#: .\accounts\templates\accounts\index.html:405
+msgid ""
+"I've worked with other banks, but this one gives the best investment advice "
+"hands down. I'm confident in where my money's going."
+msgstr ""
+
+#: .\accounts\templates\accounts\index.html:412
+msgid "Retired Veteran"
+msgstr "Pensionierter Veteran"
+
+#: .\accounts\templates\accounts\index.html:414
+msgid ""
+"Even in retirement, I feel completely supported. Their team is professional, "
+"patient, and always takes time to explain my options clearly."
+msgstr ""
+
+#: .\accounts\templates\accounts\index.html:429
+msgid "Frequently Asked "
+msgstr "Häufig gestellte "
+
+#: .\accounts\templates\accounts\index.html:429
+msgid "Questions"
+msgstr "Fragen"
+
+#: .\accounts\templates\accounts\index.html:430
+msgid "Have Questions? We've Got Answers!"
+msgstr "Haben Sie Fragen? Wir haben Antworten!"
+
+#: .\accounts\templates\accounts\index.html:431
+msgid ""
+"Explore our Frequently Asked Questions to find quick answers to common "
+"inquiries."
+msgstr ""
+
+#: .\accounts\templates\accounts\index.html:437
+msgid "How do I open an account with TrustBank.Plc online?"
+msgstr ""
+
+#: .\accounts\templates\accounts\index.html:439
+msgid ""
+"You can open an account online by visiting our website and selecting the "
+"type of account you'd like to open. You'll need to provide basic information "
+"such as your name, address, and identification documents."
+msgstr ""
+
+#: .\accounts\templates\accounts\index.html:446
+msgid "How secure is TrustBank.Plc's online banking platform?"
+msgstr ""
+
+#: .\accounts\templates\accounts\index.html:448
+msgid ""
+"Our online banking platform is built with the latest security features, "
+"including encryption and two-factor authentication (2FA). Your data is "
+"always protected by industry-leading measures."
+msgstr ""
+
+#: .\accounts\templates\accounts\index.html:455
+msgid "Can I apply for a loan or credit card online?"
+msgstr ""
+
+#: .\accounts\templates\accounts\index.html:457
+msgid ""
+"Yes, you can apply for loans and credit cards directly through our online "
+"platform. Simply visit our Loans or Credit Cards section, fill out the "
+"application form, and submit any required documents."
+msgstr ""
+
+#: .\accounts\templates\accounts\index.html:464
+msgid "How can I transfer money between accounts online?"
+msgstr ""
+
+#: .\accounts\templates\accounts\index.html:466
+msgid ""
+"Transferring money is easy through our online banking platform. You can "
+"transfer funds between your own accounts with a few clicks. All transfers "
+"are secure and typically processed within 1–3 business days."
+msgstr ""
+
+#: .\accounts\templates\accounts\index.html:483
+msgid "Our News & Insights"
+msgstr "Neuigkeiten und Einblicke"
+
+#: .\accounts\templates\accounts\index.html:484
+msgid "Stay informed with our latest news and insights."
+msgstr ""
+
+#: .\accounts\templates\accounts\index.html:492
+msgid "News"
+msgstr "Neuigkeiten"
+
+#: .\accounts\templates\accounts\index.html:493
+msgid "The Lazy Customer's Way Banking Services"
+msgstr ""
+
+#: .\accounts\templates\accounts\index.html:504
+#: .\accounts\templates\accounts\index.html:516
+msgid "Tips"
+msgstr "Tipps"
+
+#: .\accounts\templates\accounts\index.html:505
+msgid "Never Worry About What to Do About Banking Again With These Tips"
+msgstr ""
+
+#: .\accounts\templates\accounts\index.html:517
+msgid "Non-US Citizens Account Opening Guide"
+msgstr ""
+
+#: .\accounts\templates\accounts\index.html:542
+msgid "Get in touch"
+msgstr "Kontakt aufnehmen"
+
+#: .\accounts\templates\accounts\index.html:543
+msgid ""
+"We're here to help you every step of the way. Whether you have a question "
+"about our services, need support, or simply want to talk to one of our team "
+"members — we'd love to hear from you."
+msgstr ""
+
+#: .\accounts\templates\accounts\index.html:546
+msgid "Location:"
+msgstr "Standort:"
+
+#: .\accounts\templates\accounts\index.html:550
+#: .\accounts\templates\accounts\index.html:601
+#: .\accounts\templates\accounts\privacy_policy.html:149
+#: .\accounts\templates\accounts\register.html:298
+#: .\accounts\templates\accounts\set_transaction_pin.html:114
+#: .\accounts\templates\accounts\transaction_history.html:164
+#: .\accounts\templates\accounts\transfer.html:130
+msgid "Email:"
+msgstr "E-Mail:"
+
+#: .\accounts\templates\accounts\index.html:554
+msgid "Call:"
+msgstr "Telefon:"
+
+#: .\accounts\templates\accounts\index.html:563
+msgid "Your Name"
+msgstr "Ihr Name"
+
+#: .\accounts\templates\accounts\index.html:566
+msgid "Your Email"
+msgstr "Ihre E-Mail"
+
+#: .\accounts\templates\accounts\index.html:570
+msgid "Subject"
+msgstr "Betreff"
+
+#: .\accounts\templates\accounts\index.html:573
+msgid "Message"
+msgstr "Nachricht"
+
+#: .\accounts\templates\accounts\index.html:576
+msgid "Loading"
+msgstr "Laden"
+
+#: .\accounts\templates\accounts\index.html:578
+msgid "Your message has been sent. Thank you!"
+msgstr "Ihre Nachricht wurde gesendet. Danke!"
+
+#: .\accounts\templates\accounts\index.html:580
+msgid "Send Message"
+msgstr "Nachricht senden"
+
+#: .\accounts\templates\accounts\index.html:600
+#: .\accounts\templates\accounts\privacy_policy.html:148
+#: .\accounts\templates\accounts\register.html:297
+#: .\accounts\templates\accounts\set_transaction_pin.html:113
+#: .\accounts\templates\accounts\transaction_history.html:163
+#: .\accounts\templates\accounts\transfer.html:129
+msgid "Phone:"
+msgstr "Telefon:"
+
+#: .\accounts\templates\accounts\index.html:606
+#: .\accounts\templates\accounts\privacy_policy.html:153
+#: .\accounts\templates\accounts\register.html:303
+#: .\accounts\templates\accounts\set_transaction_pin.html:119
+#: .\accounts\templates\accounts\transaction_history.html:169
+#: .\accounts\templates\accounts\transfer.html:135
+msgid "Useful Links"
+msgstr "Nützliche Links"
+
+#: .\accounts\templates\accounts\index.html:609
+#: .\accounts\templates\accounts\privacy_policy.html:156
+#: .\accounts\templates\accounts\register.html:306
+#: .\accounts\templates\accounts\set_transaction_pin.html:122
+#: .\accounts\templates\accounts\transaction_history.html:172
+#: .\accounts\templates\accounts\transfer.html:138
+msgid "About us"
+msgstr "Über uns"
+
+#: .\accounts\templates\accounts\index.html:611
+#: .\accounts\templates\accounts\privacy_policy.html:158
+#: .\accounts\templates\accounts\register.html:93
+#: .\accounts\templates\accounts\register.html:308
+#: .\accounts\templates\accounts\set_transaction_pin.html:124
+#: .\accounts\templates\accounts\transaction_history.html:174
+#: .\accounts\templates\accounts\transfer.html:140
+msgid "Open an Account"
+msgstr "Konto eröffnen"
+
+#: .\accounts\templates\accounts\login.html:46
+msgid "Login to TrustBank.Plc"
+msgstr "Bei TrustBank.Plc anmelden"
+
+#: .\accounts\templates\accounts\login.html:69
+msgid "Username"
+msgstr "Benutzername"
+
+#: .\accounts\templates\accounts\login.html:71
+msgid "Please enter your username."
+msgstr "Bitte geben Sie Ihren Benutzernamen ein."
+
+#: .\accounts\templates\accounts\login.html:76
+msgid "Password"
+msgstr "Passwort"
+
+#: .\accounts\templates\accounts\login.html:78
+msgid "Please enter your password."
+msgstr "Bitte geben Sie Ihr Passwort ein."
+
+#: .\accounts\templates\accounts\login.html:88
+msgid "Don't have an account?"
+msgstr "Kein Konto?"
+
+#: .\accounts\templates\accounts\messages.html:60
+msgid "Chat with Support"
+msgstr "Mit dem Support chatten"
+
+#: .\accounts\templates\accounts\messages.html:61
+msgid "Back to Account Dashboard"
+msgstr "Zurück zum Konto-Dashboard"
+
+#: .\accounts\templates\accounts\messages.html:71
+msgid "No messages yet. Start the conversation below!"
+msgstr "Noch keine Nachrichten. Starten Sie das Gespräch!"
+
+#: .\accounts\templates\accounts\messages.html:79
+msgid "Type your message..."
+msgstr "Nachricht eingeben..."
+
+#: .\accounts\templates\accounts\messages.html:122
+msgid "New message from admin"
+msgstr "Neue Nachricht vom Administrator"
+
+#: .\accounts\templates\accounts\privacy_policy.html:90
+msgid "Privacy Policy for TrustBank.Plc"
+msgstr "Datenschutzrichtlinie von TrustBank.Plc"
+
+#: .\accounts\templates\accounts\privacy_policy.html:91
+msgid ""
+"At TrustBank.Plc, one of our main priorities is the privacy of our visitors. "
+"This Privacy Policy document contains types of information that is collected "
+"and recorded by TrustBank.Plc and how we use it."
+msgstr ""
+
+#: .\accounts\templates\accounts\privacy_policy.html:92
+msgid ""
+"If you have additional questions or require more information about our "
+"Privacy Policy, do not hesitate to contact us."
+msgstr ""
+
+#: .\accounts\templates\accounts\privacy_policy.html:93
+msgid ""
+"This Privacy Policy applies only to our online activities and is valid for "
+"visitors to our website in regard to the information that they shared and/or "
+"collect in TrustBank.Plc. This policy is not applicable to any information "
+"collected offline or via channels other than this website."
+msgstr ""
+
+#: .\accounts\templates\accounts\privacy_policy.html:94
+msgid "Consent"
+msgstr "Zustimmung"
+
+#: .\accounts\templates\accounts\privacy_policy.html:95
+msgid ""
+"By using our website, you hereby consent to our Privacy Policy and agree to "
+"its terms."
+msgstr ""
+
+#: .\accounts\templates\accounts\privacy_policy.html:96
+msgid "Information we collect"
+msgstr "Informationen, die wir sammeln"
+
+#: .\accounts\templates\accounts\privacy_policy.html:97
+msgid ""
+"The personal information that you are asked to provide, and the reasons why "
+"you are asked to provide it, will be made clear to you at the point we ask "
+"you to provide your personal information."
+msgstr ""
+
+#: .\accounts\templates\accounts\privacy_policy.html:98
+msgid ""
+"If you contact us directly, we may receive additional information about you "
+"such as your name, email address, phone number, the contents of the message "
+"and/or attachments you may send us, and any other information you may choose "
+"to provide."
+msgstr ""
+
+#: .\accounts\templates\accounts\privacy_policy.html:99
+msgid ""
+"When you register for an Account, we may ask for your contact information, "
+"including items such as name, company name, address, email address, and "
+"telephone number."
+msgstr ""
+
+#: .\accounts\templates\accounts\privacy_policy.html:100
+msgid "How we use your information"
+msgstr "Wie wir Ihre Informationen verwenden"
+
+#: .\accounts\templates\accounts\privacy_policy.html:101
+msgid "We use the information we collect in various ways, including to:"
+msgstr ""
+
+#: .\accounts\templates\accounts\privacy_policy.html:103
+msgid "Provide, operate, and maintain our website"
+msgstr ""
+
+#: .\accounts\templates\accounts\privacy_policy.html:104
+msgid "Improve, personalize, and expand our website"
+msgstr ""
+
+#: .\accounts\templates\accounts\privacy_policy.html:105
+msgid "Understand and analyze how you use our website"
+msgstr ""
+
+#: .\accounts\templates\accounts\privacy_policy.html:106
+msgid "Develop new products, services, features, and functionality"
+msgstr ""
+
+#: .\accounts\templates\accounts\privacy_policy.html:107
+msgid ""
+"Communicate with you, either directly or through one of our partners, "
+"including for customer service, to provide you with updates and other "
+"information relating to the website, and for marketing and promotional "
+"purposes"
+msgstr ""
+
+#: .\accounts\templates\accounts\privacy_policy.html:108
+msgid "Send you emails"
+msgstr ""
+
+#: .\accounts\templates\accounts\privacy_policy.html:109
+msgid "Find and prevent fraud"
+msgstr ""
+
+#: .\accounts\templates\accounts\privacy_policy.html:111
+msgid "Log Files"
+msgstr "Log-Dateien"
+
+#: .\accounts\templates\accounts\privacy_policy.html:112
+msgid ""
+"TrustBank.Plc follows a standard procedure of using log files. These files "
+"log visitors when they visit websites. The information collected by log "
+"files include internet protocol (IP) addresses, browser type, Internet "
+"Service Provider (ISP), date and time stamp, referring/exit pages, and "
+"possibly the number of clicks. These are not linked to any information that "
+"is personally identifiable."
+msgstr ""
+
+#: .\accounts\templates\accounts\privacy_policy.html:113
+msgid "Cookies and Web Beacons"
+msgstr "Cookies und Web-Beacons"
+
+#: .\accounts\templates\accounts\privacy_policy.html:114
+msgid ""
+"Like any other website, TrustBank.Plc uses 'cookies'. These cookies are used "
+"to store information including visitors' preferences, and the pages on the "
+"website that the visitor accessed or visited. The information is used to "
+"optimize the users' experience by customizing our web page content based on "
+"visitors' browser type and/or other information."
+msgstr ""
+
+#: .\accounts\templates\accounts\privacy_policy.html:115
+msgid "Third Party Privacy Policies"
+msgstr "Datenschutzrichtlinien Dritter"
+
+#: .\accounts\templates\accounts\privacy_policy.html:116
+msgid ""
+"TrustBank.Plc's Privacy Policy does not apply to other advertisers or "
+"websites. Thus, we are advising you to consult the respective Privacy "
+"Policies of these third party ad servers for more detailed information."
+msgstr ""
+
+#: .\accounts\templates\accounts\privacy_policy.html:117
+msgid "GDPR Data Protection Rights"
+msgstr "DSGVO-Datenschutzrechte"
+
+#: .\accounts\templates\accounts\privacy_policy.html:118
+msgid ""
+"We would like to make sure you are fully aware of all of your data "
+"protection rights. Every user is entitled to the following:"
+msgstr ""
+
+#: .\accounts\templates\accounts\privacy_policy.html:120
+msgid ""
+"The right to access – You have the right to request copies of your personal "
+"data."
+msgstr ""
+
+#: .\accounts\templates\accounts\privacy_policy.html:121
+msgid ""
+"The right to rectification – You have the right to request that we correct "
+"any information you believe is inaccurate."
+msgstr ""
+
+#: .\accounts\templates\accounts\privacy_policy.html:122
+msgid ""
+"The right to erasure – You have the right to request that we erase your "
+"personal data, under certain conditions."
+msgstr ""
+
+#: .\accounts\templates\accounts\privacy_policy.html:123
+msgid ""
+"The right to restrict processing – You have the right to request that we "
+"restrict the processing of your personal data, under certain conditions."
+msgstr ""
+
+#: .\accounts\templates\accounts\privacy_policy.html:124
+msgid ""
+"The right to object to processing – You have the right to object to our "
+"processing of your personal data, under certain conditions."
+msgstr ""
+
+#: .\accounts\templates\accounts\privacy_policy.html:125
+msgid ""
+"The right to data portability – You have the right to request that we "
+"transfer the data that we have collected to another organization, or "
+"directly to you, under certain conditions."
+msgstr ""
+
+#: .\accounts\templates\accounts\privacy_policy.html:127
+msgid ""
+"If you make a request, we have one month to respond to you. If you would "
+"like to exercise any of these rights, please contact us."
+msgstr ""
+
+#: .\accounts\templates\accounts\privacy_policy.html:128
+msgid "Children's Information"
+msgstr "Informationen für Kinder"
+
+#: .\accounts\templates\accounts\privacy_policy.html:129
+msgid ""
+"TrustBank.Plc does not knowingly collect any Personal Identifiable "
+"Information from children under the age of 13. If you think that your child "
+"provided this kind of information on our website, we strongly encourage you "
+"to contact us immediately."
+msgstr ""
+
+#: .\accounts\templates\accounts\register.html:108
+msgid "Create an Account"
+msgstr "Konto erstellen"
+
+#: .\accounts\templates\accounts\register.html:109
+msgid "Join TrustBank.Plc and start managing your finances with ease."
+msgstr "Treten Sie TrustBank.Plc bei und verwalten Sie Ihre Finanzen."
+
+#: .\accounts\templates\accounts\register.html:135
+msgid "Personal Information"
+msgstr "Persönliche Informationen"
+
+#: .\accounts\templates\accounts\register.html:200
+msgid "Address Information"
+msgstr "Adressinformationen"
+
+#: .\accounts\templates\accounts\register.html:240
+msgid "Verification Information"
+msgstr "Verifizierungsinformationen"
+
+#: .\accounts\templates\accounts\register.html:257
+msgid "Password Information"
+msgstr "Passwortinformationen"
+
+#: .\accounts\templates\accounts\set_transaction_pin.html:10
+msgid "Set Transaction PIN"
+msgstr "Transaktions-PIN festlegen"
+
+#: .\accounts\templates\accounts\set_transaction_pin.html:11
+msgid "Set your secure transaction PIN for transfers and deposits"
+msgstr ""
+
+#: .\accounts\templates\accounts\set_transaction_pin.html:64
+msgid "Set Your Transaction PIN"
+msgstr "Legen Sie Ihren Transaktions-PIN fest"
+
+#: .\accounts\templates\accounts\set_transaction_pin.html:68
+msgid "Create a 6-digit secure PIN used for transfers and deposits."
+msgstr ""
+
+#: .\accounts\templates\accounts\set_transaction_pin.html:86
+msgid "Enter New PIN"
+msgstr ""
+
+#: .\accounts\templates\accounts\set_transaction_pin.html:88
+msgid "Enter 6-digit PIN"
+msgstr ""
+
+#: .\accounts\templates\accounts\set_transaction_pin.html:92
+msgid "Confirm PIN"
+msgstr ""
+
+#: .\accounts\templates\accounts\set_transaction_pin.html:94
+msgid "Re-enter PIN"
+msgstr ""
+
+#: .\accounts\templates\accounts\set_transaction_pin.html:97
+msgid "Save PIN"
+msgstr ""
+
+#: .\accounts\templates\accounts\set_transaction_pin.html:166
+msgid "PINs do not match. Please re-enter."
+msgstr ""
+
+#: .\accounts\templates\accounts\top_up.html:12
+#: .\accounts\templates\accounts\top_up.html:104
+msgid "Top Up"
+msgstr "Aufladen"
+
+#: .\accounts\templates\accounts\top_up.html:65
+msgid "Top Up Balance"
+msgstr "Guthaben aufladen"
+
+#: .\accounts\templates\accounts\top_up.html:102
+msgid "Enter amount to top up"
+msgstr "Aufladebetrag eingeben"
+
+#: .\accounts\templates\accounts\transaction_history.html:10
+#: .\accounts\templates\accounts\transaction_history.html:119
+msgid "Transaction History"
+msgstr "Transaktionsverlauf"
+
+#: .\accounts\templates\accounts\transaction_history.html:94
+msgid "Total Credit"
+msgstr "Gesamtguthaben"
+
+#: .\accounts\templates\accounts\transaction_history.html:102
+msgid "Total Debit"
+msgstr "Gesamtbelastung"
+
+#: .\accounts\templates\accounts\transaction_history.html:146
+msgid "No transactions found."
+msgstr "Keine Transaktionen gefunden."
+
+#: .\accounts\templates\accounts\transfer.html:11
+#: .\accounts\templates\accounts\transfer.html:65
+msgid "Transfer Money"
+msgstr "Geld überweisen"
+
+#: .\accounts\templates\accounts\transfer.html:69
+msgid "Available Balance:"
+msgstr "Verfügbares Guthaben:"
+
+#: .\accounts\templates\accounts\transfer.html:76
+msgid "Recipient Account Number"
+msgstr "Empfängerkontonummer"
+
+#: .\accounts\templates\accounts\transfer.html:78
+msgid "Enter recipient's account number"
+msgstr "Kontonummer des Empfängers eingeben"
+
+#: .\accounts\templates\accounts\transfer.html:83
+msgid "Recipient Name"
+msgstr "Name des Empfängers"
+
+#: .\accounts\templates\accounts\transfer.html:85
+msgid "Account found"
+msgstr "Konto gefunden"
+
+#: .\accounts\templates\accounts\transfer.html:91
+msgid "Enter amount"
+msgstr "Betrag eingeben"
+
+#: .\accounts\templates\accounts\transfer.html:95
+msgid "Description (optional)"
+msgstr "Beschreibung (optional)"
+
+#: .\accounts\templates\accounts\transfer.html:97
+msgid "Enter reason for transfer"
+msgstr "Grund für Überweisung eingeben"
+
+#: .\accounts\templates\accounts\transfer.html:101
+msgid "Transaction PIN"
+msgstr "Transaktions-PIN"
+
+#: .\accounts\templates\accounts\transfer.html:102
+msgid "Enter your PIN"
+msgstr "PIN eingeben"

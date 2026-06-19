@@ -1,967 +1,1270 @@
 {% load i18n %}
-{% trans "Hello" %}
 {% load static %}
 
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="{{ LANGUAGE_CODE }}">
 <head>
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
-  <title>TrustBank.Plc</title>
-  <meta name="description" content="">
-  <meta name="keywords" content="">
+  <title>TrustBank.Plc — Secure Online Banking</title>
+  <meta name="description" content="TrustBank.Plc — Your trusted partner in secure, smart and convenient online banking.">
 
-  <!-- Favicons -->
   <link rel="apple-touch-icon" sizes="180x180" href="{% static 'img/apple-touch-icon.png' %}">
   <link rel="icon" type="image/png" sizes="32x32" href="{% static 'img/favicon-32x32.png' %}">
   <link rel="icon" type="image/png" sizes="16x16" href="{% static 'img/favicon-16x16.png' %}">
   <link rel="manifest" href="{% static 'img/site.webmanifest' %}">
   <link rel="icon" href="{% static 'img/favicon.ico' %}">
-  <!--  <link href="assets/img/favicon2.ico" rel="apple-touch-icon">-->
 
-  <!-- Fonts -->
   <link href="https://fonts.googleapis.com" rel="preconnect">
   <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Source+Sans+Pro:ital,wght@0,200;0,300;0,400;0,600;0,700;0,900;1,200;1,300;1,400;1,600;1,700;1,900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
-  {% load static %}
+  <link href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+  <link href="{% static 'vendor/bootstrap-icons/bootstrap-icons.css' %}" rel="stylesheet">
+  <link href="{% static 'vendor/aos/aos.css' %}" rel="stylesheet">
+  <link href="{% static 'vendor/swiper/swiper-bundle.min.css' %}" rel="stylesheet">
+  <link href="{% static 'css/main.css' %}" rel="stylesheet">
 
-<!-- Vendor CSS Files -->
-<link href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
-<link href="{% static 'vendor/bootstrap-icons/bootstrap-icons.css' %}" rel="stylesheet">
-<link href="{% static 'vendor/aos/aos.css' %}" rel="stylesheet">
-<link href="{% static 'vendor/glightbox/css/glightbox.min.css' %}" rel="stylesheet">
-<link href="{% static 'vendor/swiper/swiper-bundle.min.css' %}" rel="stylesheet">
+  <style>
+    :root {
+      --brand: #0d6efd;
+      --brand-dark: #0a3d9c;
+      --brand-light: #e8f0fe;
+      --teal: #00897b;
+      --dark: #0f1c2e;
+      --text: #374151;
+      --muted: #6b7280;
+      --border: #e5e7eb;
+      --radius: 14px;
+    }
 
-<!-- Main CSS File -->
-<link href="{% static 'css/main.css' %}" rel="stylesheet">
+    *, *::before, *::after { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
 
-  <!-- =======================================================
-  * Template Name: HeroBiz
-  * Template URL: https://bootstrapmade.com/herobiz-bootstrap-business-template/
-  * Updated: Aug 07 2024 with Bootstrap v5.3.3
-  * Author: BootstrapMade.com
-  * License: https://bootstrapmade.com/license/
-  ======================================================== -->
+    body {
+      font-family: 'Inter', sans-serif;
+      color: var(--text);
+      background: #fff;
+      overflow-x: hidden;
+    }
+
+    /* ── NAV ── */
+    #header {
+      background: rgba(255,255,255,0.97);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--border);
+      padding: 0 0;
+      transition: box-shadow .3s;
+    }
+
+    #header.scrolled { box-shadow: 0 2px 20px rgba(0,0,0,.08); }
+
+    .header-inner {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 0 24px;
+      height: 68px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    .logo-link {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      text-decoration: none;
+      flex-shrink: 0;
+    }
+
+    .logo-link img { width: 32px; height: 32px; border-radius: 8px; }
+    .logo-link span { font-size: 1.15rem; font-weight: 800; color: var(--dark); letter-spacing: -.3px; }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      list-style: none;
+      margin: 0; padding: 0;
+    }
+
+    .nav-links a {
+      font-size: .875rem;
+      font-weight: 500;
+      color: var(--text);
+      text-decoration: none;
+      padding: 6px 12px;
+      border-radius: 8px;
+      transition: background .15s, color .15s;
+      white-space: nowrap;
+    }
+
+    .nav-links a:hover { background: var(--brand-light); color: var(--brand); }
+
+    .nav-dropdown { position: relative; }
+
+    .nav-dropdown > a { display: flex; align-items: center; gap: 4px; }
+
+    .nav-dropdown-menu {
+      display: none;
+      position: absolute;
+      top: calc(100% + 8px);
+      left: 0;
+      min-width: 200px;
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      box-shadow: 0 8px 30px rgba(0,0,0,.12);
+      padding: 6px;
+      z-index: 1000;
+    }
+
+    .nav-dropdown:hover .nav-dropdown-menu { display: block; }
+
+    .nav-dropdown-menu a {
+      display: block;
+      padding: 8px 12px;
+      font-size: .84rem;
+      border-radius: 8px;
+      color: var(--text);
+    }
+
+    .nav-dropdown-menu a:hover { background: var(--brand-light); color: var(--brand); }
+
+    .nav-actions { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
+
+    .lang-select {
+      font-size: .8rem;
+      padding: 6px 10px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      color: var(--text);
+      background: #fff;
+      cursor: pointer;
+    }
+
+    .btn-nav-login {
+      font-size: .875rem;
+      font-weight: 600;
+      padding: 8px 20px;
+      border-radius: 9px;
+      background: var(--brand);
+      color: #fff;
+      text-decoration: none;
+      border: none;
+      transition: background .15s;
+      white-space: nowrap;
+    }
+
+    .btn-nav-login:hover { background: var(--brand-dark); color: #fff; }
+
+    .mobile-menu-btn {
+      display: none;
+      background: none;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 6px 10px;
+      cursor: pointer;
+      color: var(--dark);
+      font-size: 1.2rem;
+    }
+
+    .mobile-nav {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: #fff;
+      z-index: 9999;
+      overflow-y: auto;
+      padding: 20px;
+    }
+
+    .mobile-nav.open { display: block; }
+
+    .mobile-nav-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 24px;
+    }
+
+    .mobile-nav-close {
+      background: none;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      width: 38px; height: 38px;
+      cursor: pointer;
+      font-size: 1.1rem;
+      color: var(--dark);
+    }
+
+    .mobile-nav-links { list-style: none; padding: 0; margin: 0; }
+
+    .mobile-nav-links li { border-bottom: 1px solid var(--border); }
+
+    .mobile-nav-links a {
+      display: block;
+      padding: 14px 4px;
+      font-size: 1rem;
+      font-weight: 500;
+      color: var(--dark);
+      text-decoration: none;
+    }
+
+    /* ── HERO ── */
+    .hero {
+      background: linear-gradient(135deg, #0d6efd 0%, #0a3d9c 60%, #00334e 100%);
+      min-height: 92vh;
+      display: flex;
+      align-items: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: url("{% static 'img/hero-bg.png' %}") center/cover no-repeat;
+      opacity: .07;
+    }
+
+    .hero-orb {
+      position: absolute;
+      border-radius: 50%;
+      background: rgba(255,255,255,.05);
+    }
+
+    .hero-orb-1 { width: 600px; height: 600px; top: -200px; right: -150px; }
+    .hero-orb-2 { width: 400px; height: 400px; bottom: -150px; left: -100px; }
+
+    .hero-inner {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 80px 24px;
+      position: relative;
+      z-index: 1;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      align-items: center;
+      gap: 60px;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(255,255,255,.12);
+      border: 1px solid rgba(255,255,255,.2);
+      border-radius: 99px;
+      padding: 6px 14px;
+      font-size: .8rem;
+      color: rgba(255,255,255,.9);
+      margin-bottom: 20px;
+    }
+
+    .hero h1 {
+      font-family: 'Poppins', sans-serif;
+      font-size: clamp(2.2rem, 4vw, 3.4rem);
+      font-weight: 800;
+      color: #fff;
+      line-height: 1.15;
+      margin-bottom: 20px;
+      letter-spacing: -.5px;
+    }
+
+    .hero h1 span {
+      background: linear-gradient(90deg, #a5c4ff, #c3d8ff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero p {
+      font-size: 1.05rem;
+      color: rgba(255,255,255,.8);
+      line-height: 1.7;
+      margin-bottom: 32px;
+      max-width: 500px;
+    }
+
+    .hero-btns { display: flex; flex-wrap: wrap; gap: 12px; }
+
+    .btn-hero-primary {
+      background: #fff;
+      color: var(--brand);
+      font-weight: 700;
+      font-size: .95rem;
+      padding: 13px 28px;
+      border-radius: 10px;
+      text-decoration: none;
+      transition: transform .15s, box-shadow .15s;
+      box-shadow: 0 4px 14px rgba(0,0,0,.15);
+    }
+
+    .btn-hero-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(0,0,0,.2); color: var(--brand); }
+
+    .btn-hero-secondary {
+      background: rgba(255,255,255,.12);
+      color: #fff;
+      font-weight: 600;
+      font-size: .95rem;
+      padding: 13px 28px;
+      border-radius: 10px;
+      text-decoration: none;
+      border: 1px solid rgba(255,255,255,.3);
+      transition: background .15s;
+    }
+
+    .btn-hero-secondary:hover { background: rgba(255,255,255,.22); color: #fff; }
+
+    .hero-stats {
+      display: flex;
+      gap: 24px;
+      margin-top: 40px;
+      flex-wrap: wrap;
+    }
+
+    .hero-stat { color: #fff; }
+    .hero-stat-num { font-size: 1.8rem; font-weight: 800; line-height: 1; }
+    .hero-stat-label { font-size: .75rem; color: rgba(255,255,255,.7); margin-top: 2px; }
+
+    .hero-image {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .hero-image img {
+      width: 100%;
+      max-width: 480px;
+      border-radius: 20px;
+      box-shadow: 0 30px 80px rgba(0,0,0,.3);
+    }
+
+    .hero-card {
+      position: absolute;
+      background: rgba(255,255,255,.15);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255,255,255,.25);
+      border-radius: 14px;
+      padding: 14px 18px;
+      color: #fff;
+    }
+
+    .hero-card-tl { top: 20px; left: -20px; font-size: .8rem; }
+    .hero-card-tl .num { font-size: 1.3rem; font-weight: 800; display: block; }
+
+    .hero-card-br { bottom: 30px; right: -20px; font-size: .8rem; display: flex; align-items: center; gap: 8px; }
+    .hero-card-br .icon { font-size: 1.4rem; }
+
+    /* ── SECTION UTILITIES ── */
+    .section { padding: 80px 0; }
+    .section-sm { padding: 56px 0; }
+
+    .section-label {
+      font-size: .78rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .1em;
+      color: var(--brand);
+      margin-bottom: 10px;
+    }
+
+    .section-title {
+      font-family: 'Poppins', sans-serif;
+      font-size: clamp(1.6rem, 3vw, 2.4rem);
+      font-weight: 700;
+      color: var(--dark);
+      letter-spacing: -.3px;
+      line-height: 1.2;
+      margin-bottom: 14px;
+    }
+
+    .section-sub { font-size: 1rem; color: var(--muted); max-width: 560px; line-height: 1.7; }
+
+    .inner { max-width: 1280px; margin: 0 auto; padding: 0 24px; }
+
+    /* ── FEATURES STRIP ── */
+    .features-strip { background: var(--dark); }
+
+    .feature-strip-item {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 28px 20px;
+      border-right: 1px solid rgba(255,255,255,.08);
+    }
+
+    .feature-strip-item:last-child { border-right: none; }
+
+    .feature-strip-icon {
+      width: 44px; height: 44px;
+      border-radius: 10px;
+      background: rgba(13,110,253,.3);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.2rem;
+      color: #7eb3ff;
+      flex-shrink: 0;
+    }
+
+    .feature-strip-title { font-weight: 600; color: #fff; font-size: .9rem; }
+    .feature-strip-sub { font-size: .78rem; color: rgba(255,255,255,.5); }
+
+    /* ── ABOUT ── */
+    .about-img-wrap {
+      position: relative;
+      border-radius: 20px;
+      overflow: hidden;
+    }
+
+    .about-img-wrap img { width: 100%; border-radius: 20px; display: block; }
+
+    .about-badge {
+      position: absolute;
+      bottom: 24px; left: 24px;
+      background: #fff;
+      border-radius: 14px;
+      padding: 14px 18px;
+      box-shadow: 0 8px 30px rgba(0,0,0,.15);
+      font-size: .85rem;
+    }
+
+    .about-badge .big { font-size: 1.8rem; font-weight: 800; color: var(--brand); line-height: 1; }
+    .about-badge .label { color: var(--muted); font-size: .78rem; }
+
+    .tab-pill { border: none; }
+    .tab-pill .nav-link {
+      border-radius: 99px;
+      font-size: .875rem;
+      font-weight: 500;
+      color: var(--muted);
+      padding: 8px 18px;
+      border: 1px solid var(--border);
+      margin-right: 8px;
+      margin-bottom: 8px;
+      background: #fff;
+      transition: all .15s;
+    }
+
+    .tab-pill .nav-link.active { background: var(--brand); color: #fff; border-color: var(--brand); }
+
+    .check-item { display: flex; gap: 12px; align-items: flex-start; margin-bottom: 16px; }
+    .check-icon { width: 22px; height: 22px; border-radius: 50%; background: var(--brand-light); color: var(--brand); display: flex; align-items: center; justify-content: center; font-size: .7rem; flex-shrink: 0; margin-top: 2px; }
+    .check-title { font-weight: 600; color: var(--dark); font-size: .95rem; margin-bottom: 2px; }
+    .check-desc { font-size: .85rem; color: var(--muted); }
+
+    /* ── SERVICES ── */
+    .services-grid { background: #f8faff; }
+
+    .service-card {
+      background: #fff;
+      border-radius: var(--radius);
+      overflow: hidden;
+      border: 1px solid var(--border);
+      transition: transform .2s, box-shadow .2s;
+    }
+
+    .service-card:hover { transform: translateY(-5px); box-shadow: 0 12px 40px rgba(13,110,253,.1); }
+
+    .service-card-img { height: 200px; overflow: hidden; }
+    .service-card-img img { width: 100%; height: 100%; object-fit: cover; transition: transform .4s; }
+    .service-card:hover .service-card-img img { transform: scale(1.05); }
+
+    .service-card-body { padding: 22px; }
+
+    .service-card-icon {
+      width: 42px; height: 42px;
+      border-radius: 10px;
+      background: var(--brand-light);
+      color: var(--brand);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.1rem;
+      margin-bottom: 12px;
+    }
+
+    .service-card-title { font-weight: 700; font-size: 1rem; color: var(--dark); margin-bottom: 8px; }
+    .service-card-text { font-size: .85rem; color: var(--muted); line-height: 1.6; margin: 0; }
+
+    /* ── STATS ── */
+    .stats-section { background: linear-gradient(135deg, #0d6efd, #0a3d9c); }
+    .stat-box { text-align: center; padding: 30px 20px; }
+    .stat-box .num { font-size: 2.6rem; font-weight: 900; color: #fff; font-family: 'Poppins', sans-serif; line-height: 1; }
+    .stat-box .lbl { font-size: .85rem; color: rgba(255,255,255,.7); margin-top: 6px; }
+
+    /* ── TESTIMONIALS ── */
+    .testimonial-card {
+      background: #fff;
+      border-radius: var(--radius);
+      padding: 28px;
+      border: 1px solid var(--border);
+      margin: 10px;
+      box-shadow: 0 2px 12px rgba(0,0,0,.05);
+    }
+
+    .testimonial-stars { color: #f59e0b; font-size: .9rem; margin-bottom: 14px; }
+    .testimonial-text { font-size: .9rem; color: var(--muted); line-height: 1.7; margin-bottom: 20px; font-style: italic; }
+    .testimonial-author { display: flex; align-items: center; gap: 12px; }
+    .testimonial-author img { width: 44px; height: 44px; border-radius: 50%; object-fit: cover; }
+    .testimonial-author-name { font-weight: 700; font-size: .9rem; color: var(--dark); }
+    .testimonial-author-role { font-size: .78rem; color: var(--muted); }
+
+    /* ── FAQ ── */
+    .faq-item {
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      margin-bottom: 10px;
+      overflow: hidden;
+    }
+
+    .faq-q {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 18px 20px;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: .95rem;
+      color: var(--dark);
+      background: #fff;
+      border: none;
+      width: 100%;
+      text-align: left;
+      gap: 12px;
+      transition: background .15s;
+    }
+
+    .faq-q:hover { background: #f9fafb; }
+    .faq-q.open { color: var(--brand); }
+    .faq-q .faq-arrow { flex-shrink: 0; transition: transform .25s; }
+    .faq-q.open .faq-arrow { transform: rotate(180deg); }
+
+    .faq-a {
+      display: none;
+      padding: 0 20px 18px;
+      font-size: .875rem;
+      color: var(--muted);
+      line-height: 1.7;
+      background: #fff;
+    }
+
+    .faq-a.open { display: block; }
+
+    /* ── CTA BANNER ── */
+    .cta-banner {
+      background: linear-gradient(135deg, #00897b, #004d40);
+      border-radius: 20px;
+      padding: 48px 40px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+      flex-wrap: wrap;
+    }
+
+    .cta-banner h2 { font-size: 1.6rem; font-weight: 700; color: #fff; margin: 0; }
+    .cta-banner p { color: rgba(255,255,255,.8); margin: 8px 0 0; font-size: .95rem; }
+
+    .btn-cta-white {
+      background: #fff;
+      color: #00897b;
+      font-weight: 700;
+      padding: 13px 28px;
+      border-radius: 10px;
+      text-decoration: none;
+      white-space: nowrap;
+      transition: transform .15s;
+    }
+
+    .btn-cta-white:hover { transform: translateY(-2px); color: #00897b; }
+
+    /* ── CONTACT ── */
+    .contact-info-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      margin-bottom: 20px;
+    }
+
+    .contact-info-icon {
+      width: 42px; height: 42px;
+      border-radius: 10px;
+      background: var(--brand-light);
+      color: var(--brand);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1rem;
+      flex-shrink: 0;
+    }
+
+    .contact-info-label { font-weight: 600; font-size: .85rem; color: var(--dark); }
+    .contact-info-val { font-size: .85rem; color: var(--muted); }
+
+    .contact-form .form-control {
+      border-radius: 9px;
+      border: 1px solid var(--border);
+      padding: 11px 14px;
+      font-size: .9rem;
+    }
+
+    .contact-form .form-control:focus { border-color: var(--brand); box-shadow: 0 0 0 3px rgba(13,110,253,.12); }
+
+    .btn-submit {
+      background: var(--brand);
+      color: #fff;
+      font-weight: 600;
+      padding: 12px 32px;
+      border-radius: 10px;
+      border: none;
+      transition: background .15s;
+      font-size: .95rem;
+    }
+
+    .btn-submit:hover { background: var(--brand-dark); }
+
+    /* ── FOOTER ── */
+    .footer {
+      background: var(--dark);
+      padding: 60px 0 0;
+      color: rgba(255,255,255,.7);
+    }
+
+    .footer-brand img { width: 32px; height: 32px; border-radius: 8px; }
+    .footer-brand span { font-size: 1.1rem; font-weight: 800; color: #fff; }
+    .footer-desc { font-size: .875rem; line-height: 1.7; margin-top: 14px; max-width: 300px; }
+    .footer-heading { font-size: .75rem; text-transform: uppercase; letter-spacing: .1em; color: rgba(255,255,255,.4); font-weight: 700; margin-bottom: 16px; }
+    .footer-links { list-style: none; padding: 0; margin: 0; }
+    .footer-links li { margin-bottom: 10px; }
+    .footer-links a { color: rgba(255,255,255,.65); font-size: .875rem; text-decoration: none; transition: color .15s; }
+    .footer-links a:hover { color: #fff; }
+    .footer-contact-item { font-size: .875rem; display: flex; align-items: center; gap: 8px; margin-bottom: 10px; }
+    .footer-contact-item i { color: rgba(255,255,255,.4); }
+    .footer-bottom { border-top: 1px solid rgba(255,255,255,.08); margin-top: 48px; padding: 20px 0; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; }
+    .footer-copyright { font-size: .8rem; }
+    .footer-socials { display: flex; gap: 8px; }
+    .footer-social-link { width: 34px; height: 34px; border-radius: 8px; background: rgba(255,255,255,.08); color: rgba(255,255,255,.7); display: flex; align-items: center; justify-content: center; text-decoration: none; transition: background .15s; font-size: .9rem; }
+    .footer-social-link:hover { background: var(--brand); color: #fff; }
+
+    /* ── SCROLL TOP ── */
+    .scroll-top {
+      position: fixed;
+      bottom: 24px; right: 24px;
+      width: 42px; height: 42px;
+      border-radius: 50%;
+      background: var(--brand);
+      color: #fff;
+      display: none;
+      align-items: center; justify-content: center;
+      font-size: 1.2rem;
+      text-decoration: none;
+      box-shadow: 0 4px 14px rgba(13,110,253,.4);
+      z-index: 500;
+      transition: transform .15s;
+    }
+
+    .scroll-top.visible { display: flex; }
+    .scroll-top:hover { transform: translateY(-3px); color: #fff; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 991px) {
+      .nav-links { display: none; }
+      .mobile-menu-btn { display: flex; align-items: center; }
+      .hero-inner { grid-template-columns: 1fr; text-align: center; gap: 40px; padding: 60px 24px; }
+      .hero-btns { justify-content: center; }
+      .hero-stats { justify-content: center; }
+      .hero-image { display: none; }
+      .feature-strip-item { border-right: none; border-bottom: 1px solid rgba(255,255,255,.08); }
+      .feature-strip-item:last-child { border-bottom: none; }
+      .cta-banner { flex-direction: column; text-align: center; }
+    }
+
+    @media (max-width: 575px) {
+      .section { padding: 56px 0; }
+      .hero h1 { font-size: 2rem; }
+      .hero p { font-size: .95rem; }
+      .btn-hero-primary, .btn-hero-secondary { padding: 11px 22px; font-size: .875rem; }
+      .footer-bottom { flex-direction: column; align-items: center; text-align: center; }
+    }
+  </style>
 </head>
 
-<body class="index-page">
+<body>
 
-  <header id="header" class="header d-flex align-items-center sticky-top">
-    <div class="container-fluid position-relative d-flex align-items-center justify-content-between">
-
-      <a href="{% url 'index' %}" class="logo d-flex align-items-center me-auto me-xl-0">
-        <!-- Uncomment the line below if you also wish to use an image logo -->
-        <!-- <img src="assets/img/logo.png" alt=""> -->
-        <h1 class="sitename">TrustBank.Plc</h1>
-        <span>.</span>
-      </a>
-
-      <nav id="navmenu" class="navmenu">
-        <ul>
-          <li><a href="#home" class="active">Home<br></a></li>
-          <li><a href="#about">About</a></li>
-          <li><a href="#services">Services</a></li>
-          <li><a href="#faq">FAQs</a></li>
-          <li class="dropdown"><a href="{% url 'login' %}"><span>Internet Banking</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
-            <ul>
-              <li><a href="{% url 'login' %}">Personal Banking</a></li>
-              <li class="dropdown"><a href="{% url 'login' %}"><span>Bank with Us</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
-                <ul>
-                  <li><a href="{% url 'register' %}">Register</a></li>
-                  <li><a href="{% url 'login' %}">Login</a></li>
-                </ul>
-              </li>
-              <li><a href="{% url 'login' %}">Corperate Banking</a></li>
-              <li><a href="{% url 'login' %}">Credit Card</a></li>
-              <li><a href="{% url 'login' %}">Business Banking</a></li>
-              <li><a href="{% url 'login' %}">Wealth Management</a></li>
-            </ul>
-          </li>
-          <li><a href="#contact">Contact</a></li>
-          <li><a href="{% url 'privacy_policy' %}">Privacy Policy</a></li>
-        </ul>
-        <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
-      </nav>
-
-      <a class="btn-getstarted" href="{% url 'login' %}">Login</a>
-
+<!-- ── MOBILE NAV ── -->
+<div class="mobile-nav" id="mobileNav">
+  <div class="mobile-nav-header">
+    <div class="logo-link">
+      <img src="{% static 'img/favicon.ico' %}" alt="TrustBank">
+      <span>TrustBank.Plc</span>
     </div>
-  </header>
-
-  <!-- Display Success/Error Messages -->
-  {% if messages %}
-  <div class="container mt-3">
-    {% for message in messages %}
-    <div class="alert alert-{{ message.tags }}" role="alert">
-      {{ message }}
-    </div>
-    {% endfor %}
+    <button class="mobile-nav-close" id="mobileNavClose"><i class="bi bi-x-lg"></i></button>
   </div>
-  {% endif %}
+  <ul class="mobile-nav-links">
+    <li><a href="#home">{% trans "Home" %}</a></li>
+    <li><a href="#about">{% trans "About" %}</a></li>
+    <li><a href="#services">{% trans "Services" %}</a></li>
+    <li><a href="#faq">{% trans "FAQs" %}</a></li>
+    <li><a href="#contact">{% trans "Contact" %}</a></li>
+    <li><a href="{% url 'privacy_policy' %}">{% trans "Privacy Policy" %}</a></li>
+    <li><a href="{% url 'register' %}">{% trans "Register" %}</a></li>
+    <li><a href="{% url 'login' %}">{% trans "Login" %}</a></li>
+  </ul>
+</div>
 
+<!-- ── HEADER ── -->
+<header id="header" class="sticky-top">
+  <div class="header-inner">
 
-  <main class="main">
+    <a href="{% url 'index' %}" class="logo-link">
+      <img src="{% static 'img/favicon.ico' %}" alt="TrustBank">
+      <span>TrustBank.Plc</span>
+    </a>
 
-    <!-- Hero Section -->
-    <section id="home" class="hero section">
+    <ul class="nav-links">
+      <li><a href="#home">{% trans "Home" %}</a></li>
+      <li><a href="#about">{% trans "About" %}</a></li>
+      <li><a href="#services">{% trans "Services" %}</a></li>
+      <li><a href="#faq">{% trans "FAQs" %}</a></li>
+      <li class="nav-dropdown">
+        <a href="{% url 'login' %}">{% trans "Internet Banking" %} <i class="bi bi-chevron-down" style="font-size:.7rem;"></i></a>
+        <div class="nav-dropdown-menu">
+          <a href="{% url 'login' %}">{% trans "Personal Banking" %}</a>
+          <a href="{% url 'login' %}">{% trans "Corporate Banking" %}</a>
+          <a href="{% url 'login' %}">{% trans "Business Banking" %}</a>
+          <a href="{% url 'login' %}">{% trans "Credit Card" %}</a>
+          <a href="{% url 'login' %}">{% trans "Wealth Management" %}</a>
+          <a href="{% url 'register' %}">{% trans "Register" %}</a>
+          <a href="{% url 'login' %}">{% trans "Login" %}</a>
+        </div>
+      </li>
+      <li><a href="#contact">{% trans "Contact" %}</a></li>
+      <li><a href="{% url 'privacy_policy' %}">{% trans "Privacy Policy" %}</a></li>
+    </ul>
 
-      <div class="container d-flex flex-column justify-content-center align-items-center text-center position-relative" data-aos="zoom-out">
-        <img src="assets/img/bank6.avif" class="img-fluid animated" alt="">
-        <h1>Welcome to <span>TrustBank.Plc</span></h1>
-        <p>Your trusted partner in secure, smart and convenient online banking. we're here to help you manage your finances with ease and confidence.</p>
-        <div class="d-flex justify-content-center gap-3">
-          <a href="{% url 'register' %}" class="btn-get-started scrollto">Open Account</a>
-          <a href="{% url 'login' %}" class="btn-get-started scrollto"><span>Login</span></a>
+    <div class="nav-actions">
+      {% get_current_language as LANGUAGE_CODE %}
+      {% get_available_languages as LANGUAGES %}
+      <form action="{% url 'set_language' %}" method="post" class="d-inline">
+        {% csrf_token %}
+        <input name="next" type="hidden" value="{{ request.get_full_path }}">
+        <select name="language" onchange="this.form.submit()" class="lang-select">
+          {% for lang_code, lang_name in LANGUAGES %}
+            <option value="{{ lang_code }}" {% if lang_code == LANGUAGE_CODE %}selected{% endif %}>{{ lang_name }}</option>
+          {% endfor %}
+        </select>
+      </form>
+      <a href="{% url 'login' %}" class="btn-nav-login">{% trans "Login" %}</a>
+      <button class="mobile-menu-btn" id="mobileMenuBtn"><i class="bi bi-list"></i></button>
+    </div>
+
+  </div>
+</header>
+
+{% if messages %}
+<div style="max-width:1280px;margin:12px auto;padding:0 24px;">
+  {% for message in messages %}
+  <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+    {{ message }}<button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+  </div>
+  {% endfor %}
+</div>
+{% endif %}
+
+<main>
+
+  <!-- ── HERO ── -->
+  <section id="home" class="hero">
+    <div class="hero-orb hero-orb-1"></div>
+    <div class="hero-orb hero-orb-2"></div>
+    <div class="hero-inner">
+      <div data-aos="fade-right">
+        <div class="hero-badge">
+          <i class="bi bi-shield-check-fill"></i> {% trans "Trusted & Secure Banking" %}
+        </div>
+        <h1>{% trans "Welcome to" %} <span>TrustBank.Plc</span></h1>
+        <p>{% trans "Your trusted partner in secure, smart and convenient online banking. We're here to help you manage your finances with ease and confidence." %}</p>
+        <div class="hero-btns">
+          <a href="{% url 'register' %}" class="btn-hero-primary">{% trans "Open Account" %}</a>
+          <a href="{% url 'login' %}" class="btn-hero-secondary">{% trans "Login" %} →</a>
+        </div>
+        <div class="hero-stats">
+          <div class="hero-stat"><div class="hero-stat-num">50K+</div><div class="hero-stat-label">{% trans "Customers" %}</div></div>
+          <div class="hero-stat" style="border-left:1px solid rgba(255,255,255,.2);padding-left:24px;"><div class="hero-stat-num">$2B+</div><div class="hero-stat-label">{% trans "Assets Managed" %}</div></div>
+          <div class="hero-stat" style="border-left:1px solid rgba(255,255,255,.2);padding-left:24px;"><div class="hero-stat-num">99.9%</div><div class="hero-stat-label">{% trans "Uptime" %}</div></div>
         </div>
       </div>
-
-    </section><!-- /Hero Section -->
-
-    <!-- Featured Services Section -->
-    <section id="featured-services" class="featured-services section">
-
-      <div class="container">
-
-        <div class="row gy-4">
-
-          <div class="col-xl-3 col-md-6 d-flex" data-aos="fade-up" data-aos-delay="100">
-            <div class="service-item position-relative">
-              <div class="icon"><i class="bi bi-activity icon"></i></div>
-              <h4><a href="{% url 'register' %}" class="stretched-link">Savings Account</a></h4>
-              <p>TrustBank.Plc Savings Account is specially Designed for residents and Non-residents to offer a seamless local and international banking solution</p>
-            </div>
-          </div><!-- End Service Item -->
-
-          <div class="col-xl-3 col-md-6 d-flex" data-aos="fade-up" data-aos-delay="200">
-            <div class="service-item position-relative">
-              <div class="icon"><i class="bi bi-bounding-box-circles icon"></i></div>
-              <h4><a href="{% url 'register' %}" class="stretched-link">Banking Solutions</a></h4>
-              <p>Access Your money and use it when and how you like. TrustBank.Plc removes the obstacles, so you can make your dreams real. </p>
-            </div>
-          </div><!-- End Service Item -->
-
-          <div class="col-xl-3 col-md-6 d-flex" data-aos="fade-up" data-aos-delay="300">
-            <div class="service-item position-relative">
-              <div class="icon"><i class="bi bi-calendar4-week icon"></i></div>
-              <h4><a href="{% url 'register' %}" class="stretched-link">Financial Solutions</a></h4>
-              <p>As your Business grows and opportunities arises We deliver the right finance Solutions rather than simply handing you an off-the-shelf package. </p>
-            </div>
-          </div><!-- End Service Item -->
-
-          <div class="col-xl-3 col-md-6 d-flex" data-aos="fade-up" data-aos-delay="400">
-            <div class="service-item position-relative">
-              <div class="icon"><i class="bi bi-broadcast icon"></i></div>
-              <h4><a href="{% url 'register' %}" class="stretched-link">Loan Solutions</a></h4>
-              <p>We offer variety of Loan solutions to your business Ideas with small or No collateral needed.</p>
-            </div>
-          </div><!-- End Service Item -->
-
+      <div class="hero-image" data-aos="fade-left">
+        <img src="{% static 'img/bank6.avif' %}" alt="TrustBank Online Banking">
+        <div class="hero-card hero-card-tl">
+          <span class="num">$12,450</span>
+          {% trans "Available Balance" %}
         </div>
-
-      </div>
-
-    </section><!-- /Featured Services Section -->
-
-    <!-- About Section -->
-    <section id="about" class="about section">
-
-      <!-- Section Title -->
-      <div class="container section-title" data-aos="fade-up">
-        <h2>About Us</h2>
-        <p>TrustBank.Plc has worked to make a difference in our customers Lives in ways  that matter most to them </p>
-      </div><!-- End Section Title -->
-
-      <div class="container" data-aos="fade-up">
-
-        <div class="row g-4 g-lg-5" data-aos="fade-up" data-aos-delay="200">
-
-          <div class="col-lg-5">
-            <div class="about-img">
-              <img src="assets/img/about-portrait.jpg" class="img-fluid" alt="">
-            </div>
-          </div>
-
-          <div class="col-lg-7">
-            <h3 class="pt-0 pt-lg-5">We solve your Financial problem</h3>
-
-            <!-- Tabs -->
-            <ul class="nav nav-pills mb-3">
-              <li><a class="nav-link active" data-bs-toggle="pill" href="#about-tab1">Our Mission</a></li>
-              <li><a class="nav-link" data-bs-toggle="pill" href="#about-tab2">Our Vission</a></li>
-              <li><a class="nav-link" data-bs-toggle="pill" href="#about-tab3">Our Core Values</a></li>
-            </ul><!-- End Tabs -->
-
-            <!-- Tab Content -->
-            <div class="tab-content">
-
-              <div class="tab-pane fade show active" id="about-tab1">
-
-                <p class="fst-italic">We provide you with budget tools to keep track of your spending and not exceed your set budget. we empower our users with loans of different levels awith super friendly interest rates.</p>
-
-                <div class="d-flex align-items-center mt-4">
-                  <i class="bi bi-check2"></i>
-                  <h4>Grow Your Wealth</h4>
-                </div>
-                <p>Take advantage of our wealth management scheme. We help.
-                <ul>
-                <li><i ></i> Track your spending.</li>
-                <li><i ></i> Offer Invest programs.</li>
-                <li><i ></i> Provide Financial Analysis.</li>
-                </ul>
-                </p>
-
-                <div class="d-flex align-items-center mt-4">
-                  <i class="bi bi-check2"></i>
-                  <h4>Great Cashback</h4>
-                </div>
-                <p>Get up to 5% cash back on your first funding. Enjoy up to 20% annual interest on your saving account. T&C Applies.</p>
-
-                <div class="d-flex align-items-center mt-4">
-                  <i class="bi bi-check2"></i>
-                  <h4>Invest your way</h4>
-                </div>
-                <p>We have tools, the people and the insights to help you create a personalized strategy to pursue your goals. All you will need is readily available.</p>
-
-                <div class="d-flex align-items-center mt-4">
-                  <i class="bi bi-check2"></i>
-                  <h4>The right features</h4>
-                </div>
-                <p>Including a $0 Liability Guarantee that helps cover you from unauthorized transactions.Get started with a TrustBank.Plc Checking Account</p>
-
-              </div><!-- End Tab 1 Content -->
-
-              <div class="tab-pane fade" id="about-tab2">
-
-                <p class="fst-italic">To empower our customers to succeed in every aspect of their financial lives. Our community driven culture and ongoing commitment to superior service, innovative connectivity and intuitive technology will expand our relationships for generations to come.</p>
-
-                <div class="d-flex align-items-center mt-4">
-                  <i class="bi bi-check2"></i>
-                  <h4>Money Savings</h4>
-                </div>
-                <p>We offer up to 0.40% APY and 0.60% APY with minimum balance of $0 and $1000 respectively.</p>
-
-                <div class="d-flex align-items-center mt-4">
-                  <i class="bi bi-check2"></i>
-                  <h4>Online Shoppings</h4>
-                </div>
-                <p>Shop at any merchant online or onsite mall with no payment barrier both locally and internationally.</p>
-
-                <div class="d-flex align-items-center mt-4">
-                  <i class="bi bi-check2"></i>
-                  <h4>Credit / Debit Cards</h4>
-                </div>
-                <p>We offer various Debit and Credit cards based on your request for seemless electronic transactions on POS, ATMs and web POS.</p>
-
-              </div><!-- End Tab 2 Content -->
-
-              <div class="tab-pane fade" id="about-tab3">
-
-                <div class="d-flex align-items-center mt-4">
-                  <i class="bi bi-check2"></i>
-                  <h4>Integrity and honesty</h4>
-                </div>
-                <p>we will always take the high road by practicing the utmost ethical standards, and by honoring our commitments. we are dedicated to the practice of choosing to be fortright and honest; this is who we are.</p>
-
-                <div class="d-flex align-items-center mt-4">
-                  <i class="bi bi-check2"></i>
-                  <h4>Relationship</h4>
-                </div>
-                <p>We seek to establish mutually beneficial, caring relationship based on trust and the desire for mutual success.</p>
-
-                <div class="d-flex align-items-center mt-4">
-                  <i class="bi bi-check2"></i>
-                  <h4>Loyalty</h4>
-                </div>
-                <p>with pride and dedication, we are committed to staying together through thick and thin. we are a family that cares for each other.</p>
-                <div class="d-flex align-items-center mt-4">
-                  <i class="bi bi-check2"></i>
-                  <h4>Respect</h4>
-                </div>
-                <p>We consistently seek to treat others as we want to be treated.</p>
-
-                <div class="d-flex align-items-center mt-4">
-                  <i class="bi bi-check2"></i>
-                  <h4>Hard work</h4>
-                </div>
-                <p>We are dedicated to go above and beyond with commitment to consistently provide the TrustBank.Plc difference.</p>
-
-              </div><!-- End Tab 3 Content -->
-
-            </div>
-
-          </div>
-
-        </div>
-
-      </div>
-
-    </section><!-- /About Section -->
-
-    <!-- Clients Section -->
-    <section id="clients" class="clients section">
-
-      <div class="container" data-aos="fade-up">
-
-        <div class="row gy-4">
-
-          <div class="col-xl-2 col-md-3 col-6 client-logo">
-            <img src="assets/img/clients/client-1.png" class="img-fluid" alt="">
-          </div><!-- End Client Item -->
-
-          <div class="col-xl-2 col-md-3 col-6 client-logo">
-            <img src="assets/img/clients/client-2.png" class="img-fluid" alt="">
-          </div><!-- End Client Item -->
-
-          <div class="col-xl-2 col-md-3 col-6 client-logo">
-            <img src="assets/img/clients/client-3.png" class="img-fluid" alt="">
-          </div><!-- End Client Item -->
-
-          <div class="col-xl-2 col-md-3 col-6 client-logo">
-            <img src="assets/img/clients/client-4.png" class="img-fluid" alt="">
-          </div><!-- End Client Item -->
-
-          <div class="col-xl-2 col-md-3 col-6 client-logo">
-            <img src="assets/img/clients/client-5.png" class="img-fluid" alt="">
-          </div><!-- End Client Item -->
-
-          <div class="col-xl-2 col-md-3 col-6 client-logo">
-            <img src="assets/img/clients/client-6.png" class="img-fluid" alt="">
-          </div><!-- End Client Item -->
-
-        </div>
-
-      </div>
-
-    </section><!-- /Clients Section -->
-
-    <!-- Call To Action Section -->
-    <section id="call-to-action" class="call-to-action section">
-
-      <div class="container" data-aos="zoom-out">
-
-        <div class="row g-5">
-
-          <div class="col-lg-8 col-md-6 content d-flex flex-column justify-content-center order-last order-md-first">
-            <h3>At <em>TrustBank.Plc</em> We value Customers satisfaction.</h3>
-            <p> Our Digital banking involves the digitization of all traditional banking products, processes and activities to serve customers through online channels!.</p>
-            <a class="cta-btn align-self-start" href="{% url 'register' %}">Open Account</a>
-          </div>
-
-          <div class="col-lg-4 col-md-6 order-first order-md-last d-flex align-items-center">
-            <div class="img">
-              <img src="assets/img/ph3.jpeg" alt="" class="img-fluid">
-            </div>
-          </div>
-
-        </div>
-
-      </div>
-
-    </section><!-- /Call To Action Section -->
-
-    <!-- Onfocus Section -->
-    <section id="onfocus" class="onfocus section dark-background">
-
-      <div class="container-fluid p-0" data-aos="fade-up">
-
-        <div class="row g-0">
-          <div class="col-lg-6 video-play position-relative">
-            <a href="https://youtu.be/X8FkegKcfjo?si=MAApS3NpzGNSscy2" class="glightbox pulsating-play-btn"></a>
-          </div>
-          <div class="col-lg-6">
-            <div class="content d-flex flex-column justify-content-center h-100">
-              <h3>Banking Solutions</h3>
-              <p class="fst-italic">
-                Access your Money and use it when and how you like. Starlink Bank removes the Obstacles, so you can make your dreams real.
-              </p>
-              <ul>
-                <li><i class="bi bi-check-circle"></i> Smooth and fast Registration process.</li>
-                <li><i class="bi bi-check-circle"></i>Savings Account for your Money.</li>
-                <li><i class="bi bi-check-circle"></i>Easy and fast withdrawal Process.</li>
-              </ul>
-              <a href="{% url 'register' %}" class="read-more align-self-start"><span>Create Account</span><i class="bi bi-arrow-right"></i></a>
-            </div>
-          </div>
-        </div>
-
-      </div>
-
-    </section><!-- /Onfocus Section -->
-
-
-    <!-- Services Section -->
-    <section id="services" class="services section">
-
-      <!-- Section Title -->
-      <div class="container section-title" data-aos="fade-up">
-        <h2>Our Services</h2>
-      </div><!-- End Section Title -->
-
-      <div class="container" data-aos="fade-up" data-aos-delay="100">
-
-        <div class="row gy-5">
-
-          <div class="col-xl-4 col-md-6" data-aos="zoom-in" data-aos-delay="200">
-            <div class="service-item">
-              <div class="img">
-                <img src="assets/img/business consulting.jpg" class="img-fluid" alt="">
-              </div>
-              <div class="details position-relative">
-                <div class="icon">
-                  <i class="bi bi-cash"></i>
-                </div>
-                <a href="{% url 'register' %}" class="stretched-link">
-                  <h3>Business Consulting</h3>
-                </a>
-                <p>We help our customers identify, address, and overcome obstacles to meeting their business goals.</p>
-              </div>
-            </div>
-          </div><!-- End Service Item -->
-
-          <div class="col-xl-4 col-md-6" data-aos="zoom-in" data-aos-delay="300">
-            <div class="service-item">
-              <div class="img">
-                <img src="assets/img/ph2.jpg" class="img-fluid" alt="">
-              </div>
-              <div class="details position-relative">
-                <div class="icon">
-                  <i class="bi bi-credit-card"></i>
-                </div>
-                <a href="{% url 'register' %}" class="stretched-link">
-                  <h3>Credit Card</h3>
-                </a>
-                <p>We offer free credit scores, purchase protection, fraud protection, and above all convenience while using your credit cards.</p>
-              </div>
-            </div>
-          </div><!-- End Service Item -->
-
-          <div class="col-xl-4 col-md-6" data-aos="zoom-in" data-aos-delay="400">
-            <div class="service-item">
-              <div class="img">
-                <img src="assets/img/ph4.jpeg" class="img-fluid" alt="">
-              </div>
-              <div class="details position-relative">
-                <div class="icon">
-                  <i class="bi bi-graph-up"></i>
-                </div>
-                <a href="{% url 'register' %}" class="stretched-link">
-                  <h3>Income Monitoring</h3>
-                </a>
-                <p>Helping you monitor your expenditures against income is our priority as we take the financial welfare of our customers seriously</p>
-              </div>
-            </div>
-          </div><!-- End Service Item -->
-
-          <div class="col-xl-4 col-md-6" data-aos="zoom-in" data-aos-delay="500">
-            <div class="service-item">
-              <div class="img">
-                <img src="assets/img/ph5.jpeg" class="img-fluid" alt="">
-              </div>
-              <div class="details position-relative">
-                <div class="icon">
-                  <i class="bi bi-bar-chart"></i>
-                </div>
-                <a href="{% url 'register' %}" class="stretched-link">
-                  <h3>Insurance Consulting</h3>
-                </a>
-                <p>Whether a business or an individual, we have a team of highly experienced professionals that will develop your insurance plans and assess the type of corporate insurance you need.</p>
-                <a href="service-details.html" class="stretched-link"></a>
-              </div>
-            </div>
-          </div><!-- End Service Item -->
-
-          <div class="col-xl-4 col-md-6" data-aos="zoom-in" data-aos-delay="600">
-            <div class="service-item">
-              <div class="img">
-                <img src="assets/img/ph6.jpeg" class="img-fluid" alt="">
-              </div>
-              <div class="details position-relative">
-                <div class="icon">
-                  <i class="bi bi-receipt"></i>
-                </div>
-                <a href="{% url 'register' %}" class="stretched-link">
-                  <h3>Financial Investment</h3>
-                </a>
-                <p>With our connections across the globe, we provide you with stuck and bond deals to maximize your revenue and navigate regulatory requirements.</p>
-                <a href="service-details.html" class="stretched-link"></a>
-              </div>
-            </div>
-          </div><!-- End Service Item -->
-
-          <div class="col-xl-4 col-md-6" data-aos="zoom-in" data-aos-delay="700">
-            <div class="service-item">
-              <div class="img">
-                <img src="assets/img/ph8.jpeg" class="img-fluid" alt="">
-              </div>
-              <div class="details position-relative">
-                <div class="icon">
-                  <i class="bi bi-bank"></i>
-                </div>
-                <a href="{% url 'register' %}" class="stretched-link">
-                  <h3>Financial Management</h3>
-                </a>
-                <p>We help our customers plan, organise and control their financial activities while boosting their financial health.</p>
-                <a href="service-details.html" class="stretched-link"></a>
-              </div>
-            </div>
-          </div><!-- End Service Item -->
-
-        </div>
-
-      </div>
-
-    </section><!-- /Services Section -->
-
-    <!-- Testimonials Section -->
-    <section id="testimonials" class="testimonials section dark-background">
-
-      <!-- Section Title -->
-      <div class="container section-title" data-aos="fade-up">
-        <h2>Testimonials</h2>
-        <p>Our good and effective work speaks for us.</p>
-      </div><!-- End Section Title -->
-
-      <img src="assets/img/testimonials-bg.jpg" class="testimonials-bg" alt="">
-
-      <div class="container" data-aos="fade-up" data-aos-delay="100">
-
-        <div class="swiper init-swiper">
-          <script type="application/json" class="swiper-config">
-            {
-              "loop": true,
-              "speed": 600,
-              "autoplay": {
-                "delay": 5000
-              },
-              "slidesPerView": "auto",
-              "pagination": {
-                "el": ".swiper-pagination",
-                "type": "bullets",
-                "clickable": true
-              }
-            }
-          </script>
-          <div class="swiper-wrapper">
-
-            <div class="swiper-slide">
-              <div class="testimonial-item">
-                <img src="assets/img/testimonials/testimonials-1.jpg" class="testimonial-img" alt="">
-                <h3>Jason M.</h3>
-                <h4>Software Engineer</h4>
-                <div class="stars">
-                  <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
-                </div>
-                <p>
-                  <i class="bi bi-quote quote-icon-left"></i>
-                  <span>Their online banking tools are fast, easy to use, and always reliable. I handle everything from my phone now—saves me so much time.</span>
-                  <i class="bi bi-quote quote-icon-right"></i>
-                </p>
-              </div>
-            </div><!-- End testimonial item -->
-
-            <div class="swiper-slide">
-              <div class="testimonial-item">
-                <img src="assets/img/testimonials/testimonials-2.jpg" class="testimonial-img" alt="">
-                <h3>Emily R.</h3>
-                <h4>Small Business Owner</h4>
-                <div class="stars">
-                  <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
-                </div>
-                <p>
-                  <i class="bi bi-quote quote-icon-left"></i>
-                  <span>The support I received when opening my business checking account was phenomenal. They really understand what entrepreneurs need!</span>
-                  <i class="bi bi-quote quote-icon-right"></i>
-                </p>
-              </div>
-            </div><!-- End testimonial item -->
-
-            <div class="swiper-slide">
-              <div class="testimonial-item">
-                <img src="assets/img/testimonials/testimonials-3.jpg" class="testimonial-img" alt="">
-                <h3>Ashley T.</h3>
-                <h4>College Student</h4>
-                <div class="stars">
-                  <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
-                </div>
-                <p>
-                  <i class="bi bi-quote quote-icon-left"></i>
-                  <span>As a student, budgeting was tough—until I opened my account here. Their budgeting tips and savings tools helped me stay on track.</span>
-                  <i class="bi bi-quote quote-icon-right"></i>
-                </p>
-              </div>
-            </div><!-- End testimonial item -->
-
-            <div class="swiper-slide">
-              <div class="testimonial-item">
-                <img src="assets/img/testimonials/testimonials-4.jpg" class="testimonial-img" alt="">
-                <h3>Michael B.</h3>
-                <h4>Investor</h4>
-                <div class="stars">
-                  <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
-                </div>
-                <p>
-                  <i class="bi bi-quote quote-icon-left"></i>
-                  <span>I’ve worked with other banks, but this one gives the best investment advice hands down. I’m confident in where my money’s going.</span>
-                  <i class="bi bi-quote quote-icon-right"></i>
-                </p>
-              </div>
-            </div><!-- End testimonial item -->
-
-            <div class="swiper-slide">
-              <div class="testimonial-item">
-                <img src="assets/img/testimonials/testimonials-5.jpg" class="testimonial-img" alt="">
-                <h3>Robert L.</h3>
-                <h4>Retired Veteran</h4>
-                <div class="stars">
-                  <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
-                </div>
-                <p>
-                  <i class="bi bi-quote quote-icon-left"></i>
-                  <span>Even in retirement, I feel completely supported. Their team is professional, patient, and always takes time to explain my options clearly.</span>
-                  <i class="bi bi-quote quote-icon-right"></i>
-                </p>
-              </div>
-            </div><!-- End testimonial item -->
-
-          </div>
-          <div class="swiper-pagination"></div>
-        </div>
-
-      </div>
-
-    </section><!-- /Testimonials Section -->
-
-    <!-- Faq Section -->
-    <section id="faq" class="faq section">
-
-      <div class="container-fluid">
-
-        <div class="row gy-4">
-
-          <div class="col-lg-7 d-flex flex-column justify-content-center order-2 order-lg-1">
-
-            <div class="content px-xl-5" data-aos="fade-up" data-aos-delay="100">
-              <h3><span>Frequently Asked </span><strong>Questions</strong></h3>
-              <p>
-                Have Questions? We’ve Got Answers!</p>
-                 <p> Explore our Frequently Asked Questions to find quick answers to common inquiries. Whether you're curious about our services, support, or processes, this section is here to help you get the information you need fast and hassle free.
-              </p>
-            </div>
-
-            <div class="faq-container px-xl-5" data-aos="fade-up" data-aos-delay="200">
-
-              <div class="faq-item faq-active">
-                <i class="faq-icon bi bi-question-circle"></i>
-                <h3>How do I open an account with TrustBank.Plc online?</h3>
-                <div class="faq-content">
-                  <p>You can open an account online by visiting our website and selecting the type of account you'd like to open (savings, checking, etc.). You’ll need to provide basic information, such as your name, address, and social security number. You’ll also need to submit identification documents like a driver’s license or passport. You can complete the process in a few simple steps and start banking right away!.</p>
-                </div>
-                <i class="faq-toggle bi bi-chevron-right"></i>
-              </div><!-- End Faq item-->
-
-              <div class="faq-item">
-                <i class="faq-icon bi bi-question-circle"></i>
-                <h3>How secure is Starlink Bank’s online banking platform?</h3>
-                <div class="faq-content">
-                  <p>Our online banking platform is built with the latest security features, including encryption and two-factor authentication (2FA). We also offer biometric login options for mobile banking. Your data is always protected by industry-leading measures, and our system is regularly updated to safeguard against any emerging security threats.</p>
-                </div>
-                <i class="faq-toggle bi bi-chevron-right"></i>
-              </div><!-- End Faq item-->
-
-              <div class="faq-item">
-                <i class="faq-icon bi bi-question-circle"></i>
-                <h3>Can I apply for a loan or credit card online with Starlink Bank?</h3>
-                <div class="faq-content">
-                  <p>Yes, you can apply for loans and credit cards directly through our online platform. Simply visit our "Loans" or "Credit Cards" section, fill out the application form, and submit any required documents. We will review your application and get back to you with a decision in a timely manner.</p>
-                </div>
-                <i class="faq-toggle bi bi-chevron-right"></i>
-              </div><!-- End Faq item-->
-
-              <div class="faq-item">
-                <i class="faq-icon bi bi-question-circle"></i>
-                <h3>How can I transfer money between my accounts or to another bank online?</h3>
-                <div class="faq-content">
-                  <p>Transferring money is easy through our online banking platform. You can transfer funds between your own accounts with a few clicks. To send money to another bank, use our External Transfers feature. All transfers are secure and typically processed within 1–3 business days, depending on the transaction.</p>
-                </div>
-                <i class="faq-toggle bi bi-chevron-right"></i>
-              </div><!-- End Faq item-->
-
-            </div>
-
-          </div>
-
-          <div class="col-lg-5 order-1 order-lg-2">
-            <img src="assets/img/faq.jpg" class="img-fluid" alt="" data-aos="zoom-in" data-aos-delay="100">
-          </div>
-        </div>
-
-      </div>
-
-    </section><!-- /Faq Section -->
-
-    <!-- Recent Posts Section -->
-    <section id="recent-posts" class="recent-posts section">
-
-      <!-- Section Title -->
-      <div class="container section-title" data-aos="fade-up">
-        <h2>our news & insights</h2>
-        <p>Stay informed with our latest news and insights.</p>
-      </div><!-- End Section Title -->
-
-      <div class="container">
-
-        <div class="row gy-4">
-
-          <div class="col-xl-4 col-md-6" data-aos="fade-up" data-aos-delay="100">
-            <article>
-
-              <div class="post-img">
-                <img src="assets/img/blog/blog-1.jpg" alt="" class="img-fluid">
-              </div>
-
-              <p class="post-category">News</p>
-
-              <h2 class="title">
-                <a href="blog-details.html">The Lazy Customer’s Way Banking Services</a>
-              </h2>
-
-              <div class="d-flex align-items-center">
-                <img src="assets/img/blog/blog-author.jpg" alt="" class="img-fluid post-author-img flex-shrink-0">
-                <div class="post-meta">
-                  <p class="post-author">Maria Doe</p>
-                  <p class="post-date">
-                    <time datetime="2022-01-01">April 1, 2025</time>
-                  </p>
-                </div>
-              </div>
-
-            </article>
-          </div><!-- End post list item -->
-
-          <div class="col-xl-4 col-md-6" data-aos="fade-up" data-aos-delay="200">
-            <article>
-
-              <div class="post-img">
-                <img src="assets/img/blog/blog-2.jpg" alt="" class="img-fluid">
-              </div>
-
-              <p class="post-category">Tips</p>
-
-              <h2 class="title">
-                <a href="blog-details.html">Never Worry About What to Do About Banking Again With These Tips</a>
-              </h2>
-
-              <div class="d-flex align-items-center">
-                <img src="assets/img/blog/blog-author-2.jpg" alt="" class="img-fluid post-author-img flex-shrink-0">
-                <div class="post-meta">
-                  <p class="post-author">Allisa Mayer</p>
-                  <p class="post-date">
-                    <time datetime="2022-01-01">Jun 5, 2025</time>
-                  </p>
-                </div>
-              </div>
-
-            </article>
-          </div><!-- End post list item -->
-
-          <div class="col-xl-4 col-md-6" data-aos="fade-up" data-aos-delay="300">
-            <article>
-
-              <div class="post-img">
-                <img src="assets/img/blog/blog-3.jpg" alt="" class="img-fluid">
-              </div>
-
-              <p class="post-category">Tips</p>
-
-              <h2 class="title">
-                <a href="blog-details.html">Non-US Citizens Account Opening Guide</a>
-              </h2>
-
-              <div class="d-flex align-items-center">
-                <img src="assets/img/blog/blog-author-3.jpg" alt="" class="img-fluid post-author-img flex-shrink-0">
-                <div class="post-meta">
-                  <p class="post-author">Mark Dower</p>
-                  <p class="post-date">
-                    <time datetime="2022-01-01">Jun 22, 2022</time>
-                  </p>
-                </div>
-              </div>
-
-            </article>
-          </div><!-- End post list item -->
-
-        </div><!-- End recent posts list -->
-
-      </div>
-
-    </section><!-- /Recent Posts Section -->
-
-    <!-- Contact Section -->
-    <section id="contact" class="contact section">
-
-      <!-- Section Title -->
-      <div class="container section-title" data-aos="fade-up">
-        <h2>Contact</h2>
-      </div><!-- End Section Title -->
-
-      <div class="mb-5">
-        <iframe style="width: 100%; height: 400px;" src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d12097.433213460943!2d-74.0062269!3d40.7101282!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0xb89d1fe6bc499443!2sDowntown+Conference+Center!5e0!3m2!1smk!2sbg!4v1539943755621" frameborder="0" allowfullscreen=""></iframe>
-      </div><!-- End Google Maps -->
-
-      <div class="container" data-aos="fade">
-
-        <div class="row gy-5 gx-lg-5">
-
-          <div class="col-lg-4">
-
-            <div class="info">
-              <h3>Get in touch</h3>
-              <p>We’re here to help you every step of the way. Whether you have a question about our services, need support, or simply want to talk to one of our team members — we’d love to hear from you.</p>
-
-              <div class="info-item d-flex">
-                <i class="bi bi-geo-alt flex-shrink-0"></i>
-                <div>
-                  <h4>Location:</h4>
-                  <p>A108 Adam Street, New York, NY 535022</p>
-                </div>
-              </div><!-- End Info Item -->
-
-              <div class="info-item d-flex">
-                <i class="bi bi-envelope flex-shrink-0"></i>
-                <div>
-                  <h4>Email:</h4>
-                  <p>info@trustbankplc.com</p>
-                </div>
-              </div><!-- End Info Item -->
-
-              <div class="info-item d-flex">
-                <i class="bi bi-phone flex-shrink-0"></i>
-                <div>
-                  <h4>Call:</h4>
-                  <p>+1 5589 55488 55</p>
-                </div>
-              </div><!-- End Info Item -->
-
-            </div>
-
-          </div>
-
-          <div class="col-lg-8">
-            <form action="forms/contact.php" method="post" role="form" class="php-email-form">
-              <div class="row">
-                <div class="col-md-6 form-group">
-                  <input type="text" name="name" class="form-control" id="name" placeholder="Your Name" required="">
-                </div>
-                <div class="col-md-6 form-group mt-3 mt-md-0">
-                  <input type="email" class="form-control" name="email" id="email" placeholder="Your Email" required="">
-                </div>
-              </div>
-              <div class="form-group mt-3">
-                <input type="text" class="form-control" name="subject" id="subject" placeholder="Subject" required="">
-              </div>
-              <div class="form-group mt-3">
-                <textarea class="form-control" name="message" placeholder="Message" required=""></textarea>
-              </div>
-              <div class="my-3">
-                <div class="loading">Loading</div>
-                <div class="error-message"></div>
-                <div class="sent-message">Your message has been sent. Thank you!</div>
-              </div>
-              <div class="text-center"><button type="submit">Send Message</button></div>
-            </form>
-          </div><!-- End Contact Form -->
-
-        </div>
-
-      </div>
-
-    </section><!-- /Contact Section -->
-
-  </main>
-
-  <footer id="footer" class="footer dark-background">
-
-    <div class="footer-top">
-      <div class="container">
-        <div class="row gy-4">
-          <div class="col-lg-4 col-md-6 footer-about">
-            <a href="{% url 'index' %}" class="logo d-flex align-items-center">
-              <span class="sitename">TrustBank.Plc Official Web site</span>
-            </a>
-            <div class="footer-contact pt-3">
-              <p>A108 Adam Street</p>
-              <p>New York, NY 535022</p>
-              <p class="mt-3"><strong>Phone:</strong> <span>+1 5589 55488 55</span></p>
-              <p><strong>Email:</strong> <span>info@trustbankplc.com</span></p>
-            </div>
-          </div>
-
-          <div class="col-lg-2 col-md-3 footer-links">
-            <h4>Useful Links</h4>
-            <ul>
-              <li><a href="#home">Home</a></li>
-              <li><a href="#about">About us</a></li>
-              <li><a href="#services">Services</a></li>
-              <li><a href="{% url 'register' %}">Open an Account</a></li>
-              <li><a href="#">Privacy policy</a></li>
-            </ul>
-          </div>
-
-          <div class="col-lg-2 col-md-3 footer-links">
-            <h4>Our Services</h4>
-            <ul>
-              <li><a href="#">Personal Banking</a></li>
-              <li><a href="#">Corperate Banking</a></li>
-              <li><a href="#">Business Banking</a></li>
-              <li><a href="#">Wealth Management</a></li>
-            </ul>
-          </div>
-
+        <div class="hero-card hero-card-br">
+          <div class="icon"><i class="bi bi-graph-up-arrow"></i></div>
+          <div>+8.2% {% trans "This Month" %}</div>
         </div>
       </div>
     </div>
+  </section>
 
-    <div class="copyright text-center">
-      <div class="container d-flex flex-column flex-lg-row justify-content-center justify-content-lg-between align-items-center">
-
-        <div class="d-flex flex-column align-items-center align-items-lg-start">
-          <div>
-            © Copyright <strong><span>TrustBank.Plc</span></strong>. All Rights Reserved
+  <!-- ── FEATURES STRIP ── -->
+  <section class="features-strip">
+    <div class="inner">
+      <div class="row g-0">
+        <div class="col-md-3 col-6">
+          <div class="feature-strip-item">
+            <div class="feature-strip-icon"><i class="bi bi-shield-lock"></i></div>
+            <div>
+              <div class="feature-strip-title">{% trans "Bank-grade Security" %}</div>
+              <div class="feature-strip-sub">256-bit SSL</div>
+            </div>
+          </div>
         </div>
-
-        <div class="social-links order-first order-lg-last mb-3 mb-lg-0">
-          <a href=""><i class="bi bi-twitter-x"></i></a>
-          <a href=""><i class="bi bi-facebook"></i></a>
-          <a href=""><i class="bi bi-instagram"></i></a>
-          <a href=""><i class="bi bi-linkedin"></i></a>
+        <div class="col-md-3 col-6">
+          <div class="feature-strip-item">
+            <div class="feature-strip-icon"><i class="bi bi-lightning-charge"></i></div>
+            <div>
+              <div class="feature-strip-title">{% trans "Instant Transfers" %}</div>
+              <div class="feature-strip-sub">24/7 Available</div>
+            </div>
+          </div>
         </div>
-
+        <div class="col-md-3 col-6">
+          <div class="feature-strip-item">
+            <div class="feature-strip-icon"><i class="bi bi-phone"></i></div>
+            <div>
+              <div class="feature-strip-title">{% trans "Mobile Banking" %}</div>
+              <div class="feature-strip-sub">iOS & Android</div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3 col-6">
+          <div class="feature-strip-item">
+            <div class="feature-strip-icon"><i class="bi bi-headset"></i></div>
+            <div>
+              <div class="feature-strip-title">{% trans "24/7 Support" %}</div>
+              <div class="feature-strip-sub">Always here</div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
+  </section>
+
+  <!-- ── ABOUT ── -->
+  <section id="about" class="section">
+    <div class="inner">
+      <div class="row g-5 align-items-center">
+        <div class="col-lg-5" data-aos="fade-right">
+          <div class="about-img-wrap">
+            <img src="{% static 'img/about-portrait.jpg' %}" alt="About TrustBank">
+            <div class="about-badge">
+              <div class="big">25+</div>
+              <div class="label">{% trans "Years of Experience" %}</div>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-7" data-aos="fade-left">
+          <div class="section-label">{% trans "About Us" %}</div>
+          <h2 class="section-title">{% trans "We solve your financial problems" %}</h2>
+          <p class="section-sub mb-4">{% trans "TrustBank.Plc has worked to make a difference in our customers' lives in ways that matter most to them." %}</p>
+
+          <ul class="nav tab-pill mb-4">
+            <li class="nav-item"><a class="nav-link active" data-bs-toggle="pill" href="#tab-mission">{% trans "Our Mission" %}</a></li>
+            <li class="nav-item"><a class="nav-link" data-bs-toggle="pill" href="#tab-vision">{% trans "Our Vision" %}</a></li>
+            <li class="nav-item"><a class="nav-link" data-bs-toggle="pill" href="#tab-values">{% trans "Our Core Values" %}</a></li>
+          </ul>
+
+          <div class="tab-content">
+            <div class="tab-pane fade show active" id="tab-mission">
+              <div class="check-item"><div class="check-icon"><i class="bi bi-check-lg"></i></div><div><div class="check-title">{% trans "Grow Your Wealth" %}</div><div class="check-desc">{% trans "Take advantage of our wealth management scheme. Track your spending, offer investment programs, and provide financial analysis." %}</div></div></div>
+              <div class="check-item"><div class="check-icon"><i class="bi bi-check-lg"></i></div><div><div class="check-title">{% trans "Great Cashback" %}</div><div class="check-desc">{% trans "Get up to 5% cash back on your first funding. Enjoy up to 20% annual interest on your savings account. T&C Applies." %}</div></div></div>
+              <div class="check-item"><div class="check-icon"><i class="bi bi-check-lg"></i></div><div><div class="check-title">{% trans "Invest your way" %}</div><div class="check-desc">{% trans "We have tools, the people and the insights to help you create a personalized strategy to pursue your goals." %}</div></div></div>
+            </div>
+            <div class="tab-pane fade" id="tab-vision">
+              <div class="check-item"><div class="check-icon"><i class="bi bi-check-lg"></i></div><div><div class="check-title">{% trans "Money Savings" %}</div><div class="check-desc">{% trans "We offer up to 0.40% APY and 0.60% APY with minimum balance of $0 and $1000 respectively." %}</div></div></div>
+              <div class="check-item"><div class="check-icon"><i class="bi bi-check-lg"></i></div><div><div class="check-title">{% trans "Online Shopping" %}</div><div class="check-desc">{% trans "Shop at any merchant online or in-store with no payment barrier both locally and internationally." %}</div></div></div>
+              <div class="check-item"><div class="check-icon"><i class="bi bi-check-lg"></i></div><div><div class="check-title">{% trans "Credit / Debit Cards" %}</div><div class="check-desc">{% trans "We offer various debit and credit cards based on your request for seamless electronic transactions on POS, ATMs and web POS." %}</div></div></div>
+            </div>
+            <div class="tab-pane fade" id="tab-values">
+              <div class="check-item"><div class="check-icon"><i class="bi bi-check-lg"></i></div><div><div class="check-title">{% trans "Integrity and Honesty" %}</div><div class="check-desc">{% trans "We will always take the high road by practicing the utmost ethical standards, and by honoring our commitments." %}</div></div></div>
+              <div class="check-item"><div class="check-icon"><i class="bi bi-check-lg"></i></div><div><div class="check-title">{% trans "Loyalty" %}</div><div class="check-desc">{% trans "With pride and dedication, we are committed to staying together through thick and thin. We are a family that cares for each other." %}</div></div></div>
+              <div class="check-item"><div class="check-icon"><i class="bi bi-check-lg"></i></div><div><div class="check-title">{% trans "Hard Work" %}</div><div class="check-desc">{% trans "We are dedicated to go above and beyond with commitment to consistently provide the TrustBank.Plc difference." %}</div></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
+  </section>
 
-  </footer>
+  <!-- ── STATS ── -->
+  <section class="stats-section section-sm">
+    <div class="inner">
+      <div class="row g-0 text-center">
+        <div class="col-6 col-md-3" data-aos="fade-up" data-aos-delay="100">
+          <div class="stat-box"><div class="num">50K+</div><div class="lbl">{% trans "Happy Customers" %}</div></div>
+        </div>
+        <div class="col-6 col-md-3" data-aos="fade-up" data-aos-delay="200">
+          <div class="stat-box"><div class="num">$2B+</div><div class="lbl">{% trans "Assets Managed" %}</div></div>
+        </div>
+        <div class="col-6 col-md-3" data-aos="fade-up" data-aos-delay="300">
+          <div class="stat-box"><div class="num">25+</div><div class="lbl">{% trans "Years Experience" %}</div></div>
+        </div>
+        <div class="col-6 col-md-3" data-aos="fade-up" data-aos-delay="400">
+          <div class="stat-box"><div class="num">180+</div><div class="lbl">{% trans "Countries Served" %}</div></div>
+        </div>
+      </div>
+    </div>
+  </section>
 
-  <!-- Scroll Top -->
-  <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+  <!-- ── SERVICES ── -->
+  <section id="services" class="section services-grid">
+    <div class="inner">
+      <div class="text-center mb-5" data-aos="fade-up">
+        <div class="section-label">{% trans "What We Offer" %}</div>
+        <h2 class="section-title">{% trans "Our Services" %}</h2>
+        <p class="section-sub mx-auto">{% trans "At TrustBank.Plc we value customer satisfaction." %}</p>
+      </div>
+      <div class="row g-4">
+        <div class="col-xl-4 col-md-6" data-aos="zoom-in" data-aos-delay="100">
+          <div class="service-card">
+            <div class="service-card-img"><img src="{% static 'img/business consulting.jpg' %}" alt="{% trans 'Business Consulting' %}"></div>
+            <div class="service-card-body">
+              <div class="service-card-icon"><i class="bi bi-cash"></i></div>
+              <div class="service-card-title">{% trans "Business Consulting" %}</div>
+              <p class="service-card-text">{% trans "We help our customers identify, address, and overcome obstacles to meeting their business goals." %}</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-xl-4 col-md-6" data-aos="zoom-in" data-aos-delay="150">
+          <div class="service-card">
+            <div class="service-card-img"><img src="{% static 'img/ph2.jpg' %}" alt="{% trans 'Credit Card' %}"></div>
+            <div class="service-card-body">
+              <div class="service-card-icon"><i class="bi bi-credit-card"></i></div>
+              <div class="service-card-title">{% trans "Credit Card" %}</div>
+              <p class="service-card-text">{% trans "We offer free credit scores, purchase protection, fraud protection, and above all convenience while using your credit cards." %}</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-xl-4 col-md-6" data-aos="zoom-in" data-aos-delay="200">
+          <div class="service-card">
+            <div class="service-card-img"><img src="{% static 'img/ph4.jpeg' %}" alt="{% trans 'Income Monitoring' %}"></div>
+            <div class="service-card-body">
+              <div class="service-card-icon"><i class="bi bi-graph-up"></i></div>
+              <div class="service-card-title">{% trans "Income Monitoring" %}</div>
+              <p class="service-card-text">{% trans "Helping you monitor your expenditures against income is our priority as we take the financial welfare of our customers seriously." %}</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-xl-4 col-md-6" data-aos="zoom-in" data-aos-delay="250">
+          <div class="service-card">
+            <div class="service-card-img"><img src="{% static 'img/ph5.jpeg' %}" alt="{% trans 'Insurance Consulting' %}"></div>
+            <div class="service-card-body">
+              <div class="service-card-icon"><i class="bi bi-bar-chart"></i></div>
+              <div class="service-card-title">{% trans "Insurance Consulting" %}</div>
+              <p class="service-card-text">{% trans "Whether a business or an individual, we have a team of highly experienced professionals that will develop your insurance plans." %}</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-xl-4 col-md-6" data-aos="zoom-in" data-aos-delay="300">
+          <div class="service-card">
+            <div class="service-card-img"><img src="{% static 'img/ph6.jpeg' %}" alt="{% trans 'Financial Investment' %}"></div>
+            <div class="service-card-body">
+              <div class="service-card-icon"><i class="bi bi-receipt"></i></div>
+              <div class="service-card-title">{% trans "Financial Investment" %}</div>
+              <p class="service-card-text">{% trans "With our connections across the globe, we provide you with stock and bond deals to maximize your revenue." %}</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-xl-4 col-md-6" data-aos="zoom-in" data-aos-delay="350">
+          <div class="service-card">
+            <div class="service-card-img"><img src="{% static 'img/ph8.jpeg' %}" alt="{% trans 'Financial Management' %}"></div>
+            <div class="service-card-body">
+              <div class="service-card-icon"><i class="bi bi-bank"></i></div>
+              <div class="service-card-title">{% trans "Financial Management" %}</div>
+              <p class="service-card-text">{% trans "We help our customers plan, organise and control their financial activities while boosting their financial health." %}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
 
-  <!-- Preloader -->
-  <div id="preloader"></div>
+  <!-- ── TESTIMONIALS ── -->
+  <section class="section">
+    <div class="inner">
+      <div class="text-center mb-5" data-aos="fade-up">
+        <div class="section-label">{% trans "Testimonials" %}</div>
+        <h2 class="section-title">{% trans "Our good and effective work speaks for us." %}</h2>
+      </div>
+      <div class="swiper init-swiper" data-aos="fade-up" data-aos-delay="100">
+        <script type="application/json" class="swiper-config">
+          {"loop": true, "speed": 600, "autoplay": {"delay": 5000}, "slidesPerView": 1, "spaceBetween": 20, "breakpoints": {"640": {"slidesPerView": 2}, "1024": {"slidesPerView": 3}}, "pagination": {"el": ".swiper-pagination", "clickable": true}}
+        </script>
+        <div class="swiper-wrapper">
+          <div class="swiper-slide">
+            <div class="testimonial-card">
+              <div class="testimonial-stars"><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i></div>
+              <p class="testimonial-text">"{% trans "Their online banking tools are fast, easy to use, and always reliable. I handle everything from my phone now — saves me so much time." %}"</p>
+              <div class="testimonial-author">
+                <img src="{% static 'img/testimonials/testimonials-1.jpg' %}" alt="Jason M.">
+                <div><div class="testimonial-author-name">Jason M.</div><div class="testimonial-author-role">{% trans "Software Engineer" %}</div></div>
+              </div>
+            </div>
+          </div>
+          <div class="swiper-slide">
+            <div class="testimonial-card">
+              <div class="testimonial-stars"><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i></div>
+              <p class="testimonial-text">"{% trans "The support I received when opening my business checking account was phenomenal. They really understand what entrepreneurs need!" %}"</p>
+              <div class="testimonial-author">
+                <img src="{% static 'img/testimonials/testimonials-2.jpg' %}" alt="Emily R.">
+                <div><div class="testimonial-author-name">Emily R.</div><div class="testimonial-author-role">{% trans "Small Business Owner" %}</div></div>
+              </div>
+            </div>
+          </div>
+          <div class="swiper-slide">
+            <div class="testimonial-card">
+              <div class="testimonial-stars"><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i></div>
+              <p class="testimonial-text">"{% trans "As a student, budgeting was tough — until I opened my account here. Their budgeting tips and savings tools helped me stay on track." %}"</p>
+              <div class="testimonial-author">
+                <img src="{% static 'img/testimonials/testimonials-3.jpg' %}" alt="Ashley T.">
+                <div><div class="testimonial-author-name">Ashley T.</div><div class="testimonial-author-role">{% trans "College Student" %}</div></div>
+              </div>
+            </div>
+          </div>
+          <div class="swiper-slide">
+            <div class="testimonial-card">
+              <div class="testimonial-stars"><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i></div>
+              <p class="testimonial-text">"{% trans "I've worked with other banks, but this one gives the best investment advice hands down. I'm confident in where my money's going." %}"</p>
+              <div class="testimonial-author">
+                <img src="{% static 'img/testimonials/testimonials-4.jpg' %}" alt="Michael B.">
+                <div><div class="testimonial-author-name">Michael B.</div><div class="testimonial-author-role">{% trans "Investor" %}</div></div>
+              </div>
+            </div>
+          </div>
+          <div class="swiper-slide">
+            <div class="testimonial-card">
+              <div class="testimonial-stars"><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i></div>
+              <p class="testimonial-text">"{% trans "Even in retirement, I feel completely supported. Their team is professional, patient, and always takes time to explain my options clearly." %}"</p>
+              <div class="testimonial-author">
+                <img src="{% static 'img/testimonials/testimonials-5.jpg' %}" alt="Robert L.">
+                <div><div class="testimonial-author-name">Robert L.</div><div class="testimonial-author-role">{% trans "Retired Veteran" %}</div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="swiper-pagination mt-4" style="position:relative;"></div>
+      </div>
+    </div>
+  </section>
 
-  <!-- Vendor JS Files -->
-  <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-  <script src="assets/vendor/php-email-form/validate.js"></script>
-  <script src="assets/vendor/aos/aos.js"></script>
-  <script src="assets/vendor/glightbox/js/glightbox.min.js"></script>
-  <script src="assets/vendor/swiper/swiper-bundle.min.js"></script>
-  <script src="assets/vendor/imagesloaded/imagesloaded.pkgd.min.js"></script>
-  <script src="assets/vendor/isotope-layout/isotope.pkgd.min.js"></script>
+  <!-- ── CTA BANNER ── -->
+  <section class="section-sm">
+    <div class="inner">
+      <div class="cta-banner" data-aos="zoom-in">
+        <div>
+          <h2>{% trans "At TrustBank.Plc we value customer satisfaction." %}</h2>
+          <p>{% trans "Our digital banking involves the digitization of all traditional banking products, processes and activities to serve customers through online channels." %}</p>
+        </div>
+        <a href="{% url 'register' %}" class="btn-cta-white">{% trans "Open Account" %} →</a>
+      </div>
+    </div>
+  </section>
 
-  <!-- Main JS File -->
-  <script src="assets/js/main.js"></script>
+  <!-- ── FAQ ── -->
+  <section id="faq" class="section" style="background:#f8faff;">
+    <div class="inner">
+      <div class="row g-5 align-items-start">
+        <div class="col-lg-5" data-aos="fade-right">
+          <div class="section-label">{% trans "FAQs" %}</div>
+          <h2 class="section-title">{% trans "Frequently Asked " %}<strong>{% trans "Questions" %}</strong></h2>
+          <p class="section-sub mb-4">{% trans "Have Questions? We've Got Answers!" %}</p>
+          <p class="section-sub">{% trans "Explore our Frequently Asked Questions to find quick answers to common inquiries." %}</p>
+          <img src="{% static 'img/faq.jpg' %}" alt="FAQ" class="img-fluid rounded-3 mt-4" style="box-shadow:0 8px 30px rgba(0,0,0,.1);">
+        </div>
+        <div class="col-lg-7" data-aos="fade-left">
+          <div class="faq-item">
+            <button class="faq-q open" onclick="toggleFaq(this)">
+              {% trans "How do I open an account with TrustBank.Plc online?" %}
+              <i class="bi bi-chevron-down faq-arrow"></i>
+            </button>
+            <div class="faq-a open">{% trans "You can open an account online by visiting our website and selecting the type of account you'd like to open. You'll need to provide basic information such as your name, address, and identification documents." %}</div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-q" onclick="toggleFaq(this)">
+              {% trans "How secure is TrustBank.Plc's online banking platform?" %}
+              <i class="bi bi-chevron-down faq-arrow"></i>
+            </button>
+            <div class="faq-a">{% trans "Our online banking platform is built with the latest security features, including encryption and two-factor authentication (2FA). Your data is always protected by industry-leading measures." %}</div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-q" onclick="toggleFaq(this)">
+              {% trans "Can I apply for a loan or credit card online?" %}
+              <i class="bi bi-chevron-down faq-arrow"></i>
+            </button>
+            <div class="faq-a">{% trans "Yes, you can apply for loans and credit cards directly through our online platform. Simply visit our Loans or Credit Cards section, fill out the application form, and submit any required documents." %}</div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-q" onclick="toggleFaq(this)">
+              {% trans "How can I transfer money between accounts online?" %}
+              <i class="bi bi-chevron-down faq-arrow"></i>
+            </button>
+            <div class="faq-a">{% trans "Transferring money is easy through our online banking platform. You can transfer funds between your own accounts with a few clicks. All transfers are secure and typically processed within 1–3 business days." %}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── CONTACT ── -->
+  <section id="contact" class="section">
+    <div class="inner">
+      <div class="text-center mb-5" data-aos="fade-up">
+        <div class="section-label">{% trans "Contact" %}</div>
+        <h2 class="section-title">{% trans "Get in touch" %}</h2>
+        <p class="section-sub mx-auto">{% trans "We're here to help you every step of the way. Whether you have a question about our services, need support, or simply want to talk to one of our team members — we'd love to hear from you." %}</p>
+      </div>
+
+      <div class="row g-5" data-aos="fade-up" data-aos-delay="100">
+        <div class="col-lg-4">
+          <div class="contact-info-item">
+            <div class="contact-info-icon"><i class="bi bi-geo-alt"></i></div>
+            <div><div class="contact-info-label">{% trans "Location:" %}</div><div class="contact-info-val">A108 Adam Street, New York, NY 535022</div></div>
+          </div>
+          <div class="contact-info-item">
+            <div class="contact-info-icon"><i class="bi bi-envelope"></i></div>
+            <div><div class="contact-info-label">{% trans "Email:" %}</div><div class="contact-info-val">info@trustbankplc.com</div></div>
+          </div>
+          <div class="contact-info-item">
+            <div class="contact-info-icon"><i class="bi bi-telephone"></i></div>
+            <div><div class="contact-info-label">{% trans "Call:" %}</div><div class="contact-info-val">+1 5589 55488 55</div></div>
+          </div>
+          <div class="rounded-3 overflow-hidden mt-3" style="height:220px;">
+            <iframe style="width:100%;height:100%;border:0;" loading="lazy"
+              src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d12097.433213460943!2d-74.0062269!3d40.7101282!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0xb89d1fe6bc499443!2sDowntown+Conference+Center!5e0!3m2!1smk!2sbg!4v1539943755621"
+              allowfullscreen></iframe>
+          </div>
+        </div>
+
+        <div class="col-lg-8">
+          <form action="forms/contact.php" method="post" class="contact-form">
+            <div class="row g-3">
+              <div class="col-md-6">
+                <input type="text" name="name" class="form-control" placeholder="{% trans "Your Name" %}" required>
+              </div>
+              <div class="col-md-6">
+                <input type="email" name="email" class="form-control" placeholder="{% trans "Your Email" %}" required>
+              </div>
+              <div class="col-12">
+                <input type="text" name="subject" class="form-control" placeholder="{% trans "Subject" %}" required>
+              </div>
+              <div class="col-12">
+                <textarea name="message" class="form-control" rows="6" placeholder="{% trans "Message" %}" required></textarea>
+              </div>
+              <div class="col-12">
+                <button type="submit" class="btn-submit">{% trans "Send Message" %}</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- ── FOOTER ── -->
+<footer class="footer">
+  <div class="inner">
+    <div class="row g-5">
+      <div class="col-lg-4 col-md-6">
+        <div class="footer-brand d-flex align-items-center gap-2 mb-3">
+          <img src="{% static 'img/favicon.ico' %}" alt="TrustBank">
+          <span>TrustBank.Plc</span>
+        </div>
+        <p class="footer-desc">{% trans "Your trusted partner in secure, smart and convenient online banking. We're here to help you manage your finances with ease and confidence." %}</p>
+        <div class="footer-contact-item mt-3"><i class="bi bi-telephone"></i> +1 5589 55488 55</div>
+        <div class="footer-contact-item"><i class="bi bi-envelope"></i> info@trustbankplc.com</div>
+        <div class="footer-contact-item"><i class="bi bi-geo-alt"></i> A108 Adam Street, New York, NY</div>
+      </div>
+      <div class="col-lg-2 col-md-3 col-6">
+        <div class="footer-heading">{% trans "Useful Links" %}</div>
+        <ul class="footer-links">
+          <li><a href="#home">{% trans "Home" %}</a></li>
+          <li><a href="#about">{% trans "About us" %}</a></li>
+          <li><a href="#services">{% trans "Services" %}</a></li>
+          <li><a href="{% url 'register' %}">{% trans "Open an Account" %}</a></li>
+          <li><a href="{% url 'privacy_policy' %}">{% trans "Privacy Policy" %}</a></li>
+        </ul>
+      </div>
+      <div class="col-lg-2 col-md-3 col-6">
+        <div class="footer-heading">{% trans "Our Services" %}</div>
+        <ul class="footer-links">
+          <li><a href="{% url 'login' %}">{% trans "Personal Banking" %}</a></li>
+          <li><a href="{% url 'login' %}">{% trans "Corporate Banking" %}</a></li>
+          <li><a href="{% url 'login' %}">{% trans "Business Banking" %}</a></li>
+          <li><a href="{% url 'login' %}">{% trans "Wealth Management" %}</a></li>
+          <li><a href="{% url 'login' %}">{% trans "Credit Card" %}</a></li>
+        </ul>
+      </div>
+      <div class="col-lg-4 col-md-6">
+        <div class="footer-heading">{% trans "Internet Banking" %}</div>
+        <p style="font-size:.875rem;line-height:1.7;margin-bottom:20px;">{% trans "Access your account anytime, anywhere. Secure, fast and always available." %}</p>
+        <div class="d-flex gap-2 flex-wrap">
+          <a href="{% url 'register' %}" class="btn-nav-login" style="font-size:.82rem;padding:9px 18px;">{% trans "Open Account" %}</a>
+          <a href="{% url 'login' %}" style="font-size:.82rem;padding:9px 18px;border-radius:9px;border:1px solid rgba(255,255,255,.2);color:rgba(255,255,255,.8);text-decoration:none;transition:background .15s;" onmouseover="this.style.background='rgba(255,255,255,.1)'" onmouseout="this.style.background='transparent'">{% trans "Login" %} →</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div class="footer-copyright">© 2025 <strong>TrustBank.Plc</strong>. {% trans "All Rights Reserved" %}</div>
+      <div class="footer-socials">
+        <a href="#" class="footer-social-link"><i class="bi bi-twitter-x"></i></a>
+        <a href="#" class="footer-social-link"><i class="bi bi-facebook"></i></a>
+        <a href="#" class="footer-social-link"><i class="bi bi-instagram"></i></a>
+        <a href="#" class="footer-social-link"><i class="bi bi-linkedin"></i></a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<a href="#" class="scroll-top" id="scrollTop"><i class="bi bi-arrow-up-short"></i></a>
+
+<script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+<script src="{% static 'vendor/aos/aos.js' %}"></script>
+<script src="{% static 'vendor/swiper/swiper-bundle.min.js' %}"></script>
+<script src="{% static 'js/main.js' %}"></script>
+
+<script>
+  // AOS
+  AOS.init({ duration: 700, once: true, offset: 60 });
+
+  // Header scroll shadow
+  const header = document.getElementById('header');
+  window.addEventListener('scroll', () => {
+    header.classList.toggle('scrolled', window.scrollY > 20);
+  });
+
+  // Mobile menu
+  const mobileNav = document.getElementById('mobileNav');
+  document.getElementById('mobileMenuBtn').addEventListener('click', () => mobileNav.classList.add('open'));
+  document.getElementById('mobileNavClose').addEventListener('click', () => mobileNav.classList.remove('open'));
+  mobileNav.querySelectorAll('a').forEach(a => a.addEventListener('click', () => mobileNav.classList.remove('open')));
+
+  // FAQ toggle
+  function toggleFaq(btn) {
+    const answer = btn.nextElementSibling;
+    const isOpen = btn.classList.contains('open');
+    document.querySelectorAll('.faq-q.open').forEach(q => { q.classList.remove('open'); q.nextElementSibling.classList.remove('open'); });
+    if (!isOpen) { btn.classList.add('open'); answer.classList.add('open'); }
+  }
+
+  // Scroll top
+  const scrollTopBtn = document.getElementById('scrollTop');
+  window.addEventListener('scroll', () => scrollTopBtn.classList.toggle('visible', window.scrollY > 300));
+  scrollTopBtn.addEventListener('click', e => { e.preventDefault(); window.scrollTo({ top: 0, behavior: 'smooth' }); });
+</script>
 
 </body>
-
 </html>

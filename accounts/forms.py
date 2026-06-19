@@ -80,6 +80,15 @@ class MessageForm(forms.ModelForm):
         }
 
 
+class ProfilePhotoForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = ['photo']
+        widgets = {
+            'photo': forms.FileInput(attrs={'accept': 'image/*', 'class': 'form-control'}),
+        }
+
+
 class TransactionPinForm(forms.Form):
     current_pin = forms.CharField(
         max_length=6,

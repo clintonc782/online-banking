@@ -1,215 +1,195 @@
 {% load static %}
-{% load widget_tweaks %}
 {% load i18n %}
-{% trans "Hello" %}
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="{{ LANGUAGE_CODE }}">
 <head>
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
-  <title>Privacy Policy - TrustBank.Plc</title>
-  <meta name="description" content="">
-  <meta name="keywords" content="">
-
-  <!-- Favicons -->
+  <title>{% trans "Privacy Policy" %} - TrustBank.Plc</title>
   <link rel="apple-touch-icon" sizes="180x180" href="{% static 'img/apple-touch-icon.png' %}">
-  <link rel="icon" type="image/png" sizes="32x32" href="{% static 'img/favicon-32x32.png' %}">
-  <link rel="icon" type="image/png" sizes="16x16" href="{% static 'img/favicon-16x16.png' %}">
-  <link rel="manifest" href="{% static 'img/site.webmanifest' %}">
   <link rel="icon" href="{% static 'img/favicon.ico' %}">
-
-  <!-- Fonts -->
-  <link href="https://fonts.googleapis.com" rel="preconnect">
-  <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Source+Sans+Pro:ital,wght@0,200;0,300;0,400;0,600;0,700;0,900;1,200;1,300;1,400;1,600;1,700;1,900&display=swap" rel="stylesheet">
-
-  <!-- Vendor CSS Files -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Poppins:wght@700;800&display=swap" rel="stylesheet">
   <link href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
   <link href="{% static 'vendor/bootstrap-icons/bootstrap-icons.css' %}" rel="stylesheet">
-  <link href="{% static 'vendor/aos/aos.css' %}" rel="stylesheet">
-  <link href="{% static 'vendor/glightbox/css/glightbox.min.css' %}" rel="stylesheet">
-  <link href="{% static 'vendor/swiper/swiper-bundle.min.css' %}" rel="stylesheet">
+  <style>
+    :root { --brand:#0d6efd; --brand-dark:#0a3d9c; --brand-light:#e8f0fe; --dark:#0f1c2e; --text:#374151; --muted:#6b7280; --border:#e5e7eb; }
+    * { box-sizing:border-box; }
+    body { font-family:'Inter',sans-serif; color:var(--text); background:#f8faff; margin:0; }
 
-  <!-- Main CSS File -->
-  <link href="{% static 'css/main.css' %}" rel="stylesheet">
+    #header { background:rgba(255,255,255,.97); backdrop-filter:blur(10px); border-bottom:1px solid var(--border); position:sticky; top:0; z-index:100; }
+    .header-inner { max-width:1280px; margin:0 auto; padding:0 24px; height:68px; display:flex; align-items:center; justify-content:space-between; gap:16px; }
+    .logo-link { display:flex; align-items:center; gap:9px; text-decoration:none; }
+    .logo-link img { width:32px; height:32px; border-radius:8px; }
+    .logo-link span { font-size:1.1rem; font-weight:800; color:var(--dark); }
+    .nav-actions { display:flex; align-items:center; gap:8px; }
+    .lang-select { font-size:.8rem; padding:6px 10px; border-radius:8px; border:1px solid var(--border); }
+    .btn-nav { font-size:.875rem; font-weight:600; padding:8px 20px; border-radius:9px; background:var(--brand); color:#fff; text-decoration:none; border:none; transition:background .15s; }
+    .btn-nav:hover { background:var(--brand-dark); color:#fff; }
+    .btn-nav-ghost { background:transparent; border:1px solid var(--border); color:var(--dark); }
+    .btn-nav-ghost:hover { background:var(--brand-light); border-color:var(--brand); color:var(--brand); }
+
+    .page-hero { background:linear-gradient(135deg,#0d6efd,#0a3d9c); padding:48px 24px; text-align:center; }
+    .page-hero h1 { font-family:'Poppins',sans-serif; font-size:clamp(1.6rem,3vw,2.4rem); font-weight:800; color:#fff; margin:0 0 8px; }
+    .page-hero p { color:rgba(255,255,255,.8); font-size:.95rem; margin:0; }
+    .breadcrumb-item a { color:rgba(255,255,255,.7); text-decoration:none; font-size:.85rem; }
+    .breadcrumb-item.active { color:rgba(255,255,255,.9); font-size:.85rem; }
+    .breadcrumb-item+.breadcrumb-item::before { color:rgba(255,255,255,.5); }
+
+    .policy-wrap { max-width:860px; margin:48px auto; padding:0 24px 60px; }
+    .policy-toc { background:#fff; border-radius:14px; border:1px solid var(--border); padding:24px 28px; margin-bottom:28px; }
+    .policy-toc h3 { font-size:.95rem; font-weight:700; color:var(--dark); margin-bottom:12px; }
+    .policy-toc ol { padding-left:20px; margin:0; }
+    .policy-toc ol li { margin-bottom:6px; }
+    .policy-toc ol li a { color:var(--brand); text-decoration:none; font-size:.875rem; }
+    .policy-toc ol li a:hover { text-decoration:underline; }
+
+    .policy-section { background:#fff; border-radius:14px; border:1px solid var(--border); padding:32px; margin-bottom:16px; }
+    .policy-section h2 { font-size:1.15rem; font-weight:700; color:var(--dark); margin-bottom:14px; display:flex; align-items:center; gap:10px; }
+    .policy-section h2 .sec-num { width:28px; height:28px; border-radius:8px; background:var(--brand-light); color:var(--brand); display:flex; align-items:center; justify-content:center; font-size:.75rem; font-weight:800; flex-shrink:0; }
+    .policy-section p { font-size:.9rem; line-height:1.8; color:var(--text); margin-bottom:10px; }
+    .policy-section p:last-child { margin-bottom:0; }
+    .policy-section ul { padding-left:20px; }
+    .policy-section ul li { font-size:.9rem; line-height:1.8; color:var(--text); margin-bottom:4px; }
+
+    .footer { background:var(--dark); padding:32px 0; }
+    .footer-copy { text-align:center; color:rgba(255,255,255,.5); font-size:.8rem; }
+    .footer-copy a { color:rgba(255,255,255,.7); text-decoration:none; margin:0 8px; }
+    .footer-copy a:hover { color:#fff; }
+  </style>
 </head>
+<body>
 
-<body class="blog-page">
-
-  <!-- Header -->
-  <header id="header" class="header d-flex align-items-center sticky-top">
-    <div class="container-fluid position-relative d-flex align-items-center justify-content-between">
-      <a href="{% url 'index' %}" class="logo d-flex align-items-center me-auto me-xl-0">
-        <h1 class="sitename">TrustBank.Plc</h1>
-        <span>.</span>
-      </a>
-      <nav id="navmenu" class="navmenu">
-        <ul>
-          <li><a href="{% url 'index' %}" class="active">Home</a></li>
-          <li><a href="{% url 'index' %}#about">About</a></li>
-          <li><a href="{% url 'index' %}#services">Services</a></li>
-          <li><a href="{% url 'index' %}#faq">FAQs</a></li>
-          <li class="dropdown">
-            <a href="{% url 'login' %}"><span>Internet Banking</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
-            <ul>
-              <li><a href="{% url 'login' %}">Personal Banking</a></li>
-              <li class="dropdown">
-                <a href="{% url 'login' %}"><span>Bank with Us</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
-                <ul>
-                  <li><a href="{% url 'register' %}">Register</a></li>
-                  <li><a href="{% url 'login' %}">Login</a></li>
-                </ul>
-              </li>
-              <li><a href="{% url 'login' %}">Corporate Banking</a></li>
-              <li><a href="{% url 'login' %}">Credit Card</a></li>
-              <li><a href="{% url 'login' %}">Business Banking</a></li>
-              <li><a href="{% url 'login' %}">Wealth Management</a></li>
-            </ul>
-          </li>
-          <li><a href="{% url 'index' %}#contact">Contact</a></li>
-          <li><a href="{% url 'privacy_policy' %}">Privacy Policy</a></li>
-        </ul>
-        <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
-      </nav>
-      <a class="btn-getstarted" href="{% url 'login' %}">Login</a>
+<header id="header">
+  <div class="header-inner">
+    <a href="{% url 'index' %}" class="logo-link">
+      <img src="{% static 'img/favicon.ico' %}" alt="TrustBank">
+      <span>TrustBank.Plc</span>
+    </a>
+    <div class="nav-actions">
+      {% get_current_language as LANGUAGE_CODE %}
+      {% get_available_languages as LANGUAGES %}
+      <form action="{% url 'set_language' %}" method="post" class="d-inline">
+        {% csrf_token %}
+        <input name="next" type="hidden" value="{{ request.get_full_path }}">
+        <select name="language" onchange="this.form.submit()" class="lang-select">
+          {% for lang_code, lang_name in LANGUAGES %}
+            <option value="{{ lang_code }}" {% if lang_code == LANGUAGE_CODE %}selected{% endif %}>{{ lang_name }}</option>
+          {% endfor %}
+        </select>
+      </form>
+      <a href="{% url 'register' %}" class="btn-nav btn-nav-ghost">{% trans "Register" %}</a>
+      <a href="{% url 'login' %}" class="btn-nav">{% trans "Login" %}</a>
     </div>
-  </header>
+  </div>
+</header>
 
-  <!-- Main Content -->
-  <main class="container py-5">
-    <div class="row justify-content-center">
-      <div class="col-lg-10">
-        <div class="card shadow-sm border-0">
-          <div class="card-body p-4">
-            <h2 class="mb-4 text-center">Privacy Policy for TrustBank.Plc</h2>
-            <p>At TrustBank.Plc, accessible from https://trustbankplc.finance, one of our main priorities is the privacy of our visitors. This Privacy Policy document contains types of information that is collected and recorded by TrustBank.Plc and how we use it.</p>
-            <p>If you have additional questions or require more information about our Privacy Policy, do not hesitate to contact us.</p>
-            <p>This Privacy Policy applies only to our online activities and is valid for visitors to our website in regard to the information that they shared and/or collect in TrustBank.Plc This policy is not applicable to any information collected offline or via channels other than this website.</p>
-            <h4 class="mt-4">Consent</h4>
-            <p>By using our website, you hereby consent to our Privacy Policy and agree to its terms.</p>
-            <h4 class="mt-4">Information we collect</h4>
-            <p>The personal information that you are asked to provide, and the reasons why you are asked to provide it, will be made clear to you at the point we ask you to provide your personal information.</p>
-            <p>If you contact us directly, we may receive additional information about you such as your name, email address, phone number, the contents of the message and/or attachments you may send us, and any other information you may choose to provide.</p>
-            <p>When you register for an Account, we may ask for your contact information, including items such as name, company name, address, email address, and telephone number.</p>
-            <h4 class="mt-4">How we use your information</h4>
-            <p>We use the information we collect in various ways, including to:</p>
-            <ul>
-              <li>Provide, operate, and maintain our website</li>
-              <li>Improve, personalize, and expand our website</li>
-              <li>Understand and analyze how you use our website</li>
-              <li>Develop new products, services, features, and functionality</li>
-              <li>Communicate with you, either directly or through one of our partners, including for customer service, to provide you with updates and other information relating to the website, and for marketing and promotional purposes</li>
-              <li>Send you emails</li>
-              <li>Find and prevent fraud</li>
-            </ul>
-            <h4 class="mt-4">Log Files</h4>
-            <p>TrustBank.Plc follows a standard procedure of using log files. These files log visitors when they visit websites. All hosting companies do this and a part of hosting services' analytics. The information collected by log files include internet protocol (IP) addresses, browser type, Internet Service Provider (ISP), date and time stamp, referring/exit pages, and possibly the number of clicks. These are not linked to any information that is personally identifiable. The purpose of the information is for analyzing trends, administering the site, tracking users' movement on the website, and gathering demographic information.</p>
-            <h4 class="mt-4">Cookies and Web Beacons</h4>
-            <p>Like any other website, TrustBank.Plc uses 'cookies'. These cookies are used to store information including visitors' preferences, and the pages on the website that the visitor accessed or visited. The information is used to optimize the users' experience by customizing our web page content based on visitors' browser type and/or other information.</p>
-            <p>For more general information on cookies, please read the Cookies article on Generate Privacy Policy website.</p>
-            <h4 class="mt-4">Advertising Partners Privacy Policies</h4>
-            <p>You may consult this list to find the Privacy Policy for each of the advertising partners of TrustBank.plc.</p>
-            <p>Third-party ad servers or ad networks uses technologies like cookies, JavaScript, or Web Beacons that are used in their respective advertisements and links that appear on TrustBank.Plc, which are sent directly to users' browser. They automatically receive your IP address when this occurs. These technologies are used to measure the effectiveness of their advertising campaigns and/or to personalize the advertising content that you see on websites that you visit.</p>
-            <p>Note that TrustBank.Plc has no access to or control over these cookies that are used by third-party advertisers.</p>
-            <h4 class="mt-4">Third Party Privacy Policies</h4>
-            <p>TrustBank.Plc's Privacy Policy does not apply to other advertisers or websites. Thus, we are advising you to consult the respective Privacy Policies of these third party ad servers for more detailed information. It may include their practices and instructions about how to opt-out of certain options.</p>
-            <p>You can choose to disable cookies through your individual browser options. To know more detailed information about cookie management with specific web browsers, it can be found at the browsers' respective websites.</p>
-            <h4 class="mt-4">CCPA Privacy Rights (Do Not Sell My Personal Information)</h4>
-            <p>Under the CCPA, among other rights, California consumers have the right to:</p>
-            <ul>
-              <li>Request that a business that collects a consumer's personal data disclose the categories and specific pieces of personal data that a business has collected about consumers.</li>
-              <li>Request that a business delete any personal data about the consumer that a business has collected.</li>
-              <li>Request that a business that sells a consumer's personal data, not sell the consumer's personal data.</li>
-            </ul>
-            <p>If you make a request, we have one month to respond to you. If you would like to exercise any of these rights, please contact us.</p>
-            <h4 class="mt-4">GDPR Data Protection Rights</h4>
-            <p>We would like to make sure you are fully aware of all of your data protection rights. Every user is entitled to the following:</p>
-            <ul>
-              <li>The right to access – You have the right to request copies of your personal data. We may charge you a small fee for this service.</li>
-              <li>The right to rectification – You have the right to request that we correct any information you believe is inaccurate. You also have the right to request that we complete the information you believe is incomplete.</li>
-              <li>The right to erasure – You have the right to request that we erase your personal data, under certain conditions.</li>
-              <li>The right to restrict processing – You have the right to request that we restrict the processing of your personal data, under certain conditions.</li>
-              <li>The right to object to processing – You have the right to object to our processing of your personal data, under certain conditions.</li>
-              <li>The right to data portability – You have the right to request that we transfer the data that we have collected to another organization, or directly to you, under certain conditions.</li>
-            </ul>
-            <p>If you make a request, we have one month to respond to you. If you would like to exercise any of these rights, please contact us.</p>
-            <h4 class="mt-4">Children's Information</h4>
-            <p>Another part of our priority is adding protection for children while using the internet. We encourage parents and guardians to observe, participate in, and/or monitor and guide their online activity.</p>
-            <p>TrustBank.Plc does not knowingly collect any Personal Identifiable Information from children under the age of 13. If you think that your child provided this kind of information on our website, we strongly encourage you to contact us immediately, and we will do our best efforts to promptly remove such information from our records.</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </main>
+<div class="page-hero">
+  <h1>{% trans "Privacy Policy" %}</h1>
+  <p>{% trans "Last updated: January 1, 2025" %}</p>
+  <nav aria-label="breadcrumb" class="mt-2">
+    <ol class="breadcrumb justify-content-center mb-0">
+      <li class="breadcrumb-item"><a href="{% url 'index' %}">{% trans "Home" %}</a></li>
+      <li class="breadcrumb-item active">{% trans "Privacy Policy" %}</li>
+    </ol>
+  </nav>
+</div>
 
-  <!-- Footer -->
-  <footer id="footer" class="footer dark-background">
-    <div class="footer-top">
-      <div class="container">
-        <div class="row gy-4">
-          <div class="col-lg-4 col-md-6 footer-about">
-            <a href="{% url 'index' %}" class="logo d-flex align-items-center">
-              <span class="sitename">TrustBank.Plc Official Website</span>
-            </a>
-            <div class="footer-contact pt-3">
-              <p>A108 Adam Street</p>
-              <p>New York, NY 535022</p>
-              <p class="mt-3"><strong>Phone:</strong> <span>+1 5589 55488 55</span></p>
-              <p><strong>Email:</strong> <span>info@trustbankplc.com</span></p>
-            </div>
-          </div>
-          <div class="col-lg-2 col-md-3 footer-links">
-            <h4>Useful Links</h4>
-            <ul>
-              <li><a href="{% url 'index' %}">Home</a></li>
-              <li><a href="{% url 'index' %}#about">About us</a></li>
-              <li><a href="{% url 'index' %}#services">Services</a></li>
-              <li><a href="{% url 'register' %}">Open an Account</a></li>
-              <li><a href="{% url 'privacy_policy' %}">Privacy policy</a></li>
-            </ul>
-          </div>
-          <div class="col-lg-2 col-md-3 footer-links">
-            <h4>Our Services</h4>
-            <ul>
-              <li><a href="{% url 'login' %}">Personal Banking</a></li>
-              <li><a href="{% url 'login' %}">Corporate Banking</a></li>
-              <li><a href="{% url 'login' %}">Business Banking</a></li>
-              <li><a href="{% url 'login' %}">Wealth Management</a></li>
-            </ul>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="copyright text-center">
-      <div class="container d-flex flex-column flex-lg-row justify-content-center justify-content-lg-between align-items-center">
-        <div class="d-flex flex-column align-items-center align-items-lg-start">
-          <div>© Copyright <strong><span>TrustBank.Plc</span></strong>. All Rights Reserved</div>
-        </div>
-        <div class="social-links order-first order-lg-last mb-3 mb-lg-0">
-          <a href="#"><i class="bi bi-twitter"></i></a>
-          <a href="#"><i class="bi bi-facebook"></i></a>
-          <a href="#"><i class="bi bi-instagram"></i></a>
-          <a href="#"><i class="bi bi-linkedin"></i></a>
-        </div>
-      </div>
-    </div>
-  </footer>
+<div class="policy-wrap">
 
-  <!-- Scroll Top -->
-  <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+  <div class="policy-toc">
+    <h3><i class="bi bi-list-ul me-2"></i>{% trans "Table of Contents" %}</h3>
+    <ol>
+      <li><a href="#consent">{% trans "Consent" %}</a></li>
+      <li><a href="#information">{% trans "Information We Collect" %}</a></li>
+      <li><a href="#usage">{% trans "How We Use Your Information" %}</a></li>
+      <li><a href="#logfiles">{% trans "Log Files" %}</a></li>
+      <li><a href="#cookies">{% trans "Cookies and Web Beacons" %}</a></li>
+      <li><a href="#thirdparty">{% trans "Third Party Privacy Policies" %}</a></li>
+      <li><a href="#gdpr">{% trans "GDPR Data Protection Rights" %}</a></li>
+      <li><a href="#children">{% trans "Children's Information" %}</a></li>
+    </ol>
+  </div>
 
-  <!-- Preloader -->
-  <div id="preloader"></div>
+  <div class="policy-section">
+    <h2><span class="sec-num">i</span> {% trans "Overview" %}</h2>
+    <p>{% trans "At TrustBank.Plc, one of our main priorities is the privacy of our visitors. This Privacy Policy document contains types of information that is collected and recorded by TrustBank.Plc and how we use it." %}</p>
+    <p>{% trans "If you have additional questions or require more information about our Privacy Policy, do not hesitate to contact us." %}</p>
+    <p>{% trans "This Privacy Policy applies only to our online activities and is valid for visitors to our website in regard to the information that they shared and/or collect in TrustBank.Plc. This policy is not applicable to any information collected offline or via channels other than this website." %}</p>
+  </div>
 
-  <!-- Vendor JS Files -->
-  <script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
-  <script src="{% static 'vendor/php-email-form/validate.js' %}"></script>
-  <script src="{% static 'vendor/aos/aos.js' %}"></script>
-  <script src="{% static 'vendor/glightbox/js/glightbox.min.js' %}"></script>
-  <script src="{% static 'vendor/swiper/swiper-bundle.min.js' %}"></script>
-  <script src="{% static 'vendor/imagesloaded/imagesloaded.pkgd.min.js' %}"></script>
-  <script src="{% static 'vendor/isotope-layout/isotope.pkgd.min.js' %}"></script>
-  <script src="{% static 'js/main.js' %}"></script>
+  <div class="policy-section" id="consent">
+    <h2><span class="sec-num">1</span> {% trans "Consent" %}</h2>
+    <p>{% trans "By using our website, you hereby consent to our Privacy Policy and agree to its terms." %}</p>
+  </div>
+
+  <div class="policy-section" id="information">
+    <h2><span class="sec-num">2</span> {% trans "Information We Collect" %}</h2>
+    <p>{% trans "The personal information that you are asked to provide, and the reasons why you are asked to provide it, will be made clear to you at the point we ask you to provide your personal information." %}</p>
+    <p>{% trans "If you contact us directly, we may receive additional information about you such as your name, email address, phone number, the contents of the message and/or attachments you may send us, and any other information you may choose to provide." %}</p>
+    <p>{% trans "When you register for an Account, we may ask for your contact information, including items such as name, company name, address, email address, and telephone number." %}</p>
+  </div>
+
+  <div class="policy-section" id="usage">
+    <h2><span class="sec-num">3</span> {% trans "How We Use Your Information" %}</h2>
+    <p>{% trans "We use the information we collect in various ways, including to:" %}</p>
+    <ul>
+      <li>{% trans "Provide, operate, and maintain our website" %}</li>
+      <li>{% trans "Improve, personalize, and expand our website" %}</li>
+      <li>{% trans "Understand and analyze how you use our website" %}</li>
+      <li>{% trans "Develop new products, services, features, and functionality" %}</li>
+      <li>{% trans "Communicate with you, either directly or through one of our partners, including for customer service, to provide you with updates and other information relating to the website, and for marketing and promotional purposes" %}</li>
+      <li>{% trans "Send you emails" %}</li>
+      <li>{% trans "Find and prevent fraud" %}</li>
+    </ul>
+  </div>
+
+  <div class="policy-section" id="logfiles">
+    <h2><span class="sec-num">4</span> {% trans "Log Files" %}</h2>
+    <p>{% trans "TrustBank.Plc follows a standard procedure of using log files. These files log visitors when they visit websites. The information collected by log files include internet protocol (IP) addresses, browser type, Internet Service Provider (ISP), date and time stamp, referring/exit pages, and possibly the number of clicks. These are not linked to any information that is personally identifiable." %}</p>
+  </div>
+
+  <div class="policy-section" id="cookies">
+    <h2><span class="sec-num">5</span> {% trans "Cookies and Web Beacons" %}</h2>
+    <p>{% trans "Like any other website, TrustBank.Plc uses 'cookies'. These cookies are used to store information including visitors' preferences, and the pages on the website that the visitor accessed or visited. The information is used to optimize the users' experience by customizing our web page content based on visitors' browser type and/or other information." %}</p>
+  </div>
+
+  <div class="policy-section" id="thirdparty">
+    <h2><span class="sec-num">6</span> {% trans "Third Party Privacy Policies" %}</h2>
+    <p>{% trans "TrustBank.Plc's Privacy Policy does not apply to other advertisers or websites. Thus, we are advising you to consult the respective Privacy Policies of these third party ad servers for more detailed information." %}</p>
+  </div>
+
+  <div class="policy-section" id="gdpr">
+    <h2><span class="sec-num">7</span> {% trans "GDPR Data Protection Rights" %}</h2>
+    <p>{% trans "We would like to make sure you are fully aware of all of your data protection rights. Every user is entitled to the following:" %}</p>
+    <ul>
+      <li>{% trans "The right to access – You have the right to request copies of your personal data." %}</li>
+      <li>{% trans "The right to rectification – You have the right to request that we correct any information you believe is inaccurate." %}</li>
+      <li>{% trans "The right to erasure – You have the right to request that we erase your personal data, under certain conditions." %}</li>
+      <li>{% trans "The right to restrict processing – You have the right to request that we restrict the processing of your personal data, under certain conditions." %}</li>
+      <li>{% trans "The right to object to processing – You have the right to object to our processing of your personal data, under certain conditions." %}</li>
+      <li>{% trans "The right to data portability – You have the right to request that we transfer the data that we have collected to another organization, or directly to you, under certain conditions." %}</li>
+    </ul>
+    <p>{% trans "If you make a request, we have one month to respond to you. If you would like to exercise any of these rights, please contact us." %}</p>
+  </div>
+
+  <div class="policy-section" id="children">
+    <h2><span class="sec-num">8</span> {% trans "Children's Information" %}</h2>
+    <p>{% trans "TrustBank.Plc does not knowingly collect any Personal Identifiable Information from children under the age of 13. If you think that your child provided this kind of information on our website, we strongly encourage you to contact us immediately." %}</p>
+  </div>
+
+</div>
+
+<footer class="footer">
+  <div class="footer-copy">
+    © 2025 <strong style="color:rgba(255,255,255,.8)">TrustBank.Plc</strong>. {% trans "All Rights Reserved" %}
+    <br class="d-block mt-1">
+    <a href="{% url 'index' %}">{% trans "Home" %}</a>
+    <a href="{% url 'register' %}">{% trans "Register" %}</a>
+    <a href="{% url 'login' %}">{% trans "Login" %}</a>
+    <a href="{% url 'index' %}#contact">{% trans "Contact" %}</a>
+  </div>
+</footer>
+
+<script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
 </body>
 </html>

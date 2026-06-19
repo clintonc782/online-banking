@@ -2,157 +2,150 @@
 {% load humanize %}
 {% load widget_tweaks %}
 {% load i18n %}
-{% trans "Hello" %}
-
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="{{ LANGUAGE_CODE }}">
 <head>
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
-  <title>Top Up - TrustBank.Plc</title>
-  <!-- Favicons -->
+  <title>{% trans "Top Up Balance" %} - TrustBank.Plc</title>
   <link rel="apple-touch-icon" sizes="180x180" href="{% static 'img/apple-touch-icon.png' %}">
-  <link rel="icon" type="image/png" sizes="32x32" href="{% static 'img/favicon-32x32.png' %}">
-  <link rel="icon" type="image/png" sizes="16x16" href="{% static 'img/favicon-16x16.png' %}">
-  <link rel="manifest" href="{% static 'img/site.webmanifest' %}">
   <link rel="icon" href="{% static 'img/favicon.ico' %}">
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
   <link href="{% static 'vendor/bootstrap-icons/bootstrap-icons.css' %}" rel="stylesheet">
-  <link href="{% static 'css/main.css' %}" rel="stylesheet">
   <style>
-    .card-custom {
-      border-radius: 12px;
-      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
-    }
-    .balance-card {
-      background: linear-gradient(135deg, #4e54c8, #8f94fb);
-      color: #fff;
-      text-align: center;
-      font-weight: 500;
-      font-size: 1.2rem;
-    }
-    .btn-success:hover {
-      background-color: #3c8dbc;
-      border-color: #3c8dbc;
-    }
-    @media (max-width: 576px) {
-      .balance-card {
-        font-size: 1rem;
-      }
-    }
+    :root { --brand:#0d6efd; --brand-dark:#0a3d9c; --brand-light:#e8f0fe; --dark:#0f1c2e; --border:#e5e7eb; --muted:#6b7280; }
+    * { box-sizing:border-box; }
+    body { font-family:'Inter',sans-serif; background:#f0f2f5; margin:0; min-height:100vh; display:flex; flex-direction:column; }
+
+    .app-topbar { background:#fff; border-bottom:1px solid var(--border); height:60px; display:flex; align-items:center; padding:0 24px; gap:12px; position:sticky; top:0; z-index:100; }
+    .app-topbar .logo { display:flex; align-items:center; gap:8px; text-decoration:none; }
+    .app-topbar .logo img { width:30px; height:30px; border-radius:7px; }
+    .app-topbar .logo span { font-size:1rem; font-weight:800; color:var(--dark); }
+    .spacer { flex:1; }
+    .back-link { font-size:.85rem; color:var(--muted); text-decoration:none; display:flex; align-items:center; gap:5px; padding:6px 12px; border-radius:8px; transition:background .15s; }
+    .back-link:hover { background:var(--brand-light); color:var(--brand); }
+    .lang-sel { font-size:.78rem; padding:5px 8px; border-radius:7px; border:1px solid var(--border); }
+    .btn-logout { font-size:.8rem; font-weight:600; padding:7px 16px; border-radius:8px; background:#fff; border:1px solid var(--border); color:var(--dark); text-decoration:none; transition:all .15s; }
+    .btn-logout:hover { background:var(--brand); border-color:var(--brand); color:#fff; }
+
+    .page-body { flex:1; padding:32px 16px 60px; }
+    .inner { max-width:600px; margin:0 auto; }
+
+    .balance-hero { background:linear-gradient(135deg,#7c3aed,#5b21b6); border-radius:16px; padding:24px 28px; margin-bottom:24px; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:12px; }
+    .balance-hero .lbl { font-size:.8rem; color:rgba(255,255,255,.7); margin-bottom:4px; }
+    .balance-hero .amt { font-size:2rem; font-weight:800; color:#fff; }
+    .balance-hero .icon { width:52px; height:52px; border-radius:12px; background:rgba(255,255,255,.15); display:flex; align-items:center; justify-content:center; font-size:1.4rem; color:#fff; }
+
+    .payment-card { background:#fff; border-radius:16px; padding:24px 28px; box-shadow:0 2px 16px rgba(0,0,0,.06); margin-bottom:20px; }
+    .payment-card-title { font-size:1rem; font-weight:700; color:var(--dark); margin-bottom:16px; display:flex; align-items:center; gap:8px; }
+    .payment-row { display:flex; align-items:center; gap:12px; padding:12px 0; border-bottom:1px solid var(--border); }
+    .payment-row:last-child { border-bottom:none; }
+    .payment-method-label { font-weight:600; font-size:.875rem; color:var(--dark); min-width:90px; }
+    .payment-method-val { flex:1; font-family:monospace; font-size:.875rem; color:var(--muted); word-break:break-all; }
+    .btn-copy { font-size:.78rem; font-weight:600; padding:6px 12px; border-radius:7px; border:1px solid var(--border); background:#fff; color:var(--dark); transition:all .15s; white-space:nowrap; cursor:pointer; }
+    .btn-copy:hover { background:var(--brand); color:#fff; border-color:var(--brand); }
+
+    .form-card { background:#fff; border-radius:16px; padding:28px; box-shadow:0 2px 16px rgba(0,0,0,.06); }
+    .form-card-title { font-size:1.1rem; font-weight:700; color:var(--dark); margin-bottom:20px; display:flex; align-items:center; gap:8px; }
+    .form-label { font-size:.85rem; font-weight:600; color:var(--dark); margin-bottom:5px; }
+    .form-control { border-radius:10px; border:1px solid var(--border); padding:11px 14px; font-size:.9rem; transition:border-color .15s,box-shadow .15s; }
+    .form-control:focus { border-color:#7c3aed; box-shadow:0 0 0 3px rgba(124,58,237,.12); outline:none; }
+    .btn-topup { width:100%; padding:13px; border-radius:10px; background:#7c3aed; color:#fff; border:none; font-size:.95rem; font-weight:700; transition:background .15s,transform .1s; }
+    .btn-topup:hover { background:#5b21b6; transform:translateY(-1px); }
   </style>
 </head>
+<body>
 
-<body class="dashboard-page">
+<header class="app-topbar">
+  <a href="{% url 'index' %}" class="logo">
+    <img src="{% static 'img/favicon.ico' %}" alt="TrustBank">
+    <span>TrustBank.Plc</span>
+  </a>
+  <div class="spacer"></div>
+  <a href="{% url 'dashboard' %}" class="back-link"><i class="bi bi-arrow-left"></i> {% trans "Dashboard" %}</a>
+  {% get_current_language as LANGUAGE_CODE %}
+  {% get_available_languages as LANGUAGES %}
+  <form action="{% url 'set_language' %}" method="post" class="d-inline">
+    {% csrf_token %}
+    <input name="next" type="hidden" value="{{ request.get_full_path }}">
+    <select name="language" onchange="this.form.submit()" class="lang-sel">
+      {% for lang_code, lang_name in LANGUAGES %}
+        <option value="{{ lang_code }}" {% if lang_code == LANGUAGE_CODE %}selected{% endif %}>{{ lang_name }}</option>
+      {% endfor %}
+    </select>
+  </form>
+  <a href="{% url 'logout' %}" class="btn-logout">{% trans "Logout" %}</a>
+</header>
 
-  <!-- Header -->
-  <header id="header" class="header d-flex align-items-center sticky-top">
-    <div class="container-fluid d-flex justify-content-between align-items-center flex-wrap">
-      <a href="{% url 'index' %}" class="logo d-flex align-items-center mb-2 mb-md-0">
-        <h1 class="sitename">TrustBank.Plc</h1><span>.</span>
-      </a>
-      <nav id="navmenu" class="navmenu mb-2 mb-md-0">
-        <ul class="d-flex flex-wrap gap-2 gap-md-3 list-unstyled mb-0">
-          <li><a href="{% url 'index' %}" class="active">Home</a></li>
-          <li><a href="{% url 'index' %}#about">About</a></li>
-          <li><a href="{% url 'index' %}#services">Services</a></li>
-          <li><a href="{% url 'index' %}#faq">FAQs</a></li>
-          <li><a href="{% url 'index' %}#contact">Contact</a></li>
-        </ul>
-        <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
-      </nav>
-      <a class="btn btn-outline-light" href="{% url 'logout' %}">Logout</a>
+<div class="page-body">
+  <div class="inner">
+
+    <div class="balance-hero">
+      <div>
+        <div class="lbl">{% trans "Current Balance" %}</div>
+        <div class="amt">{{ account.currency_symbol }}{{ account.balance|floatformat:2|intcomma }}</div>
+      </div>
+      <div class="icon"><i class="bi bi-plus-circle"></i></div>
     </div>
-  </header>
 
-  <!-- Main Content -->
-  <div class="container mt-5">
-    <h2 class="mb-4 text-center">Top Up Balance</h2>
+    {% if messages %}
+      {% for message in messages %}
+        <div class="alert alert-{{ message.tags }} alert-dismissible fade show mb-3" style="border-radius:10px;font-size:.875rem;">
+          {{ message }}<button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+      {% endfor %}
+    {% endif %}
 
-    <!-- Balance Card -->
-    <div class="card card-custom balance-card mb-4 p-3">
-      <div>Current Balance</div>
-      <div class="fs-3">${{ account.balance|floatformat:2|intcomma }}</div>
-    </div>
-
-    <!-- Payment Methods Card -->
     {% if payment %}
-    <div class="card card-custom mb-4 p-3">
-      <h5 class="mb-3">Payment Options</h5>
-      <div class="d-flex flex-column flex-sm-row flex-wrap justify-content-between mb-2 align-items-sm-center">
-        <p class="mb-1 mb-sm-0 fw-bold">PayPal:</p>
-        <span class="mb-1 mb-sm-0 text-muted" id="paypalText">{{ payment.paypal_email }}</span>
-        <button class="btn btn-outline-primary btn-sm mt-1 mt-sm-0 btn-copy" data-copy="#paypalText">Copy</button>
+    <div class="payment-card">
+      <div class="payment-card-title"><i class="bi bi-credit-card-2-front" style="color:var(--brand);"></i> {% trans "Payment Options" %}</div>
+      <div class="payment-row">
+        <div class="payment-method-label">PayPal</div>
+        <div class="payment-method-val" id="paypalText">{{ payment.paypal_email }}</div>
+        <button class="btn-copy" data-copy="#paypalText">{% trans "Copy" %}</button>
       </div>
-      <div class="d-flex flex-column flex-sm-row flex-wrap justify-content-between mb-2 align-items-sm-center">
-        <p class="mb-1 mb-sm-0 fw-bold">CashApp:</p>
-        <span class="mb-1 mb-sm-0 text-muted" id="cashappText">{{ payment.cashapp_tag }}</span>
-        <button class="btn btn-outline-success btn-sm mt-1 mt-sm-0 btn-copy" data-copy="#cashappText">Copy</button>
+      <div class="payment-row">
+        <div class="payment-method-label">CashApp</div>
+        <div class="payment-method-val" id="cashappText">{{ payment.cashapp_tag }}</div>
+        <button class="btn-copy" data-copy="#cashappText">{% trans "Copy" %}</button>
       </div>
-      <div class="d-flex flex-column flex-sm-row flex-wrap justify-content-between align-items-sm-center">
-        <p class="mb-1 mb-sm-0 fw-bold">Bitcoin (BTC):</p>
-        <span class="mb-1 mb-sm-0 text-muted" id="btcText">{{ payment.bitcoin_address }}</span>
-        <button class="btn btn-outline-warning btn-sm mt-1 mt-sm-0 btn-copy" data-copy="#btcText">Copy</button>
+      <div class="payment-row">
+        <div class="payment-method-label">{% trans "Bitcoin" %}</div>
+        <div class="payment-method-val" id="btcText">{{ payment.bitcoin_address }}</div>
+        <button class="btn-copy" data-copy="#btcText">{% trans "Copy" %}</button>
       </div>
     </div>
     {% endif %}
 
-    <!-- Top-Up Form Card -->
-    <div class="card card-custom p-4 mb-4">
+    <div class="form-card">
+      <div class="form-card-title"><i class="bi bi-plus-circle-fill" style="color:#7c3aed;"></i> {% trans "Top Up Balance" %}</div>
       <form method="POST">
         {% csrf_token %}
-        <div class="mb-3">
-          <label for="amount" class="form-label">Amount</label>
-          <input type="number" step="0.01" class="form-control" id="amount" name="amount"
-                 placeholder="Enter amount to top up" required>
+        <div class="mb-4">
+          <label class="form-label">{% trans "Amount" %}</label>
+          <input type="number" step="0.01" class="form-control" name="amount" placeholder="{% trans "Enter amount to top up" %}" required>
         </div>
-        <button type="submit" class="btn btn-success w-100">Top Up</button>
+        <button type="submit" class="btn-topup">{% trans "Confirm Top Up" %} →</button>
       </form>
     </div>
 
-    <!-- Messages -->
-    {% if messages %}
-      <div class="mt-3">
-        {% for message in messages %}
-          <div class="alert alert-{{ message.tags }}">{{ message }}</div>
-        {% endfor %}
-      </div>
-    {% endif %}
   </div>
+</div>
 
-  <!-- Footer -->
-  <footer id="footer" class="footer dark-background mt-5">
-    <div class="container text-center py-3">
-      © Copyright <strong>TrustBank.Plc</strong>. All Rights Reserved
-    </div>
-  </footer>
-
-  <script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
-  <script>
-    // Copy to clipboard
-    document.querySelectorAll(".btn-copy").forEach(btn=>{
-      btn.addEventListener("click", ()=> {
-        const selector = btn.getAttribute("data-copy");
-        const node = document.querySelector(selector);
-        if (!node) return;
-        const text = node.innerText.trim();
-        if (!text) { alert("Nothing to copy"); return; }
-        navigator.clipboard?.writeText(text).then(()=>{
-          const old = btn.innerHTML;
-          btn.innerHTML = 'Copied';
-          setTimeout(()=> btn.innerHTML = old, 1400);
-        }).catch(()=> alert("Copy failed — please copy manually."));
+<script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+<script>
+  document.querySelectorAll('.btn-copy').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const node = document.querySelector(btn.getAttribute('data-copy'));
+      if (!node) return;
+      navigator.clipboard?.writeText(node.innerText.trim()).then(() => {
+        const old = btn.textContent;
+        btn.textContent = '{% trans "Copied!" %}';
+        setTimeout(() => btn.textContent = old, 1400);
       });
     });
-
-    // Mobile nav toggle
-    const toggle = document.querySelector('.mobile-nav-toggle');
-    const menu = document.querySelector('#navmenu ul');
-    toggle.addEventListener('click', () => {
-      menu.classList.toggle('d-none');
-    });
-  </script>
+  });
+</script>
 </body>
 </html>

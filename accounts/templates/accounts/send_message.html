@@ -1,96 +1,138 @@
 {% load static %}
 {% load i18n %}
-{% trans "Hello" %}
 <!DOCTYPE html>
-<html lang="en">
+<html lang="{{ LANGUAGE_CODE }}">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Messages - TrustBank.Plc</title>
+  <title>{% trans "Messages" %} - TrustBank.Plc</title>
+  <link rel="icon" href="{% static 'img/favicon.ico' %}">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
   <link href="{% static 'vendor/bootstrap-icons/bootstrap-icons.css' %}" rel="stylesheet">
-  <link href="{% static 'css/main.css' %}" rel="stylesheet">
-  <!-- Favicons -->
-  <link rel="apple-touch-icon" sizes="180x180" href="{% static 'img/apple-touch-icon.png' %}">
-  <link rel="icon" type="image/png" sizes="32x32" href="{% static 'img/favicon-32x32.png' %}">
-  <link rel="icon" type="image/png" sizes="16x16" href="{% static 'img/favicon-16x16.png' %}">
-  <link rel="manifest" href="{% static 'img/site.webmanifest' %}">
-  <link rel="icon" href="{% static 'img/favicon.ico' %}">
   <style>
-    .chat-box {
-      max-height: 500px;
-      overflow-y: auto;
-      background: #f8f9fa;
-      padding: 15px;
-      border-radius: 10px;
-    }
-    .msg {
-      margin-bottom: 12px;
-      padding: 10px 15px;
-      border-radius: 10px;
-      max-width: 80%;
-    }
-    .msg.user {
-      background-color: #d1e7dd;
-      margin-left: auto;
-      text-align: right;
-    }
-    .msg.admin {
-      background-color: #fff3cd;
-      margin-right: auto;
-    }
+    :root { --brand:#0d6efd; --brand-dark:#0a3d9c; --brand-light:#e8f0fe; --dark:#0f1c2e; --border:#e5e7eb; --muted:#6b7280; }
+    * { box-sizing:border-box; }
+    body { font-family:'Inter',sans-serif; background:#f0f2f5; margin:0; min-height:100vh; display:flex; flex-direction:column; }
+
+    .app-topbar { background:#fff; border-bottom:1px solid var(--border); height:60px; display:flex; align-items:center; padding:0 24px; gap:12px; position:sticky; top:0; z-index:100; }
+    .logo { display:flex; align-items:center; gap:8px; text-decoration:none; }
+    .logo img { width:30px; height:30px; border-radius:7px; }
+    .logo span { font-size:1rem; font-weight:800; color:var(--dark); }
+    .spacer { flex:1; }
+    .back-link { font-size:.85rem; color:var(--muted); text-decoration:none; display:flex; align-items:center; gap:5px; padding:6px 12px; border-radius:8px; transition:background .15s; }
+    .back-link:hover { background:var(--brand-light); color:var(--brand); }
+    .btn-logout { font-size:.8rem; font-weight:600; padding:7px 16px; border-radius:8px; background:#fff; border:1px solid var(--border); color:var(--dark); text-decoration:none; transition:all .15s; }
+    .btn-logout:hover { background:var(--brand); border-color:var(--brand); color:#fff; }
+
+    .page-body { flex:1; padding:32px 16px 60px; }
+    .inner { max-width:720px; margin:0 auto; }
+
+    .chat-history { background:#fff; border-radius:14px; border:1px solid var(--border); overflow:hidden; margin-bottom:20px; }
+    .chat-history-header { background:linear-gradient(135deg,var(--brand),var(--brand-dark)); padding:14px 20px; display:flex; align-items:center; gap:10px; }
+    .chat-history-header .icon { width:32px; height:32px; border-radius:50%; background:rgba(255,255,255,.15); display:flex; align-items:center; justify-content:center; font-size:.9rem; color:#fff; }
+    .chat-history-header span { font-weight:600; color:#fff; font-size:.95rem; }
+    .chat-history-body { padding:16px 20px; max-height:320px; overflow-y:auto; }
+    .msg { margin-bottom:12px; display:flex; }
+    .msg.user { justify-content:flex-end; }
+    .msg.admin { justify-content:flex-start; }
+    .msg-bubble { max-width:70%; padding:9px 13px; border-radius:14px; font-size:.875rem; line-height:1.5; }
+    .msg.user .msg-bubble { background:var(--brand); color:#fff; border-bottom-right-radius:4px; }
+    .msg.admin .msg-bubble { background:#f1f5f9; color:#1f2937; border-bottom-left-radius:4px; }
+    .msg-meta { font-size:.65rem; opacity:.65; margin-top:3px; display:block; }
+    .empty-chat { text-align:center; padding:30px; color:var(--muted); font-size:.875rem; }
+    .empty-chat i { font-size:2rem; color:#d1d5db; display:block; margin-bottom:8px; }
+
+    .compose-card { background:#fff; border-radius:14px; border:1px solid var(--border); padding:24px; }
+    .compose-title { font-size:1rem; font-weight:700; color:var(--dark); margin-bottom:18px; display:flex; align-items:center; gap:8px; }
+    .form-label { font-size:.85rem; font-weight:600; color:var(--dark); margin-bottom:5px; }
+    .form-control { border-radius:10px; border:1px solid var(--border); padding:10px 14px; font-size:.9rem; transition:border-color .15s,box-shadow .15s; }
+    .form-control:focus { border-color:var(--brand); box-shadow:0 0 0 3px rgba(13,110,253,.12); outline:none; }
+    .btn-send { padding:11px 28px; border-radius:10px; background:var(--brand); color:#fff; border:none; font-size:.9rem; font-weight:700; transition:background .15s,transform .1s; }
+    .btn-send:hover { background:var(--brand-dark); transform:translateY(-1px); }
   </style>
 </head>
+<body>
 
-<body class="dashboard-page">
-<div class="container mt-5">
-  <h3 class="mb-4 text-center">Customer Support Chat</h3>
+<header class="app-topbar">
+  <a href="{% url 'index' %}" class="logo">
+    <img src="{% static 'img/favicon.ico' %}" alt="TrustBank">
+    <span>TrustBank.Plc</span>
+  </a>
+  <div class="spacer"></div>
+  <a href="{% url 'dashboard' %}" class="back-link"><i class="bi bi-arrow-left"></i> {% trans "Dashboard" %}</a>
+  <a href="{% url 'logout' %}" class="btn-logout">{% trans "Logout" %}</a>
+</header>
 
-  <div class="chat-box mb-4" id="chatBox">
-    {% for message in messages_list %}
-      <div class="msg {% if message.sender == 'User' %}user{% else %}admin{% endif %}">
-        <strong>{{ message.sender }}:</strong> {{ message.content }}
-        <div class="text-muted small">{{ message.created_at|date:"M d, h:i A" }}</div>
+<div class="page-body">
+  <div class="inner">
 
-        {% for reply in message.replies.all %}
-          <div class="msg {% if reply.sender == 'User' %}user{% else %}admin{% endif %} mt-2">
-            <strong>{{ reply.sender }}:</strong> {{ reply.content }}
-            <div class="text-muted small">{{ reply.created_at|date:"M d, h:i A" }}</div>
+    {% if messages_list %}
+    <div class="chat-history">
+      <div class="chat-history-header">
+        <div class="icon"><i class="bi bi-chat-dots"></i></div>
+        <span>{% trans "Message History" %}</span>
+      </div>
+      <div class="chat-history-body" id="chatBox">
+        {% for message in messages_list %}
+          <div class="msg {% if message.sender == 'User' %}user{% else %}admin{% endif %}">
+            <div class="msg-bubble">
+              {{ message.content }}
+              <span class="msg-meta">{{ message.sender }} · {{ message.created_at|date:"M d, h:i A" }}</span>
+              {% for reply in message.replies.all %}
+                <div style="margin-top:8px;padding-top:8px;border-top:1px solid rgba(0,0,0,.08);">
+                  <small style="font-weight:600;">{{ reply.sender }}:</small> {{ reply.content }}
+                  <span class="msg-meta" style="opacity:.5;">{{ reply.created_at|date:"M d, h:i A" }}</span>
+                </div>
+              {% endfor %}
+            </div>
           </div>
+        {% empty %}
+          <div class="empty-chat"><i class="bi bi-inbox"></i> {% trans "No messages yet." %}</div>
         {% endfor %}
       </div>
-    {% empty %}
-      <p class="text-center text-muted">No messages yet. Start a chat below!</p>
-    {% endfor %}
+    </div>
+    {% endif %}
+
+    {% if messages %}
+      {% for message in messages %}
+        <div class="alert alert-{{ message.tags }} alert-dismissible fade show mb-3" style="border-radius:10px;font-size:.875rem;">
+          {{ message }}<button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+      {% endfor %}
+    {% endif %}
+
+    <div class="compose-card">
+      <div class="compose-title"><i class="bi bi-pencil-square" style="color:var(--brand);"></i> {% trans "Send a Message to Support" %}</div>
+      <form method="POST">
+        {% csrf_token %}
+        {% if form.subject %}
+        <div class="mb-3">
+          <label class="form-label">{% trans "Subject" %}</label>
+          <input type="text" name="{{ form.subject.html_name }}" class="form-control" placeholder="{% trans "Message subject" %}">
+        </div>
+        {% endif %}
+        <div class="mb-3">
+          <label class="form-label">{% trans "Message" %}</label>
+          <textarea name="{{ form.content.html_name }}" class="form-control" rows="4" placeholder="{% trans "Type your message here..." %}" required></textarea>
+        </div>
+        <button type="submit" class="btn-send">{% trans "Send Message" %} <i class="bi bi-send-fill ms-1"></i></button>
+      </form>
+    </div>
+
   </div>
-
-  <form method="POST" class="mb-3">
-    {% csrf_token %}
-    {{ form.subject }}
-    {{ form.content }}
-    <button type="submit" class="btn btn-primary mt-2 w-100">Send Message</button>
-  </form>
-
-  {% if messages %}
-    {% for message in messages %}
-      <div class="alert alert-{{ message.tags }}">{{ message }}</div>
-    {% endfor %}
-  {% endif %}
 </div>
-
-<audio id="beepSound" src="{% static 'audio/beep.mp3' %}" preload="auto"></audio>
 
 <script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
 <script>
-setInterval(() => {
-  fetch("{% url 'check_new_messages' %}")
-    .then(response => response.json())
-    .then(data => {
-      if (data.new_message) {
-        document.getElementById('beepSound').play();
-      }
-    });
-}, 10000); // check every 10 seconds
+  const chatBox = document.getElementById('chatBox');
+  if (chatBox) chatBox.scrollTop = chatBox.scrollHeight;
+
+  setInterval(() => {
+    fetch("{% url 'check_new_messages' %}")
+      .then(r => r.json())
+      .then(d => { if (d.new_message) { /* optional: play sound or show badge */ } });
+  }, 10000);
 </script>
 </body>
 </html>

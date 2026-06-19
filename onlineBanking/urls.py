@@ -21,10 +21,12 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('i18n/', include('django.conf.urls.i18n')),
     path('', include('accounts.urls')),
 ]
 
-# Serve static files in development
+# Serve static and media files in development
 if settings.DEBUG and hasattr(settings, 'STATICFILES_DIRS'):
     for static_dir in settings.STATICFILES_DIRS:
         urlpatterns += static(settings.STATIC_URL, document_root=static_dir)
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

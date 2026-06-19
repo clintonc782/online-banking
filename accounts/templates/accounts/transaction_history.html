@@ -1,319 +1,157 @@
 {% load static humanize %}
 {% load i18n %}
-{% trans "Hello" %}
-
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="{{ LANGUAGE_CODE }}">
 <head>
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
-  <title>Transaction History - TrustBank.Plc</title>
-
-  <!-- Favicons -->
+  <title>{% trans "Transaction History" %} - TrustBank.Plc</title>
   <link rel="apple-touch-icon" sizes="180x180" href="{% static 'img/apple-touch-icon.png' %}">
-  <link rel="icon" type="image/png" sizes="32x32" href="{% static 'img/favicon-32x32.png' %}">
-  <link rel="icon" type="image/png" sizes="16x16" href="{% static 'img/favicon-16x16.png' %}">
-  <link rel="manifest" href="{% static 'img/site.webmanifest' %}">
   <link rel="icon" href="{% static 'img/favicon.ico' %}">
-
-  <!-- Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
-
-  <!-- Vendor CSS Files -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
   <link href="{% static 'vendor/bootstrap-icons/bootstrap-icons.css' %}" rel="stylesheet">
-
-  <!-- Main CSS File -->
-  <link href="{% static 'css/main.css' %}" rel="stylesheet">
-
   <style>
-    .transaction-container {
-      margin-top: 70px;
-      margin-bottom: 100px;
-    }
+    :root { --brand:#0d6efd; --brand-dark:#0a3d9c; --brand-light:#e8f0fe; --dark:#0f1c2e; --border:#e5e7eb; --muted:#6b7280; }
+    * { box-sizing:border-box; }
+    body { font-family:'Inter',sans-serif; background:#f0f2f5; margin:0; min-height:100vh; display:flex; flex-direction:column; }
 
-    /* Summary cards */
-    .summary-section {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 20px;
-      justify-content: center;
-      margin-bottom: 30px;
-    }
+    .app-topbar { background:#fff; border-bottom:1px solid var(--border); height:60px; display:flex; align-items:center; padding:0 24px; gap:12px; position:sticky; top:0; z-index:100; }
+    .app-topbar .logo { display:flex; align-items:center; gap:8px; text-decoration:none; }
+    .app-topbar .logo img { width:30px; height:30px; border-radius:7px; }
+    .app-topbar .logo span { font-size:1rem; font-weight:800; color:var(--dark); }
+    .spacer { flex:1; }
+    .back-link { font-size:.85rem; color:var(--muted); text-decoration:none; display:flex; align-items:center; gap:5px; padding:6px 12px; border-radius:8px; transition:background .15s; }
+    .back-link:hover { background:var(--brand-light); color:var(--brand); }
+    .lang-sel { font-size:.78rem; padding:5px 8px; border-radius:7px; border:1px solid var(--border); }
+    .btn-logout { font-size:.8rem; font-weight:600; padding:7px 16px; border-radius:8px; background:#fff; border:1px solid var(--border); color:var(--dark); text-decoration:none; transition:all .15s; }
+    .btn-logout:hover { background:var(--brand); border-color:var(--brand); color:#fff; }
 
-    .summary-card {
-      flex: 1 1 250px;
-      background: #fff;
-      border-radius: 15px;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-      padding: 20px;
-      text-align: center;
-      transition: all 0.3s ease;
-    }
+    .page-body { flex:1; padding:32px 16px 60px; }
+    .inner { max-width:860px; margin:0 auto; }
 
-    .summary-card:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 6px 25px rgba(0, 0, 0, 0.12);
-    }
+    .summary-row { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; margin-bottom:24px; }
+    .summary-card { background:#fff; border-radius:14px; padding:20px 22px; box-shadow:0 2px 12px rgba(0,0,0,.06); display:flex; align-items:center; gap:14px; }
+    .summary-card .s-icon { width:44px; height:44px; border-radius:10px; display:flex; align-items:center; justify-content:center; font-size:1.2rem; flex-shrink:0; }
+    .summary-card .s-label { font-size:.78rem; color:var(--muted); margin-bottom:2px; }
+    .summary-card .s-value { font-size:1.2rem; font-weight:800; }
+    .icon-credit { background:#dcfce7; color:#16a34a; }
+    .icon-debit { background:#fee2e2; color:#dc2626; }
+    .icon-balance { background:var(--brand-light); color:var(--brand); }
+    .val-credit { color:#16a34a; }
+    .val-debit { color:#dc2626; }
+    .val-balance { color:var(--brand-dark); }
 
-    .summary-icon {
-      font-size: 2rem;
-      margin-bottom: 10px;
-    }
+    .txn-card { background:#fff; border-radius:16px; padding:24px; box-shadow:0 2px 16px rgba(0,0,0,.06); }
+    .txn-card-header { font-size:1.1rem; font-weight:700; color:var(--dark); margin-bottom:20px; display:flex; align-items:center; gap:8px; }
+    .txn-card-header i { color:var(--brand); }
 
-    .summary-title {
-      font-size: 0.95rem;
-      color: #6c757d;
-      margin-bottom: 10px;
-    }
+    .txn-item { display:flex; align-items:center; gap:14px; padding:14px 0; border-bottom:1px solid var(--border); }
+    .txn-item:last-child { border-bottom:none; padding-bottom:0; }
+    .txn-type-icon { width:40px; height:40px; border-radius:10px; display:flex; align-items:center; justify-content:center; font-size:1rem; flex-shrink:0; }
+    .txn-credit-icon { background:#dcfce7; color:#16a34a; }
+    .txn-debit-icon { background:#fee2e2; color:#dc2626; }
+    .txn-desc { flex:1; min-width:0; }
+    .txn-type-badge { font-size:.7rem; font-weight:700; text-transform:uppercase; letter-spacing:.04em; margin-bottom:2px; }
+    .txn-type-credit { color:#16a34a; }
+    .txn-type-debit { color:#dc2626; }
+    .txn-description { font-size:.875rem; color:var(--dark); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    .txn-date { font-size:.75rem; color:var(--muted); margin-top:2px; }
+    .txn-amount { font-size:.95rem; font-weight:700; white-space:nowrap; }
 
-    .summary-value {
-      font-weight: 700;
-      font-size: 1.3rem;
-    }
-
-    .credit-value {
-      color: #198754;
-    }
-
-    .debit-value {
-      color: #dc3545;
-    }
-
-    .balance-value {
-      color: #012970;
-    }
-
-    /* Transaction list */
-    .transaction-card {
-      border-radius: 15px;
-      background: #fff;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-      padding: 25px;
-      transition: all 0.3s ease;
-    }
-
-    .transaction-card:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 6px 25px rgba(0, 0, 0, 0.12);
-    }
-
-    .transaction-header {
-      font-weight: 700;
-      font-size: 1.4rem;
-      margin-bottom: 25px;
-      color: #012970;
-      text-align: center;
-    }
-
-    .transaction-item {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      border-bottom: 1px solid #e9ecef;
-      padding: 15px 0;
-    }
-
-    .transaction-item:last-child {
-      border-bottom: none;
-    }
-
-    .transaction-type {
-      font-weight: 600;
-      font-size: 0.9rem;
-      text-transform: uppercase;
-    }
-
-    .transaction-type.credit {
-      color: #198754;
-    }
-
-    .transaction-type.debit {
-      color: #dc3545;
-    }
-
-    .transaction-desc {
-      flex: 1;
-      margin-left: 10px;
-      color: #333;
-      font-size: 0.95rem;
-    }
-
-    .transaction-date {
-      font-size: 0.85rem;
-      color: #6c757d;
-    }
-
-    .transaction-amount {
-      font-weight: 700;
-      font-size: 1rem;
-    }
-
-    @media (max-width: 768px) {
-      .transaction-item {
-        flex-direction: column;
-        align-items: flex-start;
-      }
-
-      .transaction-amount {
-        margin-top: 5px;
-      }
-
-      .transaction-date {
-        font-size: 0.8rem;
-      }
+    @media(max-width:600px) {
+      .summary-row { grid-template-columns:1fr; }
+      .txn-item { flex-wrap:wrap; }
+      .txn-amount { margin-left:auto; }
     }
   </style>
 </head>
+<body>
 
-<body class="dashboard-page">
+<header class="app-topbar">
+  <a href="{% url 'index' %}" class="logo">
+    <img src="{% static 'img/favicon.ico' %}" alt="TrustBank">
+    <span>TrustBank.Plc</span>
+  </a>
+  <div class="spacer"></div>
+  <a href="{% url 'dashboard' %}" class="back-link"><i class="bi bi-arrow-left"></i> {% trans "Dashboard" %}</a>
+  {% get_current_language as LANGUAGE_CODE %}
+  {% get_available_languages as LANGUAGES %}
+  <form action="{% url 'set_language' %}" method="post" class="d-inline">
+    {% csrf_token %}
+    <input name="next" type="hidden" value="{{ request.get_full_path }}">
+    <select name="language" onchange="this.form.submit()" class="lang-sel">
+      {% for lang_code, lang_name in LANGUAGES %}
+        <option value="{{ lang_code }}" {% if lang_code == LANGUAGE_CODE %}selected{% endif %}>{{ lang_name }}</option>
+      {% endfor %}
+    </select>
+  </form>
+  <a href="{% url 'logout' %}" class="btn-logout">{% trans "Logout" %}</a>
+</header>
 
-  <!-- Header -->
-  <header id="header" class="header d-flex align-items-center sticky-top">
-    <div class="container-fluid position-relative d-flex align-items-center justify-content-between">
-      <a href="{% url 'index' %}" class="logo d-flex align-items-center me-auto me-xl-0">
-        <h1 class="sitename">TrustBank.Plc</h1>
-        <span>.</span>
-      </a>
+<div class="page-body">
+  <div class="inner">
 
-      <nav id="navmenu" class="navmenu">
-        <ul>
-          <li><a href="{% url 'index' %}">Home</a></li>
-          <li><a href="{% url 'index' %}#about">About</a></li>
-          <li><a href="{% url 'index' %}#services">Services</a></li>
-          <li><a href="{% url 'index' %}#faq">FAQs</a></li>
-          <li><a href="{% url 'index' %}#contact">Contact</a></li>
-        </ul>
-        <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
-      </nav>
-
-      <a class="btn-getstarted" href="{% url 'logout' %}">Logout</a>
-    </div>
-  </header>
-
-  <!-- Transactions Section -->
-  <div class="container transaction-container">
-
-    <!-- Summary Section -->
-    <div class="summary-section">
+    <div class="summary-row">
       <div class="summary-card">
-        <div class="summary-icon text-success"><i class="bi bi-arrow-down-circle-fill"></i></div>
-        <div class="summary-title">Total Credit</div>
-        <div class="summary-value credit-value">
-          {{ account.currency_symbol }}{{ total_credit|floatformat:2|intcomma }}
+        <div class="s-icon icon-credit"><i class="bi bi-arrow-down-circle-fill"></i></div>
+        <div>
+          <div class="s-label">{% trans "Total Credit" %}</div>
+          <div class="s-value val-credit">{{ account.currency_symbol }}{{ total_credit|floatformat:2|intcomma }}</div>
         </div>
       </div>
-
       <div class="summary-card">
-        <div class="summary-icon text-danger"><i class="bi bi-arrow-up-circle-fill"></i></div>
-        <div class="summary-title">Total Debit</div>
-        <div class="summary-value debit-value">
-          {{ account.currency_symbol }}{{ total_debit|floatformat:2|intcomma }}
+        <div class="s-icon icon-debit"><i class="bi bi-arrow-up-circle-fill"></i></div>
+        <div>
+          <div class="s-label">{% trans "Total Debit" %}</div>
+          <div class="s-value val-debit">{{ account.currency_symbol }}{{ total_debit|floatformat:2|intcomma }}</div>
         </div>
       </div>
-
       <div class="summary-card">
-        <div class="summary-icon text-primary"><i class="bi bi-wallet2"></i></div>
-        <div class="summary-title">Current Balance</div>
-        <div class="summary-value balance-value">
-          {{ account.currency_symbol }}{{ account.balance|floatformat:2|intcomma }}
+        <div class="s-icon icon-balance"><i class="bi bi-wallet2"></i></div>
+        <div>
+          <div class="s-label">{% trans "Current Balance" %}</div>
+          <div class="s-value val-balance">{{ account.currency_symbol }}{{ account.balance|floatformat:2|intcomma }}</div>
         </div>
       </div>
     </div>
 
-    <!-- Transaction List -->
-    <div class="transaction-card">
-      <h2 class="transaction-header">Transaction History</h2>
+    <div class="txn-card">
+      <div class="txn-card-header"><i class="bi bi-clock-history"></i> {% trans "Transaction History" %}</div>
 
       {% if transactions %}
         {% for transaction in transactions %}
-          <div class="transaction-item">
-            <div>
-              <div class="transaction-type {{ transaction.type }}">
-                {% if transaction.type == "credit" %}
-                  <i class="bi bi-arrow-down-circle text-success"></i>
-                {% else %}
-                  <i class="bi bi-arrow-up-circle text-danger"></i>
-                {% endif %}
+          <div class="txn-item">
+            <div class="txn-type-icon {% if transaction.type == 'credit' %}txn-credit-icon{% else %}txn-debit-icon{% endif %}">
+              {% if transaction.type == 'credit' %}
+                <i class="bi bi-arrow-down"></i>
+              {% else %}
+                <i class="bi bi-arrow-up"></i>
+              {% endif %}
+            </div>
+            <div class="txn-desc">
+              <div class="txn-type-badge {% if transaction.type == 'credit' %}txn-type-credit{% else %}txn-type-debit{% endif %}">
                 {{ transaction.get_type_display }}
               </div>
-              <div class="transaction-desc">
-                {{ transaction.description }}
-              </div>
-              <div class="transaction-date">
-                {{ transaction.date|date:"M d, Y H:i" }}
-              </div>
+              <div class="txn-description">{{ transaction.description }}</div>
+              <div class="txn-date">{{ transaction.date|date:"M d, Y — H:i" }}</div>
             </div>
-            <div class="transaction-amount {% if transaction.type == 'credit' %}text-success{% else %}text-danger{% endif %}">
-              {{ account.currency_symbol }}{{ transaction.amount|floatformat:2|intcomma }}
+            <div class="txn-amount {% if transaction.type == 'credit' %}val-credit{% else %}val-debit{% endif %}">
+              {% if transaction.type == 'credit' %}+{% else %}−{% endif %}{{ account.currency_symbol }}{{ transaction.amount|floatformat:2|intcomma }}
             </div>
           </div>
         {% endfor %}
       {% else %}
-        <p class="text-center text-muted mt-4">No transactions found.</p>
+        <div class="text-center py-5">
+          <i class="bi bi-inbox" style="font-size:2.5rem;color:#d1d5db;"></i>
+          <p class="mt-3" style="color:var(--muted);font-size:.9rem;">{% trans "No transactions found." %}</p>
+        </div>
       {% endif %}
     </div>
+
   </div>
+</div>
 
-  <!-- Footer -->
-  <footer id="footer" class="footer dark-background mt-5">
-    <div class="footer-top">
-      <div class="container">
-        <div class="row gy-4">
-          <div class="col-lg-4 col-md-6 footer-about">
-            <a href="{% url 'index' %}" class="logo d-flex align-items-center">
-              <span class="sitename">TrustBank.Plc Official Website</span>
-            </a>
-            <div class="footer-contact pt-3">
-              <p>A108 Adam Street</p>
-              <p>New York, NY 535022</p>
-              <p class="mt-3"><strong>Phone:</strong> <span>+1 5589 55488 55</span></p>
-              <p><strong>Email:</strong> <span>info@trustbankplc.com</span></p>
-            </div>
-          </div>
-
-          <div class="col-lg-2 col-md-3 footer-links">
-            <h4>Useful Links</h4>
-            <ul>
-              <li><a href="{% url 'index' %}">Home</a></li>
-              <li><a href="{% url 'index' %}#about">About us</a></li>
-              <li><a href="{% url 'index' %}#services">Services</a></li>
-              <li><a href="{% url 'register' %}">Open an Account</a></li>
-              <li><a href="#">Privacy policy</a></li>
-            </ul>
-          </div>
-
-          <div class="col-lg-2 col-md-3 footer-links">
-            <h4>Our Services</h4>
-            <ul>
-              <li><a href="{% url 'login' %}">Personal Banking</a></li>
-              <li><a href="{% url 'login' %}">Corporate Banking</a></li>
-              <li><a href="{% url 'login' %}">Business Banking</a></li>
-              <li><a href="{% url 'login' %}">Wealth Management</a></li>
-            </ul>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="copyright text-center">
-      <div class="container d-flex flex-column flex-lg-row justify-content-center justify-content-lg-between align-items-center">
-        <div class="d-flex flex-column align-items-center align-items-lg-start">
-          <div>© Copyright <strong><span>TrustBank.Plc</span></strong>. All Rights Reserved</div>
-        </div>
-        <div class="social-links order-first order-lg-last mb-3 mb-lg-0">
-          <a href="#"><i class="bi bi-twitter"></i></a>
-          <a href="#"><i class="bi bi-facebook"></i></a>
-          <a href="#"><i class="bi bi-instagram"></i></a>
-          <a href="#"><i class="bi bi-linkedin"></i></a>
-        </div>
-      </div>
-    </div>
-  </footer>
-
-  <!-- Vendor JS Files -->
-  <script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+<script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
 </body>
-
 </html>

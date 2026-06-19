@@ -1,168 +1,121 @@
 {% load static %}
 {% load i18n %}
-{% trans "Hello" %}
-
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="{{ LANGUAGE_CODE }}">
 <head>
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
-  <title>Set Transaction PIN - TrustBank.Plc</title>
-  <meta name="description" content="Set your secure transaction PIN for transfers and deposits">
-  <meta name="keywords" content="banking, pin, security">
-
-  <!-- Favicons -->
-  <link rel="apple-touch-icon" sizes="180x180" href="{% static 'img/apple-touch-icon.png' %}">
-  <link rel="icon" type="image/png" sizes="32x32" href="{% static 'img/favicon-32x32.png' %}">
-  <link rel="icon" type="image/png" sizes="16x16" href="{% static 'img/favicon-16x16.png' %}">
-  <link rel="manifest" href="{% static 'img/site.webmanifest' %}">
+  <title>{% trans "Set Transaction PIN" %} - TrustBank.Plc</title>
   <link rel="icon" href="{% static 'img/favicon.ico' %}">
-
-  <!-- Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
-
-  <!-- Vendor CSS Files -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
   <link href="{% static 'vendor/bootstrap-icons/bootstrap-icons.css' %}" rel="stylesheet">
+  <style>
+    :root { --brand:#0d6efd; --brand-dark:#0a3d9c; --brand-light:#e8f0fe; --dark:#0f1c2e; --border:#e5e7eb; --muted:#6b7280; }
+    * { box-sizing:border-box; }
+    body { font-family:'Inter',sans-serif; background:#f0f2f5; margin:0; min-height:100vh; display:flex; flex-direction:column; }
 
-  <!-- Main CSS File -->
-  <link href="{% static 'css/main.css' %}" rel="stylesheet">
+    .app-topbar { background:#fff; border-bottom:1px solid var(--border); height:60px; display:flex; align-items:center; padding:0 24px; gap:12px; position:sticky; top:0; z-index:100; }
+    .app-topbar .logo { display:flex; align-items:center; gap:8px; text-decoration:none; }
+    .app-topbar .logo img { width:30px; height:30px; border-radius:7px; }
+    .app-topbar .logo span { font-size:1rem; font-weight:800; color:var(--dark); }
+    .spacer { flex:1; }
+    .back-link { font-size:.85rem; color:var(--muted); text-decoration:none; display:flex; align-items:center; gap:5px; padding:6px 12px; border-radius:8px; transition:background .15s; }
+    .back-link:hover { background:var(--brand-light); color:var(--brand); }
+    .lang-sel { font-size:.78rem; padding:5px 8px; border-radius:7px; border:1px solid var(--border); }
+    .btn-logout { font-size:.8rem; font-weight:600; padding:7px 16px; border-radius:8px; background:#fff; border:1px solid var(--border); color:var(--dark); text-decoration:none; transition:all .15s; }
+    .btn-logout:hover { background:var(--brand); border-color:var(--brand); color:#fff; }
+
+    .page-body { flex:1; display:flex; align-items:center; justify-content:center; padding:40px 16px; }
+    .pin-card { background:#fff; border-radius:20px; box-shadow:0 4px 30px rgba(0,0,0,.08); padding:40px 36px; width:100%; max-width:440px; }
+    .pin-card-icon { width:64px; height:64px; border-radius:16px; background:linear-gradient(135deg,var(--brand),var(--brand-dark)); display:flex; align-items:center; justify-content:center; font-size:1.6rem; color:#fff; margin:0 auto 20px; }
+    .pin-card h2 { font-size:1.4rem; font-weight:700; color:var(--dark); text-align:center; margin-bottom:6px; }
+    .pin-card .subtitle { font-size:.875rem; color:var(--muted); text-align:center; margin-bottom:24px; }
+    .info-box { background:var(--brand-light); border:1px solid #bfdbfe; border-radius:10px; padding:12px 16px; display:flex; align-items:center; gap:10px; margin-bottom:24px; font-size:.85rem; color:var(--brand-dark); }
+    .info-box i { font-size:1.1rem; flex-shrink:0; }
+
+    .form-label { font-size:.85rem; font-weight:600; color:var(--dark); margin-bottom:5px; }
+    .pin-input-group { display:flex; gap:8px; justify-content:center; margin-bottom:4px; }
+    .pin-digit { width:48px; height:54px; border-radius:10px; border:1px solid var(--border); text-align:center; font-size:1.3rem; font-weight:700; transition:border-color .15s,box-shadow .15s; }
+    .pin-digit:focus { border-color:var(--brand); box-shadow:0 0 0 3px rgba(13,110,253,.12); outline:none; }
+
+    .form-control { border-radius:10px; border:1px solid var(--border); padding:11px 14px; font-size:.9rem; transition:border-color .15s,box-shadow .15s; letter-spacing:.3em; text-align:center; font-size:1.2rem; }
+    .form-control:focus { border-color:var(--brand); box-shadow:0 0 0 3px rgba(13,110,253,.12); outline:none; }
+    .btn-save { width:100%; padding:13px; border-radius:10px; background:var(--brand); color:#fff; border:none; font-size:.95rem; font-weight:700; transition:background .15s,transform .1s; margin-top:4px; }
+    .btn-save:hover { background:var(--brand-dark); transform:translateY(-1px); }
+  </style>
 </head>
+<body>
 
-<body class="dashboard-page">
+<header class="app-topbar">
+  <a href="{% url 'index' %}" class="logo">
+    <img src="{% static 'img/favicon.ico' %}" alt="TrustBank">
+    <span>TrustBank.Plc</span>
+  </a>
+  <div class="spacer"></div>
+  <a href="{% url 'dashboard' %}" class="back-link"><i class="bi bi-arrow-left"></i> {% trans "Dashboard" %}</a>
+  {% get_current_language as LANGUAGE_CODE %}
+  {% get_available_languages as LANGUAGES %}
+  <form action="{% url 'set_language' %}" method="post" class="d-inline">
+    {% csrf_token %}
+    <input name="next" type="hidden" value="{{ request.get_full_path }}">
+    <select name="language" onchange="this.form.submit()" class="lang-sel">
+      {% for lang_code, lang_name in LANGUAGES %}
+        <option value="{{ lang_code }}" {% if lang_code == LANGUAGE_CODE %}selected{% endif %}>{{ lang_name }}</option>
+      {% endfor %}
+    </select>
+  </form>
+  <a href="{% url 'logout' %}" class="btn-logout">{% trans "Logout" %}</a>
+</header>
 
-  <!-- Header -->
-  <header id="header" class="header d-flex align-items-center sticky-top">
-    <div class="container-fluid position-relative d-flex align-items-center justify-content-between">
-      <a href="{% url 'index' %}" class="logo d-flex align-items-center me-auto me-xl-0">
-        <h1 class="sitename">TrustBank.Plc</h1><span>.</span>
-      </a>
+<div class="page-body">
+  <div class="pin-card">
+    <div class="pin-card-icon"><i class="bi bi-shield-lock-fill"></i></div>
+    <h2>{% trans "Set Transaction PIN" %}</h2>
+    <p class="subtitle">{% trans "Create a secure 6-digit PIN used for transfers and deposits." %}</p>
 
-      <nav id="navmenu" class="navmenu">
-        <ul>
-          <li><a href="{% url 'index' %}" class="active">Home</a></li>
-          <li><a href="{% url 'index' %}#about">About</a></li>
-          <li><a href="{% url 'index' %}#services">Services</a></li>
-          <li><a href="{% url 'index' %}#faq">FAQs</a></li>
-          <li><a href="{% url 'index' %}#contact">Contact</a></li>
-        </ul>
-        <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
-      </nav>
-
-      <a class="btn-getstarted" href="{% url 'logout' %}">Logout</a>
-    </div>
-  </header>
-
-  <!-- Main Content -->
-  <div class="container mt-5">
-    <h2 class="mb-4 text-center">Set Your Transaction PIN</h2>
-
-    <div class="alert alert-info text-center">
-      <i class="bi bi-shield-lock-fill"></i>
-      Create a 6-digit secure PIN used for transfers and deposits.
+    <div class="info-box">
+      <i class="bi bi-info-circle-fill"></i>
+      {% trans "Your PIN protects every transaction. Keep it private and do not share it with anyone." %}
     </div>
 
     {% if messages %}
-      <div class="mb-3">
-        {% for message in messages %}
-          <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
-            {{ message }}
-            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-          </div>
-        {% endfor %}
-      </div>
+      {% for message in messages %}
+        <div class="alert alert-{{ message.tags }} alert-dismissible fade show mb-3" style="border-radius:10px;font-size:.875rem;">
+          {{ message }}<button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+      {% endfor %}
     {% endif %}
 
-    <form method="POST" class="p-4 bg-light rounded shadow-sm">
+    <form method="POST" id="pinForm">
       {% csrf_token %}
-
       <div class="mb-3">
-        <label for="pin" class="form-label">Enter New PIN</label>
-        <input type="password" class="form-control" id="pin" name="pin" maxlength="6" minlength="6"
-               pattern="\d{6}" placeholder="Enter 6-digit PIN" required>
+        <label class="form-label">{% trans "Enter New PIN" %}</label>
+        <input type="password" class="form-control" id="pin" name="pin"
+               maxlength="6" minlength="6" pattern="\d{6}"
+               placeholder="• • • • • •" required>
       </div>
-
-      <div class="mb-3">
-        <label for="confirm_pin" class="form-label">Confirm PIN</label>
-        <input type="password" class="form-control" id="confirm_pin" name="confirm_pin" maxlength="6" minlength="6"
-               pattern="\d{6}" placeholder="Re-enter PIN" required>
+      <div class="mb-4">
+        <label class="form-label">{% trans "Confirm PIN" %}</label>
+        <input type="password" class="form-control" id="confirm_pin" name="confirm_pin"
+               maxlength="6" minlength="6" pattern="\d{6}"
+               placeholder="• • • • • •" required>
       </div>
-
-      <button type="submit" class="btn btn-success w-100 mt-2">Save PIN</button>
+      <button type="submit" class="btn-save">{% trans "Save PIN" %} →</button>
     </form>
   </div>
+</div>
 
-  <!-- Footer -->
-  <footer id="footer" class="footer dark-background mt-5">
-    <div class="footer-top">
-      <div class="container">
-        <div class="row gy-4">
-          <div class="col-lg-4 col-md-6 footer-about">
-            <a href="{% url 'index' %}" class="logo d-flex align-items-center">
-              <span class="sitename">TrustBank.Plc Official Website</span>
-            </a>
-            <div class="footer-contact pt-3">
-              <p>A108 Adam Street</p>
-              <p>New York, NY 535022</p>
-              <p class="mt-3"><strong>Phone:</strong> <span>+1 5589 55488 55</span></p>
-              <p><strong>Email:</strong> <span>info@trustbankplc.com</span></p>
-            </div>
-          </div>
-
-          <div class="col-lg-2 col-md-3 footer-links">
-            <h4>Useful Links</h4>
-            <ul>
-              <li><a href="{% url 'index' %}">Home</a></li>
-              <li><a href="{% url 'index' %}#about">About us</a></li>
-              <li><a href="{% url 'index' %}#services">Services</a></li>
-              <li><a href="{% url 'register' %}">Open an Account</a></li>
-              <li><a href="#">Privacy policy</a></li>
-            </ul>
-          </div>
-
-          <div class="col-lg-2 col-md-3 footer-links">
-            <h4>Our Services</h4>
-            <ul>
-              <li><a href="{% url 'login' %}">Personal Banking</a></li>
-              <li><a href="{% url 'login' %}">Corporate Banking</a></li>
-              <li><a href="{% url 'login' %}">Business Banking</a></li>
-              <li><a href="{% url 'login' %}">Wealth Management</a></li>
-            </ul>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="copyright text-center">
-      <div class="container d-flex flex-column flex-lg-row justify-content-center justify-content-lg-between align-items-center">
-        <div class="d-flex flex-column align-items-center align-items-lg-start">
-          <div>© Copyright <strong><span>TrustBank.Plc</span></strong>. All Rights Reserved</div>
-        </div>
-        <div class="social-links order-first order-lg-last mb-3 mb-lg-0">
-          <a href="#"><i class="bi bi-twitter"></i></a>
-          <a href="#"><i class="bi bi-facebook"></i></a>
-          <a href="#"><i class="bi bi-instagram"></i></a>
-          <a href="#"><i class="bi bi-linkedin"></i></a>
-        </div>
-      </div>
-    </div>
-  </footer>
-
-  <script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
-
-  <script>
-    // Basic client-side PIN match validation
-    const form = document.querySelector("form");
-    form.addEventListener("submit", (e) => {
-      const pin = document.getElementById("pin").value.trim();
-      const confirmPin = document.getElementById("confirm_pin").value.trim();
-      if (pin !== confirmPin) {
-        e.preventDefault();
-        alert("PINs do not match. Please re-enter.");
-      }
-    });
-  </script>
-
+<script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+<script>
+  document.getElementById('pinForm').addEventListener('submit', function(e) {
+    const pin = document.getElementById('pin').value.trim();
+    const confirm = document.getElementById('confirm_pin').value.trim();
+    if (pin !== confirm) {
+      e.preventDefault();
+      alert('{% trans "PINs do not match. Please re-enter." %}');
+    }
+  });
+</script>
 </body>
 </html>

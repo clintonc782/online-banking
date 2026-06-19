@@ -2,251 +2,167 @@
 {% load humanize %}
 {% load widget_tweaks %}
 {% load i18n %}
-{% trans "Hello" %}
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="{{ LANGUAGE_CODE }}">
 <head>
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
-  <title>Transfer Money - TrustBank.Plc</title>
-  <meta name="description" content="">
-  <meta name="keywords" content="">
-
-  <!-- Favicons -->
+  <title>{% trans "Transfer Money" %} - TrustBank.Plc</title>
   <link rel="apple-touch-icon" sizes="180x180" href="{% static 'img/apple-touch-icon.png' %}">
-  <link rel="icon" type="image/png" sizes="32x32" href="{% static 'img/favicon-32x32.png' %}">
-  <link rel="icon" type="image/png" sizes="16x16" href="{% static 'img/favicon-16x16.png' %}">
-  <link rel="manifest" href="{% static 'img/site.webmanifest' %}">
   <link rel="icon" href="{% static 'img/favicon.ico' %}">
-
-  <!-- Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
-
-  <!-- Vendor CSS Files -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
   <link href="{% static 'vendor/bootstrap-icons/bootstrap-icons.css' %}" rel="stylesheet">
+  <style>
+    :root { --brand:#0d6efd; --brand-dark:#0a3d9c; --brand-light:#e8f0fe; --dark:#0f1c2e; --border:#e5e7eb; --muted:#6b7280; }
+    * { box-sizing: border-box; }
+    body { font-family:'Inter',sans-serif; background:#f0f2f5; margin:0; min-height:100vh; display:flex; flex-direction:column; }
 
-  <!-- Main CSS File -->
-  <link href="{% static 'css/main.css' %}" rel="stylesheet">
+    .app-topbar { background:#fff; border-bottom:1px solid var(--border); height:60px; display:flex; align-items:center; padding:0 24px; gap:12px; position:sticky; top:0; z-index:100; }
+    .app-topbar .logo { display:flex; align-items:center; gap:8px; text-decoration:none; }
+    .app-topbar .logo img { width:30px; height:30px; border-radius:7px; }
+    .app-topbar .logo span { font-size:1rem; font-weight:800; color:var(--dark); }
+    .app-topbar .spacer { flex:1; }
+    .app-topbar .back-link { font-size:.85rem; color:var(--muted); text-decoration:none; display:flex; align-items:center; gap:5px; padding:6px 12px; border-radius:8px; transition:background .15s; }
+    .app-topbar .back-link:hover { background:var(--brand-light); color:var(--brand); }
+    .lang-sel { font-size:.78rem; padding:5px 8px; border-radius:7px; border:1px solid var(--border); }
+    .btn-logout { font-size:.8rem; font-weight:600; padding:7px 16px; border-radius:8px; background:#fff; border:1px solid var(--border); color:var(--dark); text-decoration:none; transition:all .15s; }
+    .btn-logout:hover { background:var(--brand); border-color:var(--brand); color:#fff; }
+
+    .page-body { flex:1; padding:32px 16px 60px; }
+    .inner { max-width:600px; margin:0 auto; }
+
+    .balance-hero {
+      background:linear-gradient(135deg,#0d6efd,#0a3d9c);
+      border-radius:16px; padding:24px 28px; margin-bottom:24px;
+      display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:12px;
+    }
+    .balance-hero .lbl { font-size:.8rem; color:rgba(255,255,255,.7); margin-bottom:4px; }
+    .balance-hero .amt { font-size:2rem; font-weight:800; color:#fff; }
+    .balance-hero .icon { width:52px; height:52px; border-radius:12px; background:rgba(255,255,255,.15); display:flex; align-items:center; justify-content:center; font-size:1.4rem; color:#fff; }
+
+    .form-card { background:#fff; border-radius:16px; padding:28px; box-shadow:0 2px 16px rgba(0,0,0,.06); }
+    .form-card-title { font-size:1.1rem; font-weight:700; color:var(--dark); margin-bottom:20px; display:flex; align-items:center; gap:8px; }
+    .form-card-title i { font-size:1.2rem; color:var(--brand); }
+    .form-label { font-size:.85rem; font-weight:600; color:var(--dark); margin-bottom:5px; }
+    .form-control { border-radius:10px; border:1px solid var(--border); padding:11px 14px; font-size:.9rem; transition:border-color .15s,box-shadow .15s; }
+    .form-control:focus { border-color:var(--brand); box-shadow:0 0 0 3px rgba(13,110,253,.12); outline:none; }
+    .recipient-found { background:#f0fdf4; border:1px solid #86efac; border-radius:10px; padding:10px 14px; font-size:.875rem; color:#166534; display:flex; align-items:center; gap:8px; margin-top:6px; }
+
+    .btn-transfer { width:100%; padding:13px; border-radius:10px; background:var(--brand); color:#fff; border:none; font-size:.95rem; font-weight:700; transition:background .15s,transform .1s; margin-top:4px; }
+    .btn-transfer:hover { background:var(--brand-dark); transform:translateY(-1px); }
+
+    .info-strip { display:flex; gap:10px; margin-bottom:20px; flex-wrap:wrap; }
+    .info-chip { background:var(--brand-light); color:var(--brand); border-radius:8px; padding:6px 12px; font-size:.78rem; font-weight:600; display:flex; align-items:center; gap:5px; }
+
+    @media(max-width:576px) { .app-topbar { padding:0 12px; } .form-card { padding:20px; } }
+  </style>
 </head>
+<body>
 
-<body class="dashboard-page">
+<header class="app-topbar">
+  <a href="{% url 'index' %}" class="logo">
+    <img src="{% static 'img/favicon.ico' %}" alt="TrustBank">
+    <span>TrustBank.Plc</span>
+  </a>
+  <div class="spacer"></div>
+  <a href="{% url 'dashboard' %}" class="back-link"><i class="bi bi-arrow-left"></i> {% trans "Dashboard" %}</a>
 
-  <!-- Header -->
-  <header id="header" class="header d-flex align-items-center sticky-top">
-    <div class="container-fluid position-relative d-flex align-items-center justify-content-between">
-      <a href="{% url 'index' %}" class="logo d-flex align-items-center me-auto me-xl-0">
-        <h1 class="sitename">TrustBank.Plc</h1>
-        <span>.</span>
-      </a>
+  {% get_current_language as LANGUAGE_CODE %}
+  {% get_available_languages as LANGUAGES %}
+  <form action="{% url 'set_language' %}" method="post" class="d-inline">
+    {% csrf_token %}
+    <input name="next" type="hidden" value="{{ request.get_full_path }}">
+    <select name="language" onchange="this.form.submit()" class="lang-sel">
+      {% for lang_code, lang_name in LANGUAGES %}
+        <option value="{{ lang_code }}" {% if lang_code == LANGUAGE_CODE %}selected{% endif %}>{{ lang_name }}</option>
+      {% endfor %}
+    </select>
+  </form>
+  <a href="{% url 'logout' %}" class="btn-logout">{% trans "Logout" %}</a>
+</header>
 
-      <nav id="navmenu" class="navmenu">
-        <ul>
-          <li><a href="{% url 'index' %}" class="active">Home</a></li>
-          <li><a href="{% url 'index' %}#about">About</a></li>
-          <li><a href="{% url 'index' %}#services">Services</a></li>
-          <li><a href="{% url 'index' %}#faq">FAQs</a></li>
-          <li><a href="{% url 'index' %}#contact">Contact</a></li>
-        </ul>
-        <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
-      </nav>
+<div class="page-body">
+  <div class="inner">
 
-      <a class="btn-getstarted" href="{% url 'logout' %}">Logout</a>
+    <!-- Balance hero -->
+    <div class="balance-hero">
+      <div>
+        <div class="lbl">{% trans "Available Balance" %}</div>
+        <div class="amt">{{ account.currency_symbol }}{{ account.balance|floatformat:2|intcomma }}</div>
+      </div>
+      <div class="icon"><i class="bi bi-send"></i></div>
     </div>
-  </header>
 
-  <!-- Main Content -->
-  <div class="container mt-5">
-    <h2 class="mb-4">Transfer Money</h2>
-
-    <!-- Available Balance -->
-    <div class="alert alert-info text-center">
-      <strong>Available Balance:</strong> {{ account.currency_symbol }}{{ account.balance|floatformat:2|intcomma }}
-    </div>
-
-
-     <form method="POST" id="transferForm" class="p-4 bg-light rounded shadow-sm">
-      {% csrf_token %}
-
-      <div class="mb-3">
-        <label for="recipient_account_number" class="form-label">Recipient Account Number</label>
-        <input type="text" class="form-control" id="recipient_account_number" name="recipient_account_number"
-               placeholder="Enter recipient's account number" required>
-      </div>
-
-      <!-- Receiver name (auto-filled) -->
-      <div class="mb-3" id="recipient_name_box" style="display:none;">
-        <label class="form-label">Recipient Name</label>
-        <input type="text" id="recipient_name" class="form-control bg-success text-white" readonly>
-        <span id="recipient_check" style="display:none; color:green;">&#10004; Account found</span>
-      </div>
-
-      <div class="mb-3">
-        <label for="amount" class="form-label">Amount</label>
-        <input type="number" step="0.01" class="form-control" id="amount" name="amount"
-               placeholder="Enter amount" required>
-      </div>
-
-      <div class="mb-3">
-        <label for="description" class="form-label">Description (optional)</label>
-        <input type="text" class="form-control" id="description" name="description"
-               placeholder="Enter reason for transfer">
-      </div>
-
-      <div class="mb-3">
-        <label for="pin" class="form-label">Transaction PIN</label>
-        <input type="password" class="form-control" id="pin" name="pin" maxlength="6" placeholder="Enter your PIN" required>
-      </div>
-
-      <button type="submit" class="btn btn-success w-100">Transfer</button>
-    </form>
-
-     {% if messages %}
-      <div class="mt-3">
-        {% for message in messages %}
-          <div class="alert alert-{{ message.tags }}">{{ message }}</div>
-        {% endfor %}
-      </div>
+    {% if messages %}
+      {% for message in messages %}
+        <div class="alert alert-{{ message.tags }} alert-dismissible fade show mb-3" style="border-radius:10px;font-size:.875rem;">
+          {{ message }}<button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+      {% endfor %}
     {% endif %}
-  </div>
 
+    <div class="info-strip">
+      <div class="info-chip"><i class="bi bi-shield-check"></i> {% trans "Secure Transfer" %}</div>
+      <div class="info-chip"><i class="bi bi-lightning-charge"></i> {% trans "Instant Processing" %}</div>
+    </div>
 
+    <div class="form-card">
+      <div class="form-card-title"><i class="bi bi-send-fill"></i> {% trans "Transfer Money" %}</div>
 
-  <!-- Footer -->
-  <footer id="footer" class="footer dark-background">
-    <div class="footer-top">
-      <div class="container">
-        <div class="row gy-4">
-          <div class="col-lg-4 col-md-6 footer-about">
-            <a href="{% url 'index' %}" class="logo d-flex align-items-center">
-              <span class="sitename">TrustBank.Plc Official Website</span>
-            </a>
-            <div class="footer-contact pt-3">
-              <p>A108 Adam Street</p>
-              <p>New York, NY 535022</p>
-              <p class="mt-3"><strong>Phone:</strong> <span>+1 5589 55488 55</span></p>
-              <p><strong>Email:</strong> <span>info@trustbankplc.com</span></p>
+      <form method="POST" id="transferForm">
+        {% csrf_token %}
+        <div class="mb-3">
+          <label class="form-label">{% trans "Recipient Account Number" %}</label>
+          <input type="text" class="form-control" id="recipient_account_number" name="recipient_account_number"
+                 placeholder="{% trans "Enter recipient's account number" %}" required>
+          <div id="recipient_name_box" style="display:none;" class="mt-2">
+            <div class="recipient-found">
+              <i class="bi bi-check-circle-fill"></i>
+              <span id="recipient_name"></span>
             </div>
           </div>
-
-          <div class="col-lg-2 col-md-3 footer-links">
-            <h4>Useful Links</h4>
-            <ul>
-              <li><a href="{% url 'index' %}">Home</a></li>
-              <li><a href="{% url 'index' %}#about">About us</a></li>
-              <li><a href="{% url 'index' %}#services">Services</a></li>
-              <li><a href="{% url 'register' %}">Open an Account</a></li>
-              <li><a href="#">Privacy policy</a></li>
-            </ul>
-          </div>
-
-          <div class="col-lg-2 col-md-3 footer-links">
-            <h4>Our Services</h4>
-            <ul>
-              <li><a href="{% url 'login' %}">Personal Banking</a></li>
-              <li><a href="{% url 'login' %}">Corporate Banking</a></li>
-              <li><a href="{% url 'login' %}">Business Banking</a></li>
-              <li><a href="{% url 'login' %}">Wealth Management</a></li>
-            </ul>
-          </div>
         </div>
-      </div>
+        <div class="mb-3">
+          <label class="form-label">{% trans "Amount" %}</label>
+          <input type="number" step="0.01" class="form-control" id="amount" name="amount"
+                 placeholder="{% trans "Enter amount" %}" required>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">{% trans "Description" %} <span style="font-weight:400;color:var(--muted);">({% trans "optional" %})</span></label>
+          <input type="text" class="form-control" name="description" placeholder="{% trans "Enter reason for transfer" %}">
+        </div>
+        <div class="mb-4">
+          <label class="form-label">{% trans "Transaction PIN" %}</label>
+          <input type="password" class="form-control" name="pin" maxlength="6" placeholder="{% trans "Enter your 6-digit PIN" %}" required>
+        </div>
+        <button type="submit" class="btn-transfer">{% trans "Transfer Funds" %} →</button>
+      </form>
     </div>
 
-    <div class="copyright text-center">
-      <div class="container d-flex flex-column flex-lg-row justify-content-center justify-content-lg-between align-items-center">
-        <div class="d-flex flex-column align-items-center align-items-lg-start">
-          <div>© Copyright <strong><span>TrustBank.Plc</span></strong>. All Rights Reserved</div>
-        </div>
-        <div class="social-links order-first order-lg-last mb-3 mb-lg-0">
-          <a href="#"><i class="bi bi-twitter"></i></a>
-          <a href="#"><i class="bi bi-facebook"></i></a>
-          <a href="#"><i class="bi bi-instagram"></i></a>
-          <a href="#"><i class="bi bi-linkedin"></i></a>
-        </div>
-      </div>
-    </div>
-  </footer>
+  </div>
+</div>
 
-  <!-- Vendor JS Files -->
-  <script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}">
-  </script>
-
+<script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
 <script>
-    const accountInput = document.getElementById("recipient_account_number");
-    const nameBox = document.getElementById("recipient_name_box");
-    const nameField = document.getElementById("recipient_name");
+  const accountInput = document.getElementById('recipient_account_number');
+  const nameBox = document.getElementById('recipient_name_box');
+  const nameField = document.getElementById('recipient_name');
+  let timeout = null;
 
-    accountInput.addEventListener("blur", function() {
-      const accNumber = this.value.trim();
-      if (accNumber.length > 5) {
-        fetch(/verify-account/${accNumber}/)
-          .then(res => res.json())
-          .then(data => {
-            if (data.success) {
-              nameField.value = data.name;
-              nameBox.style.display = "block";
-            } else {
-              nameBox.style.display = "none";
-              alert("Account not found.");
-            }
-          })
-          .catch(() => {
-            alert("Error verifying account. Please try again.");
-          });
-      }
-    });
-  </script>
-
-<script>
-document.addEventListener('DOMContentLoaded', () => {
-    const accountInput = document.getElementById('recipient_account_number');
-    const nameBox = document.getElementById('recipient_name_box');
-    const nameField = document.getElementById('recipient_name');
-    let timeout = null;
-
-    accountInput.addEventListener('input', () => {
-        clearTimeout(timeout);
-        const accountNumber = accountInput.value.trim();
-
-        if (!accountNumber) {
-            nameBox.style.display = 'none';
-            nameField.value = '';
-            return;
-        }
-
-        timeout = setTimeout(() => {
-            fetch("{% url 'get_recipient_name' %}?account_number=" + accountNumber)
-                .then(response => response.json())
-                .then(data => {
-                    if (data.name) {
-                        nameBox.style.display = 'block';
-                        nameField.value = data.name;
-                    } else {
-                        nameBox.style.display = 'none';
-                        nameField.value = '';
-                    }
-                })
-                .catch(err => {
-                    console.error('Error:', err);
-                    nameBox.style.display = 'none';
-                    nameField.value = '';
-                });
-        }, 300);
-    });
-});
-
-  if (data.name) {
-    nameBox.style.display = 'block';
-    nameField.value = data.name;
-    document.getElementById('recipient_check').style.display = 'inline';
-} else {
-    nameBox.style.display = 'none';
-    nameField.value = '';
-    document.getElementById('recipient_check').style.display = 'none';
-}
+  accountInput.addEventListener('input', () => {
+    clearTimeout(timeout);
+    const v = accountInput.value.trim();
+    if (!v) { nameBox.style.display='none'; nameField.textContent=''; return; }
+    timeout = setTimeout(() => {
+      fetch("{% url 'get_recipient_name' %}?account_number=" + v)
+        .then(r => r.json())
+        .then(d => {
+          if (d.name) { nameBox.style.display='block'; nameField.textContent=d.name; }
+          else { nameBox.style.display='none'; nameField.textContent=''; }
+        }).catch(() => { nameBox.style.display='none'; });
+    }, 300);
+  });
 </script>
-
 </body>
 </html>

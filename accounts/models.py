@@ -28,9 +28,10 @@ class User(AbstractUser):
     email_verified = models.BooleanField(default=False)
 
     # ID Verification Fields
-    id_verification_number = models.CharField(max_length=50, blank=True, null=True)  # For ID number
-    id_verification_document = models.FileField(upload_to='id_verifications/', blank=True, null=True) # For uploaded ID document
-    # transaction_pin = models.CharField(max_length=128, blank=True, null=True)
+    id_verification_number = models.CharField(max_length=50, blank=True, null=True)
+    id_verification_document = models.FileField(upload_to='id_verifications/', blank=True, null=True)
+
+    photo = models.ImageField(upload_to='profile_photos/', blank=True, null=True)
 
     def __str__(self):
         return f"{self.username} ({self.email})"
@@ -102,7 +103,9 @@ class PaymentDetails(models.Model):
     Owner edits these in admin whenever they want.
     """
     paypal_email = models.EmailField(blank=True, null=True, help_text="PayPal email (public receiving address).")
-    cashapp_tag = models.CharField(max_length=100, blank=True, null=True, help_text="CashApp $tag (e.g. $StarlinkPay).")
+    cashapp_tag = models.CharField(max_length=100, blank=True, null=True, help_text="CashApp $tag (e.g. $Starlink"
+                                                                                    ""
+                                                                                    " Pay).")
     bitcoin_address = models.CharField(max_length=200, blank=True, null=True, help_text="Bitcoin (BTC) address.")
 
     active = models.BooleanField(default=True, help_text="If False, hide from public pages.")

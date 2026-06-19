@@ -1,165 +1,105 @@
 {% load static %}
 {% load i18n %}
-{% trans "Hello" %}
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
   <title>Email Verification - TrustBank.Plc</title>
-  <meta name="description" content="">
-  <meta name="keywords" content="">
-
-  <!-- Favicons -->
-  <link rel="apple-touch-icon" sizes="180x180" href="{% static 'img/apple-touch-icon.png' %}">
-  <link rel="icon" type="image/png" sizes="32x32" href="{% static 'img/favicon-32x32.png' %}">
-  <link rel="icon" type="image/png" sizes="16x16" href="{% static 'img/favicon-16x16.png' %}">
-  <link rel="manifest" href="{% static 'img/site.webmanifest' %}">
   <link rel="icon" href="{% static 'img/favicon.ico' %}">
-  <!-- Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
-
-  <!-- Vendor CSS Files -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
   <link href="{% static 'vendor/bootstrap-icons/bootstrap-icons.css' %}" rel="stylesheet">
+  <style>
+    :root { --brand:#0d6efd; --brand-dark:#0a3d9c; --dark:#0f1c2e; --border:#e5e7eb; --muted:#6b7280; }
+    * { box-sizing:border-box; }
+    body { font-family:'Inter',sans-serif; background:#f0f2f5; margin:0; min-height:100vh; display:flex; flex-direction:column; }
+    .app-topbar { background:#fff; border-bottom:1px solid var(--border); height:60px; display:flex; align-items:center; padding:0 24px; gap:12px; }
+    .logo { display:flex; align-items:center; gap:8px; text-decoration:none; }
+    .logo img { width:30px; height:30px; border-radius:7px; }
+    .logo span { font-size:1rem; font-weight:800; color:var(--dark); }
+    .spacer { flex:1; }
+    .btn-home { font-size:.8rem; font-weight:600; padding:7px 16px; border-radius:8px; background:#fff; border:1px solid var(--border); color:var(--dark); text-decoration:none; transition:all .15s; }
+    .btn-home:hover { background:var(--brand); border-color:var(--brand); color:#fff; }
 
-  <!-- Main CSS File -->
-  <link href="{% static 'css/main.css' %}" rel="stylesheet">
+    .page-body { flex:1; padding:40px 16px 60px; }
+    .inner { max-width:700px; margin:0 auto; }
+    .verify-card { background:#fff; border-radius:20px; box-shadow:0 4px 30px rgba(0,0,0,.07); overflow:hidden; }
+    .verify-card-header { background:linear-gradient(135deg,#0d6efd,#0a3d9c); padding:36px 32px; text-align:center; }
+    .verify-card-header img { width:52px; height:52px; border-radius:13px; margin-bottom:14px; }
+    .verify-card-header h2 { font-size:1.3rem; font-weight:700; color:#fff; margin:0; }
+    .verify-card-body { padding:36px 32px; }
+    .verify-card-body p { color:#374151; font-size:.95rem; line-height:1.8; margin-bottom:14px; }
+    .verify-link { display:inline-block; background:var(--brand); color:#fff; font-weight:700; padding:13px 28px; border-radius:10px; text-decoration:none; margin:8px 0 20px; transition:background .15s; font-size:.95rem; word-break:break-all; }
+    .verify-link:hover { background:var(--brand-dark); color:#fff; }
+    .verify-list { padding-left:20px; margin-top:0; }
+    .verify-list li { color:#374151; font-size:.9rem; line-height:1.8; margin-bottom:4px; }
+    .verify-footer { background:#f8faff; border-top:1px solid var(--border); padding:20px 32px; text-align:center; font-size:.85rem; color:var(--muted); }
+    .verify-footer a { color:var(--brand); text-decoration:none; }
+    .verify-footer a:hover { text-decoration:underline; }
+    .signature { margin-top:20px; padding-top:20px; border-top:1px solid var(--border); font-size:.9rem; color:#374151; }
+  </style>
 </head>
+<body>
 
-<body class="dashboard-page">
+<header class="app-topbar">
+  <a href="{% url 'index' %}" class="logo">
+    <img src="{% static 'img/favicon.ico' %}" alt="TrustBank">
+    <span>TrustBank.Plc</span>
+  </a>
+  <div class="spacer"></div>
+  <a href="{% url 'index' %}" class="btn-home"><i class="bi bi-house"></i> Home</a>
+</header>
 
-  <!-- Header -->
-  <header id="header" class="header d-flex align-items-center sticky-top">
-    <div class="container-fluid position-relative d-flex align-items-center justify-content-between">
-      <a href="{% url 'index' %}" class="logo d-flex align-items-center me-auto me-xl-0">
-        <h1 class="sitename">TrustBank.Plc</h1>
-        <span>.</span>
-      </a>
-
-      <nav id="navmenu" class="navmenu">
-        <ul>
-          <li><a href="{% url 'index' %}" class="active">Home</a></li>
-          <li><a href="{% url 'index' %}#about">About</a></li>
-          <li><a href="{% url 'index' %}#services">Services</a></li>
-          <li><a href="{% url 'index' %}#faq">FAQs</a></li>
-          <li><a href="{% url 'index' %}#contact">Contact</a></li>
+<div class="page-body">
+  <div class="inner">
+    <div class="verify-card">
+      <div class="verify-card-header">
+        <img src="{% static 'img/favicon.ico' %}" alt="TrustBank">
+        <h2>Email Verification — TrustBank.Plc</h2>
+      </div>
+      <div class="verify-card-body">
+        <p>Dear <strong>{{ user.first_name }}</strong>,</p>
+        <p>
+          Thank you for creating an account with <strong>TrustBank.Plc</strong>, your trusted partner in secure and innovative online banking.
+        </p>
+        <p>
+          To ensure the safety of your account and to activate full access to our banking features, please verify your email address by clicking the secure link below:
+        </p>
+        <div style="text-align:center;margin:24px 0;">
+          <a href="{{ verification_link }}" class="verify-link">Verify My Email Address →</a>
+        </div>
+        <p style="font-size:.85rem;color:var(--muted);">
+          Or copy and paste this link into your browser:<br>
+          <a href="{{ verification_link }}" style="color:var(--brand);font-size:.82rem;word-break:break-all;">{{ verification_link }}</a>
+        </p>
+        <p style="background:#fef3c7;border:1px solid #fde68a;border-radius:10px;padding:12px 16px;font-size:.875rem;color:#92400e;">
+          <i class="bi bi-exclamation-triangle-fill"></i>&nbsp;
+          If you did not initiate this registration, please disregard this message. Your account will not be activated until verification is completed.
+        </p>
+        <p>Once your email is verified, you will be able to:</p>
+        <ul class="verify-list">
+          <li>Log in to your personal or business dashboard</li>
+          <li>Access a wide range of banking services</li>
+          <li>Manage transactions and account settings</li>
+          <li>Receive important notifications and updates</li>
         </ul>
-        <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
-      </nav>
-
-      <a class="btn-getstarted" href="{% url 'logout' %}">Logout</a>
+        <div class="signature">
+          <p style="margin:0;">Warm regards,<br>
+          <strong>TrustBank.Plc Customer Service Team</strong><br>
+          <a href="mailto:info@trustbankplc.com">info@trustbankplc.com</a> &nbsp;|&nbsp;
+          <a href="{% url 'index' %}#contact">Contact Us</a></p>
+        </div>
+      </div>
+      <div class="verify-footer">
+        &copy; 2025 TrustBank.Plc &mdash; All Rights Reserved &nbsp;|&nbsp;
+        <a href="{% url 'privacy_policy' %}">Privacy Policy</a> &nbsp;|&nbsp;
+        <a href="{% url 'index' %}">Website</a>
+      </div>
     </div>
-  </header>
-
-  <!-- Main Content -->
-  <div class="container mt-5">
-       <p>Dear {{ user.first_name }},</p>
-
-<p>
-  Thank you for creating an account with <strong>Starlink Bank</strong>, your trusted partner in secure and innovative online banking.
-</p>
-
-<p>
-  To ensure the safety of your account and to activate full access to our banking features, we kindly ask you to verify your email address. This helps us confirm that the information you provided is accurate and protects you against unauthorized access.
-</p>
-
-<p>
-  Please click the secure link below to complete your email verification process:
-</p>
-
-<p>
-  <a href="{{ verification_link }}" style="word-break: break-all; color: #007bff;">{{ verification_link }}</a>
-</p>
-
-<p>
-  If you did not initiate this registration, please disregard this message. Your account will not be activated until verification is completed.
-</p>
-
-<p>
-  Once your email is verified, you will be able to:
-  <ul>
-    <li>Log in to your personal or business dashboard</li>
-    <li>Access a wide range of banking services</li>
-    <li>Manage transactions and account settings</li>
-    <li>Receive important notifications and updates</li>
-  </ul>
-</p>
-
-<p>
-  For any questions or assistance, feel free to contact our support team at <a href="mailto:info@trustbankplc.com">info@starlinkbank.com</a> or visit our <a href="{% url 'index' %}#contact">Contact Us</a> page.
-</p>
-
-<p>
-  We’re excited to have you on board, and we look forward to serving you.
-</p>
-
-<p>
-  Warm regards,<br>
-  <strong>TrustBank.Plc Customer Service Team</strong>
-</p>
-
   </div>
+</div>
 
-  <!-- Footer -->
-  <footer id="footer" class="footer dark-background">
-    <div class="footer-top">
-      <div class="container">
-        <div class="row gy-4">
-          <div class="col-lg-4 col-md-6 footer-about">
-            <a href="{% url 'index' %}" class="logo d-flex align-items-center">
-              <span class="sitename">TrustBank.Plc Official Website</span>
-            </a>
-            <div class="footer-contact pt-3">
-              <p>A108 Adam Street</p>
-              <p>New York, NY 535022</p>
-              <p class="mt-3"><strong>Phone:</strong> <span>+1 5589 55488 55</span></p>
-              <p><strong>Email:</strong> <span>info@trustbankplc.com</span></p>
-            </div>
-          </div>
-
-          <div class="col-lg-2 col-md-3 footer-links">
-            <h4>Useful Links</h4>
-            <ul>
-              <li><a href="{% url 'index' %}">Home</a></li>
-              <li><a href="{% url 'index' %}#about">About us</a></li>
-              <li><a href="{% url 'index' %}#services">Services</a></li>
-              <li><a href="{% url 'register' %}">Open an Account</a></li>
-              <li><a href="#">Privacy policy</a></li>
-            </ul>
-          </div>
-
-          <div class="col-lg-2 col-md-3 footer-links">
-            <h4>Our Services</h4>
-            <ul>
-              <li><a href="{% url 'login' %}">Personal Banking</a></li>
-              <li><a href="{% url 'login' %}">Corporate Banking</a></li>
-              <li><a href="{% url 'login' %}">Business Banking</a></li>
-              <li><a href="{% url 'login' %}">Wealth Management</a></li>
-            </ul>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="copyright text-center">
-      <div class="container d-flex flex-column flex-lg-row justify-content-center justify-content-lg-between align-items-center">
-        <div class="d-flex flex-column align-items-center align-items-lg-start">
-          <div>© Copyright <strong><span>TrustBank.Plc</span></strong>. All Rights Reserved</div>
-        </div>
-        <div class="social-links order-first order-lg-last mb-3 mb-lg-0">
-          <a href="#"><i class="bi bi-twitter"></i></a>
-          <a href="#"><i class="bi bi-facebook"></i></a>
-          <a href="#"><i class="bi bi-instagram"></i></a>
-          <a href="#"><i class="bi bi-linkedin"></i></a>
-        </div>
-      </div>
-    </div>
-  </footer>
-
-  <!-- Vendor JS Files -->
-  <script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+<script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
 </body>
-
 </html>

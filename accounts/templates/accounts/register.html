@@ -1,363 +1,263 @@
 {% load static %}
 {% load widget_tweaks %}
 {% load i18n %}
-{% trans "Hello" %}
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="{{ LANGUAGE_CODE }}">
 <head>
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
-  <title>register - TrustBank.Plc</title>
-  <meta name="description" content="">
-  <meta name="keywords" content="">
-
-  <!-- Favicons -->
+  <title>{% trans "Open an Account" %} - TrustBank.Plc</title>
   <link rel="apple-touch-icon" sizes="180x180" href="{% static 'img/apple-touch-icon.png' %}">
   <link rel="icon" type="image/png" sizes="32x32" href="{% static 'img/favicon-32x32.png' %}">
-  <link rel="icon" type="image/png" sizes="16x16" href="{% static 'img/favicon-16x16.png' %}">
-  <link rel="manifest" href="{% static 'img/site.webmanifest' %}">
   <link rel="icon" href="{% static 'img/favicon.ico' %}">
-
-  <!-- Fonts -->
-  <link href="https://fonts.googleapis.com" rel="preconnect">
-  <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Source+Sans+Pro:ital,wght@0,200;0,300;0,400;0,600;0,700;0,900;1,200;1,300;1,400;1,600;1,700;1,900&display=swap" rel="stylesheet">
-
-  <!-- Vendor CSS Files -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Poppins:wght@700;800&display=swap" rel="stylesheet">
   <link href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
   <link href="{% static 'vendor/bootstrap-icons/bootstrap-icons.css' %}" rel="stylesheet">
-  <link href="{% static 'vendor/aos/aos.css' %}" rel="stylesheet">
-  <link href="{% static 'vendor/glightbox/css/glightbox.min.css' %}" rel="stylesheet">
-  <link href="{% static 'vendor/swiper/swiper-bundle.min.css' %}" rel="stylesheet">
+  <style>
+    :root {
+      --brand: #0d6efd; --brand-dark: #0a3d9c; --brand-light: #e8f0fe;
+      --dark: #0f1c2e; --text: #374151; --muted: #6b7280; --border: #e5e7eb; --radius: 14px;
+    }
+    *, *::before, *::after { box-sizing: border-box; }
+    body { font-family: 'Inter', sans-serif; color: var(--text); background: #f8faff; margin: 0; }
 
-  <!-- Main CSS File -->
-  <link href="{% static 'css/main.css' %}" rel="stylesheet">
+    /* NAV */
+    #header { background: rgba(255,255,255,.97); backdrop-filter: blur(10px); border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 100; }
+    .header-inner { max-width: 1280px; margin: 0 auto; padding: 0 24px; height: 68px; display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+    .logo-link { display: flex; align-items: center; gap: 9px; text-decoration: none; flex-shrink: 0; }
+    .logo-link img { width: 32px; height: 32px; border-radius: 8px; }
+    .logo-link span { font-size: 1.1rem; font-weight: 800; color: var(--dark); }
+    .nav-actions { display: flex; align-items: center; gap: 8px; }
+    .lang-select { font-size: .8rem; padding: 6px 10px; border-radius: 8px; border: 1px solid var(--border); }
+    .btn-nav { font-size: .875rem; font-weight: 600; padding: 8px 20px; border-radius: 9px; background: var(--brand); color: #fff; text-decoration: none; border: none; transition: background .15s; }
+    .btn-nav:hover { background: var(--brand-dark); color: #fff; }
+    .btn-nav-outline { background: transparent; border: 1px solid var(--border); color: var(--dark); }
+    .btn-nav-outline:hover { background: var(--brand-light); color: var(--brand); }
 
-  <!-- =======================================================
-  * Template Name: SkyBank
-  * Author: BootstrapMade.com
-  * License: https://bootstrapmade.com/license/
-  ======================================================== -->
+    /* HERO BANNER */
+    .page-hero {
+      background: linear-gradient(135deg, #0d6efd, #0a3d9c);
+      padding: 40px 24px; text-align: center;
+    }
+    .page-hero h1 { font-family: 'Poppins', sans-serif; font-size: clamp(1.6rem, 3vw, 2.2rem); font-weight: 800; color: #fff; margin: 0 0 8px; }
+    .page-hero p { color: rgba(255,255,255,.8); font-size: .95rem; margin: 0; }
+    .breadcrumb-item a { color: rgba(255,255,255,.7); text-decoration: none; font-size: .85rem; }
+    .breadcrumb-item.active { color: rgba(255,255,255,.9); font-size: .85rem; }
+    .breadcrumb-item+.breadcrumb-item::before { color: rgba(255,255,255,.5); }
+
+    /* FORM CARD */
+    .reg-wrap { max-width: 860px; margin: 40px auto; padding: 0 24px 60px; }
+    .reg-card { background: #fff; border-radius: 20px; box-shadow: 0 4px 30px rgba(0,0,0,.07); overflow: hidden; }
+    .reg-card-header { background: linear-gradient(135deg, var(--brand), var(--brand-dark)); padding: 28px 36px; text-align: center; }
+    .reg-card-header img { width: 48px; height: 48px; border-radius: 12px; margin-bottom: 12px; }
+    .reg-card-header h2 { font-size: 1.4rem; font-weight: 700; color: #fff; margin: 0 0 4px; }
+    .reg-card-header p { font-size: .875rem; color: rgba(255,255,255,.8); margin: 0; }
+    .reg-card-body { padding: 36px; }
+
+    .section-divider {
+      display: flex; align-items: center; gap: 12px;
+      margin: 28px 0 20px; color: var(--brand); font-size: .75rem; font-weight: 700; text-transform: uppercase; letter-spacing: .1em;
+    }
+    .section-divider::before, .section-divider::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+
+    .form-label { font-size: .85rem; font-weight: 600; color: var(--dark); margin-bottom: 5px; }
+    .form-control, .form-select {
+      border-radius: 10px; border: 1px solid var(--border); padding: 10px 14px; font-size: .9rem;
+      transition: border-color .15s, box-shadow .15s;
+    }
+    .form-control:focus, .form-select:focus { border-color: var(--brand); box-shadow: 0 0 0 3px rgba(13,110,253,.12); }
+    .form-control.is-invalid { border-color: #dc3545; }
+
+    .btn-register { width: 100%; padding: 13px; border-radius: 10px; background: var(--brand); color: #fff; border: none; font-size: 1rem; font-weight: 700; transition: background .15s, transform .1s; }
+    .btn-register:hover { background: var(--brand-dark); transform: translateY(-1px); }
+
+    /* FOOTER */
+    .footer { background: #0f1c2e; padding: 32px 0; margin-top: 0; }
+    .footer-copy { text-align: center; color: rgba(255,255,255,.5); font-size: .8rem; }
+    .footer-copy a { color: rgba(255,255,255,.7); text-decoration: none; margin: 0 8px; }
+    .footer-copy a:hover { color: #fff; }
+  </style>
 </head>
+<body>
 
-<body class="blog-page">
-
-  <!-- Header -->
-  <header id="header" class="header d-flex align-items-center sticky-top">
-    <div class="container-fluid position-relative d-flex align-items-center justify-content-between">
-      <a href="{% url 'index' %}" class="logo d-flex align-items-center me-auto me-xl-0">
-        <h1 class="sitename">TrustBank.Plc</h1>
-        <span>.</span>
-      </a>
-
-      <nav id="navmenu" class="navmenu">
-        <ul>
-          <li><a href="{% url 'index' %}" class="active">Home</a></li>
-          <li><a href="{% url 'index' %}#about">About</a></li>
-          <li><a href="{% url 'index' %}#services">Services</a></li>
-          <li><a href="{% url 'index' %}#faq">FAQs</a></li>
-          <li class="dropdown">
-            <a href="{% url 'login' %}"><span>Internet Banking</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
-            <ul>
-              <li><a href="{% url 'login' %}">Personal Banking</a></li>
-              <li class="dropdown">
-                <a href="{% url 'login' %}"><span>Bank with Us</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
-                <ul>
-                  <li><a href="{% url 'register' %}">Register</a></li>
-                  <li><a href="{% url 'login' %}">Login</a></li>
-                </ul>
-              </li>
-              <li><a href="{% url 'login' %}">Corporate Banking</a></li>
-              <li><a href="{% url 'login' %}">Credit Card</a></li>
-              <li><a href="{% url 'login' %}">Business Banking</a></li>
-              <li><a href="{% url 'login' %}">Wealth Management</a></li>
-            </ul>
-          </li>
-          <li><a href="{% url 'index' %}#contact">Contact</a></li>
-          <li><a href="{% url 'privacy_policy' %}">Privacy Policy</a></li>
-        </ul>
-        <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
-      </nav>
-
-      <a class="btn-getstarted" href="{% url 'login' %}">Login</a>
-    </div>
-  </header>
-
-  <!-- Main Content -->
-  <main class="main">
-    <!-- Page Title -->
-    <div class="page-title">
-      <div class="container d-lg-flex justify-content-between align-items-center">
-        <h1 class="mb-2 mb-lg-0">Open an Account</h1>
-        <nav class="breadcrumbs">
-          <ol>
-            <li><a href="{% url 'index' %}">Home</a></li>
-          </ol>
-        </nav>
-      </div>
-    </div>
-
-    <!-- Registration Section -->
-    <section id="register" class="register section">
-  <div class="container" data-aos="fade-up">
-    <div class="row justify-content-center">
-      <div class="col-lg-8">
-        <div class="form-container">
-          <h2 class="text-center">Create an Account</h2>
-          <p class="text-center">Join TrustBank.Plc and start managing your finances with ease.</p>
-
-          <!-- Success and Error Messages -->
-              {% if messages %}
-              <div>
-                {% for message in messages %}
-                <div class="alert alert-{{ message.tags }}">{{ message }}</div>
-                {% endfor %}
-              </div>
-              {% endif %}
-
-              <!-- Form Errors -->
-              {% if form.errors %}
-              <div class="alert alert-danger">
-                <ul>
-                  {% for field, errors in form.errors.items %}
-                    {% for error in errors %}
-                      <li>{{ error }}</li>
-                    {% endfor %}
-                  {% endfor %}
-                </ul>
-              </div>
-              {% endif %}
-
-
-          <form method="post" enctype="multipart/form-data" class="needs-validation" novalidate>
-            {% csrf_token %}
-
-            <!-- Personal Information -->
-            <h4 class="mt-4">Personal Information</h4>
-            <div class="row">
-              <div class="col-md-6">
-                <div class="form-group mb-3">
-                  {{ form.username.label_tag }}
-                  {{ form.username|add_class:"form-control" }}
-                </div>
-              </div>
-              <div class="col-md-6">
-                <div class="form-group mb-3">
-                  {{ form.first_name.label_tag }}
-                  {{ form.first_name|add_class:"form-control" }}
-                </div>
-              </div>
-              <div class="col-md-6">
-                <div class="form-group mb-3">
-                  {{ form.last_name.label_tag }}
-                  {{ form.last_name|add_class:"form-control" }}
-                </div>
-              </div>
-              <div class="col-md-6">
-                <div class="form-group mb-3">
-                  {{ form.other_names.label_tag }}
-                  {{ form.other_names|add_class:"form-control" }}
-                </div>
-              </div>
-              <div class="col-md-6">
-                <div class="form-group mb-3">
-                  {{ form.email.label_tag }}
-                  {{ form.email|add_class:"form-control" }}
-                </div>
-              </div>
-              <div class="col-md-6">
-                <div class="form-group mb-3">
-                  {{ form.phone_number.label_tag }}
-                  {{ form.phone_number|add_class:"form-control" }}
-                </div>
-              </div>
-              <div class="col-md-6">
-                <div class="form-group mb-3">
-                  {{ form.gender.label_tag }}
-                  {{ form.gender|add_class:"form-control" }}
-                </div>
-              </div>
-              <div class="col-md-6">
-                <div class="form-group mb-3">
-                  {{ form.date_of_birth.label_tag }}
-                  {{ form.date_of_birth|add_class:"form-control" }}
-                </div>
-              </div>
-            </div>
-            <div class="col-md-6">
-                <div class="form-group mb-3">
-                  {{ form.occupation.label_tag }}
-                  {{ form.occupation|add_class:"form-control" }}
-                </div>
-              </div>
-            <div class="col-md-6">
-                <div class="form-group mb-3">
-                  {{ form.next_of_kin.label_tag }}
-                  {{ form.next_of_kin|add_class:"form-control" }}
-                </div>
-              </div>
-
-            <!-- Address Information -->
-            <h4 class="mt-4">Address Information</h4>
-            <div class="row">
-              <div class="col-md-6">
-                <div class="form-group mb-3">
-                  {{ form.street.label_tag }}
-                  {{ form.street|add_class:"form-control" }}
-                </div>
-              </div>
-              <div class="col-md-6">
-                <div class="form-group mb-3">
-                  {{ form.apartment.label_tag }}
-                  {{ form.apartment|add_class:"form-control" }}
-                </div>
-              </div>
-              <div class="col-md-6">
-                <div class="form-group mb-3">
-                  {{ form.city.label_tag }}
-                  {{ form.city|add_class:"form-control" }}
-                </div>
-              </div>
-              <div class="col-md-6">
-                <div class="form-group mb-3">
-                  {{ form.state.label_tag }}
-                  {{ form.state|add_class:"form-control" }}
-                </div>
-              </div>
-              <div class="col-md-6">
-                <div class="form-group mb-3">
-                  {{ form.zip_code.label_tag }}
-                  {{ form.zip_code|add_class:"form-control" }}
-                </div>
-              </div>
-              <div class="col-md-6">
-                <div class="form-group mb-3">
-                  {{ form.country.label_tag }}
-                  {{ form.country|add_class:"form-control" }}
-                </div>
-              </div>
-            </div>
-
-            <!-- Verification Information -->
-            <h4 class="mt-4">Verification Information</h4>
-            <div class="row">
-              <div class="col-md-6">
-                <div class="form-group mb-3">
-                  {{ form.id_verification_number.label_tag }}
-                  {{ form.id_verification_number|add_class:"form-control" }}
-                </div>
-              </div>
-              <div class="col-md-6">
-                <div class="form-group mb-3">
-                  {{ form.id_verification_document.label_tag }}
-                  {{ form.id_verification_document|add_class:"form-control" }}
-                </div>
-              </div>
-            </div>
-
-            <!-- Password Information -->
-            <h4 class="mt-4">Password Information</h4>
-            <div class="row">
-              <div class="col-md-6">
-                <div class="form-group mb-3">
-                  {{ form.password.label_tag }}
-                  {{ form.password|add_class:"form-control" }}
-                </div>
-              </div>
-              <div class="col-md-6">
-                <div class="form-group mb-3">
-                  {{ form.confirm_password.label_tag }}
-                  {{ form.confirm_password|add_class:"form-control" }}
-                </div>
-              </div>
-            </div>
-
-            <!-- Submit Button -->
-            <div class="col-12">
-              <button type="submit" class="btn btn-primary w-100">Register</button>
-            </div>
-          </form>
-        </div>
-      </div>
+<header id="header">
+  <div class="header-inner">
+    <a href="{% url 'index' %}" class="logo-link">
+      <img src="{% static 'img/favicon.ico' %}" alt="TrustBank">
+      <span>TrustBank.Plc</span>
+    </a>
+    <div class="nav-actions">
+      {% get_current_language as LANGUAGE_CODE %}
+      {% get_available_languages as LANGUAGES %}
+      <form action="{% url 'set_language' %}" method="post" class="d-inline">
+        {% csrf_token %}
+        <input name="next" type="hidden" value="{{ request.get_full_path }}">
+        <select name="language" onchange="this.form.submit()" class="lang-select">
+          {% for lang_code, lang_name in LANGUAGES %}
+            <option value="{{ lang_code }}" {% if lang_code == LANGUAGE_CODE %}selected{% endif %}>{{ lang_name }}</option>
+          {% endfor %}
+        </select>
+      </form>
+      <a href="{% url 'login' %}" class="btn-nav btn-nav-outline">{% trans "Login" %}</a>
     </div>
   </div>
-</section>
-  </main>
+</header>
 
-  <!-- Footer -->
-  <footer id="footer" class="footer dark-background">
-    <div class="footer-top">
-      <div class="container">
-        <div class="row gy-4">
-          <div class="col-lg-4 col-md-6 footer-about">
-            <a href="{% url 'index' %}" class="logo d-flex align-items-center">
-              <span class="sitename">TrustBank.Plc Official Website</span>
-            </a>
-            <div class="footer-contact pt-3">
-              <p>A108 Adam Street</p>
-              <p>New York, NY 535022</p>
-              <p class="mt-3"><strong>Phone:</strong> <span>+1 5589 55488 55</span></p>
-              <p><strong>Email:</strong> <span>info@trustbankplc.com</span></p>
-            </div>
-          </div>
+<div class="page-hero">
+  <h1>{% trans "Open an Account" %}</h1>
+  <nav aria-label="breadcrumb" class="mt-2">
+    <ol class="breadcrumb justify-content-center mb-0">
+      <li class="breadcrumb-item"><a href="{% url 'index' %}">{% trans "Home" %}</a></li>
+      <li class="breadcrumb-item active">{% trans "Register" %}</li>
+    </ol>
+  </nav>
+</div>
 
-          <div class="col-lg-2 col-md-3 footer-links">
-            <h4>Useful Links</h4>
-            <ul>
-              <li><a href="{% url 'index' %}">Home</a></li>
-              <li><a href="{% url 'index' %}#about">About us</a></li>
-              <li><a href="{% url 'index' %}#services">Services</a></li>
-              <li><a href="{% url 'register' %}">Open an Account</a></li>
-              <li><a href="#">Privacy policy</a></li>
-            </ul>
-          </div>
-
-          <div class="col-lg-2 col-md-3 footer-links">
-            <h4>Our Services</h4>
-            <ul>
-              <li><a href="{% url 'login' %}">Personal Banking</a></li>
-              <li><a href="{% url 'login' %}">Corporate Banking</a></li>
-              <li><a href="{% url 'login' %}">Business Banking</a></li>
-              <li><a href="{% url 'login' %}">Wealth Management</a></li>
-            </ul>
-          </div>
-        </div>
-      </div>
+<div class="reg-wrap">
+  <div class="reg-card">
+    <div class="reg-card-header">
+      <img src="{% static 'img/favicon.ico' %}" alt="TrustBank">
+      <h2>{% trans "Create an Account" %}</h2>
+      <p>{% trans "Join TrustBank.Plc and start managing your finances with ease." %}</p>
     </div>
+    <div class="reg-card-body">
 
-    <div class="copyright text-center">
-      <div class="container d-flex flex-column flex-lg-row justify-content-center justify-content-lg-between align-items-center">
-        <div class="d-flex flex-column align-items-center align-items-lg-start">
-          <div>© Copyright <strong><span>TrustBank.Plc</span></strong>. All Rights Reserved</div>
+      {% if messages %}
+        {% for message in messages %}
+          <div class="alert alert-{{ message.tags }} alert-dismissible fade show" style="border-radius:10px;font-size:.875rem;">
+            {{ message }}<button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+          </div>
+        {% endfor %}
+      {% endif %}
+      {% if form.errors %}
+        <div class="alert alert-danger" style="border-radius:10px;font-size:.875rem;">
+          <ul class="mb-0 ps-3">
+            {% for field, errors in form.errors.items %}
+              {% for error in errors %}<li>{{ error }}</li>{% endfor %}
+            {% endfor %}
+          </ul>
         </div>
-        <div class="social-links order-first order-lg-last mb-3 mb-lg-0">
-          <a href="#"><i class="bi bi-twitter"></i></a>
-          <a href="#"><i class="bi bi-facebook"></i></a>
-          <a href="#"><i class="bi bi-instagram"></i></a>
-          <a href="#"><i class="bi bi-linkedin"></i></a>
+      {% endif %}
+
+      <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        <div class="section-divider"><i class="bi bi-person me-1"></i> {% trans "Personal Information" %}</div>
+        <div class="row g-3">
+          <div class="col-md-6">
+            <label class="form-label">{{ form.username.label }}</label>
+            {{ form.username|add_class:"form-control" }}
+          </div>
+          <div class="col-md-6">
+            <label class="form-label">{{ form.first_name.label }}</label>
+            {{ form.first_name|add_class:"form-control" }}
+          </div>
+          <div class="col-md-6">
+            <label class="form-label">{{ form.last_name.label }}</label>
+            {{ form.last_name|add_class:"form-control" }}
+          </div>
+          <div class="col-md-6">
+            <label class="form-label">{{ form.other_names.label }}</label>
+            {{ form.other_names|add_class:"form-control" }}
+          </div>
+          <div class="col-md-6">
+            <label class="form-label">{{ form.email.label }}</label>
+            {{ form.email|add_class:"form-control" }}
+          </div>
+          <div class="col-md-6">
+            <label class="form-label">{{ form.phone_number.label }}</label>
+            {{ form.phone_number|add_class:"form-control" }}
+          </div>
+          <div class="col-md-6">
+            <label class="form-label">{{ form.gender.label }}</label>
+            {{ form.gender|add_class:"form-control" }}
+          </div>
+          <div class="col-md-6">
+            <label class="form-label">{{ form.date_of_birth.label }}</label>
+            {{ form.date_of_birth|add_class:"form-control" }}
+          </div>
+          <div class="col-md-6">
+            <label class="form-label">{{ form.occupation.label }}</label>
+            {{ form.occupation|add_class:"form-control" }}
+          </div>
+          <div class="col-md-6">
+            <label class="form-label">{{ form.next_of_kin.label }}</label>
+            {{ form.next_of_kin|add_class:"form-control" }}
+          </div>
         </div>
-      </div>
+
+        <div class="section-divider"><i class="bi bi-geo-alt me-1"></i> {% trans "Address Information" %}</div>
+        <div class="row g-3">
+          <div class="col-md-6">
+            <label class="form-label">{{ form.street.label }}</label>
+            {{ form.street|add_class:"form-control" }}
+          </div>
+          <div class="col-md-6">
+            <label class="form-label">{{ form.apartment.label }}</label>
+            {{ form.apartment|add_class:"form-control" }}
+          </div>
+          <div class="col-md-6">
+            <label class="form-label">{{ form.city.label }}</label>
+            {{ form.city|add_class:"form-control" }}
+          </div>
+          <div class="col-md-6">
+            <label class="form-label">{{ form.state.label }}</label>
+            {{ form.state|add_class:"form-control" }}
+          </div>
+          <div class="col-md-6">
+            <label class="form-label">{{ form.zip_code.label }}</label>
+            {{ form.zip_code|add_class:"form-control" }}
+          </div>
+          <div class="col-md-6">
+            <label class="form-label">{{ form.country.label }}</label>
+            {{ form.country|add_class:"form-control" }}
+          </div>
+        </div>
+
+        <div class="section-divider"><i class="bi bi-card-text me-1"></i> {% trans "Verification Information" %}</div>
+        <div class="row g-3">
+          <div class="col-md-6">
+            <label class="form-label">{{ form.id_verification_number.label }}</label>
+            {{ form.id_verification_number|add_class:"form-control" }}
+          </div>
+          <div class="col-md-6">
+            <label class="form-label">{{ form.id_verification_document.label }}</label>
+            {{ form.id_verification_document|add_class:"form-control" }}
+          </div>
+        </div>
+
+        <div class="section-divider"><i class="bi bi-lock me-1"></i> {% trans "Password Information" %}</div>
+        <div class="row g-3 mb-4">
+          <div class="col-md-6">
+            <label class="form-label">{{ form.password.label }}</label>
+            {{ form.password|add_class:"form-control" }}
+          </div>
+          <div class="col-md-6">
+            <label class="form-label">{{ form.confirm_password.label }}</label>
+            {{ form.confirm_password|add_class:"form-control" }}
+          </div>
+        </div>
+
+        <button type="submit" class="btn-register">{% trans "Create My Account" %} →</button>
+
+        <p class="text-center mt-3" style="font-size:.875rem;color:#6b7280;">
+          {% trans "Already have an account?" %} <a href="{% url 'login' %}" style="color:var(--brand);font-weight:600;text-decoration:none;">{% trans "Sign In" %}</a>
+        </p>
+      </form>
     </div>
-  </footer>
+  </div>
+</div>
 
-  <!-- Scroll Top -->
-  <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+<footer class="footer">
+  <div class="footer-copy">
+    © 2025 <strong style="color:rgba(255,255,255,.8)">TrustBank.Plc</strong>. {% trans "All Rights Reserved" %}
+    <br>
+    <a href="{% url 'index' %}">{% trans "Home" %}</a>
+    <a href="{% url 'privacy_policy' %}">{% trans "Privacy Policy" %}</a>
+    <a href="{% url 'login' %}">{% trans "Login" %}</a>
+  </div>
+</footer>
 
-  <!-- Preloader -->
-  <div id="preloader"></div>
-
-  <!-- Vendor JS Files -->
-  <script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
-  <script src="{% static 'vendor/php-email-form/validate.js' %}"></script>
-  <script src="{% static 'vendor/aos/aos.js' %}"></script>
-  <script src="{% static 'vendor/glightbox/js/glightbox.min.js' %}"></script>
-  <script src="{% static 'vendor/swiper/swiper-bundle.min.js' %}"></script>
-  <script src="{% static 'vendor/imagesloaded/imagesloaded.pkgd.min.js' %}"></script>
-  <script src="{% static 'vendor/isotope-layout/isotope.pkgd.min.js' %}"></script>
-
-  <!-- Main JS File -->
-  <script src="{% static 'js/main.js' %}"></script>
+<script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
 </body>
-
 </html>

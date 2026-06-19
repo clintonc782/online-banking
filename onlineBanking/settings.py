@@ -14,6 +14,7 @@ from pathlib import Path
 import os
 from decouple import config, Csv
 import dj_database_url
+from django.conf import global_settings
 
 
 
@@ -138,7 +139,20 @@ AUTH_PASSWORD_VALIDATORS = [
 LANGUAGE_CODE = 'en'
 LANGUAGES = [
     ('en', 'English'),
-    ('es', 'Spanish'),
+    ('es', 'Español'),
+    ('fr', 'Français'),
+    ('de', 'Deutsch'),
+    ('pt', 'Português'),
+    ('it', 'Italiano'),
+    ('ru', 'Русский'),
+    ('zh-hans', '中文(简体)'),
+    ('ar', 'العربية'),
+    ('ja', '日本語'),
+    ('ko', '한국어'),
+    ('hi', 'हिन्दी'),
+    ('tr', 'Türkçe'),
+    ('nl', 'Nederlands'),
+    ('pl', 'Polski'),
 ]
 
 TIME_ZONE = 'UTC'
@@ -154,6 +168,9 @@ USE_TZ = True
 
 STATIC_URL = '/assets/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')  # ← ALWAYS set this
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 if DEBUG:
     # Development: serve directly from assets folder
@@ -193,8 +210,8 @@ DEFAULT_FROM_EMAIL = config("EMAIL_HOST_USER")
 
 # settings.py
 SECURE_SSL_REDIRECT = False  # Redirect all HTTP traffic to HTTPS
-SESSION_COOKIE_SECURE = True  # Use secure cookies
-CSRF_COOKIE_SECURE = True  # Use secure CSRF cookies
+SESSION_COOKIE_SECURE = not DEBUG  # Only use secure cookies in production
+CSRF_COOKIE_SECURE = not DEBUG  # Only use secure CSRF cookies in production
 SECURE_HSTS_SECONDS = 31536000  # Enable HTTP Strict Transport Security (HSTS)
 SECURE_HSTS_INCLUDE_SUBDOMAINS = True
 SECURE_HSTS_PRELOAD = True
@@ -221,7 +238,7 @@ LOGGING = {
     },
 }
 
-APPEND_SLASH = False
+APPEND_SLASH = True
 
 LOCALE_PATHS = [
     os.path.join(BASE_DIR, 'locale'),

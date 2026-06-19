@@ -19,5 +19,6 @@ urlpatterns = [
     path('message/fetch/', views.fetch_messages, name='fetch_messages'),  # Fetch messages AJAX
     path('messages/unread_count/', views.unread_messages_count, name='unread_messages_count'),
     path('get-recipient-name/', views.get_recipient_name, name='get_recipient_name'),
+    path('upload-photo/', views.upload_photo, name='upload_photo'),
 ]
 

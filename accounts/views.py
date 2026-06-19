@@ -11,7 +11,7 @@ from django.core.mail import EmailMessage
 from django.template.loader import render_to_string
 from django.conf import settings
 from django.urls import reverse
-from .forms import UserRegistrationForm, MessageForm, TransferForm, TransactionPinForm
+from .forms import UserRegistrationForm, MessageForm, TransferForm, TransactionPinForm, ProfilePhotoForm
 from .models import BankAccount, Message, VerificationToken, Transaction, CardRequest, User, PaymentDetails
 from .utils import process_transaction, get_currency_from_country
 from django.core.exceptions import ValidationError
@@ -34,7 +34,7 @@ logger = logging.getLogger(__name__)
 
 def index(request):
     logger.debug(f"Index page accessed by user: {request.user}")
-    logger.info(f"{request.user.username} did X from IP: {request.META.get('REMOTE_ADDR')}")
+    logger.info(f"{request.user.username} visited index from IP: {request.META.get('REMOTE_ADDR')}")
     return render(request, 'accounts/index.html')
 
 
@@ -144,7 +144,7 @@ def login_view(request):
                 return redirect('index')
 
             # Notify user if account is frozen, but allow login
-            if bank_account == 'Frozen':
+            if bank_account.status == 'Frozen':
                 messages.warning(request, "Your account is currently frozen. Some features may be restricted.")
 
             return redirect('dashboard')
@@ -179,8 +179,8 @@ def dashboard(request):
     if request.method == 'POST':
         if 'withdraw' in request.POST:
             with transaction.atomic():
-                account.is_frozen = True
-                account.save()
+                account.status = 'Frozen'
+                account.save(update_fields=['status'])
             logger.info(f"Account {account.account_number} frozen by {request.user.username}.")
             messages.success(request, "Your account has been frozen for withdrawal.")
             return redirect('dashboard')
@@ -200,10 +200,9 @@ def dashboard(request):
                     parent_message = Message.objects.get(id=reply_to_id, user=request.user)
                     Message.objects.create(
                         user=request.user,
-                        sender=request.user.username,  # Use actual username
+                        sender='User',
                         content=reply_content,
-                        is_reply=True,
-                        parent=parent_message  # Link reply to original message
+                        parent=parent_message
                     )
                     logger.info(f"User {request.user.username} replied to message ID {reply_to_id}.")
                     messages.success(request, "Reply sent.")
@@ -315,8 +314,8 @@ def transfer_money(request):
             #     logger.error(f"Email sending failed for user {request.user.username}: {e}")
 
             # ✅ 7. Finish transfer
-            messages.success(request, f"₦{amount:.2f} successfully transferred to {receiver_account.user.first_name}.")
-            logger.info(f"User {request.user.username} transferred ₦{amount:.2f} to {receiver_account_number}.")
+            messages.success(request, f"{sender_account.currency_symbol}{amount:.2f} successfully transferred to {receiver_account.user.first_name}.")
+            logger.info(f"User {request.user.username} transferred {sender_account.currency_symbol}{amount:.2f} to {receiver_account_number}.")
             return redirect('dashboard')
 
     else:
@@ -497,7 +496,7 @@ def top_up(request):
                 fail_silently=True,
             )
 
-            messages.success(request, f"₦{amount:.2f} has been added to your account.")
+            messages.success(request, f"{account.currency_symbol}{amount:.2f} has been added to your account.")
             return redirect('dashboard')
 
         except (ValueError, TypeError):
@@ -544,7 +543,7 @@ def deposit(request):
                 fail_silently=True,
             )
 
-            messages.success(request, f"₦{amount:.2f} deposited successfully.")
+            messages.success(request, f"{account.currency_symbol}{amount:.2f} deposited successfully.")
             return redirect('dashboard')
 
         except (ValueError, TypeError):
@@ -572,6 +571,7 @@ def transaction_history(request):
 
 
 
+@login_required
 def get_recipient_name(request):
     account_number = request.GET.get('account_number', '').strip()
     if account_number:
@@ -581,6 +581,18 @@ def get_recipient_name(request):
         except BankAccount.DoesNotExist:
             return JsonResponse({'name': ''})
     return JsonResponse({'name': ''})
+
+
+@login_required
+def upload_photo(request):
+    if request.method == 'POST':
+        form = ProfilePhotoForm(request.POST, request.FILES, instance=request.user)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Profile photo updated.")
+        else:
+            messages.error(request, "Invalid file. Please upload a valid image.")
+    return redirect('dashboard')
 
 
 def privacy_policy(request):
