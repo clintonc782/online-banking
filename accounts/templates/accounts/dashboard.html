@@ -284,6 +284,7 @@
       width: 200px; height: 200px;
       border-radius: 50%;
       background: rgba(255,255,255,.06);
+      z-index: 0;
     }
 
     .balance-hero::before {
@@ -293,11 +294,12 @@
       width: 140px; height: 140px;
       border-radius: 50%;
       background: rgba(255,255,255,.04);
+      z-index: 0;
     }
 
     .balance-label { font-size: .85rem; opacity: .8; margin-bottom: 4px; }
     .balance-amount { font-size: 2.4rem; font-weight: 800; letter-spacing: -.5px; }
-    .balance-acct { font-size: .9rem; opacity: 1; margin-top: 6px; background: rgba(255,255,255,.15); display: inline-block; padding: 4px 10px; border-radius: 6px; }
+    .balance-acct { font-size: .9rem; opacity: 1; margin-top: 6px; background: rgba(0,0,0,.25); display: inline-block; padding: 4px 10px; border-radius: 6px; border: 1px solid rgba(255,255,255,.2); }
     .balance-acct strong { font-size: 1rem; font-weight: 700; letter-spacing: .5px; }
     .balance-status { margin-top: 8px; }
 
@@ -480,7 +482,9 @@
 
   <div class="sidebar-profile">
     {% if request.user.photo %}
-      <img src="{{ request.user.photo.url }}" alt="{% trans "Profile" %}" class="sidebar-avatar">
+      <img src="{{ request.user.photo.url }}" alt="Profile" class="sidebar-avatar"
+           onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+      <div class="sidebar-avatar-placeholder" style="display:none;"><i class="bi bi-person-fill"></i></div>
     {% else %}
       <div class="sidebar-avatar-placeholder"><i class="bi bi-person-fill"></i></div>
     {% endif %}
@@ -578,6 +582,14 @@
 <div class="page-body">
   <div class="page-inner">
 
+    <!-- Django framework messages (upload feedback, etc.) -->
+    {% for message in messages %}
+    <div class="alert alert-{% if message.tags == 'error' %}danger{% else %}{{ message.tags }}{% endif %} alert-dismissible fade show mb-3" role="alert">
+      {{ message }}
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    {% endfor %}
+
     <!-- Frozen account alert -->
     {% if account.status == 'Frozen' %}
     <div class="frozen-alert mb-4">
@@ -596,7 +608,7 @@
     <div class="row g-3 mb-4">
       <div class="col-lg-5">
         <div class="balance-hero h-100">
-          <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:16px;">
+          <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:16px;position:relative;z-index:1;">
             <div style="flex:1;min-width:0;">
               <div class="balance-label">{% trans "Available Balance" %}</div>
               <div class="balance-amount">{{ account.currency_symbol }}{{ account.balance|floatformat:2|intcomma }}</div>
@@ -610,8 +622,12 @@
             </div>
             <div style="flex-shrink:0;">
               {% if request.user.photo %}
-                <img src="{{ request.user.photo.url }}" alt="{% trans "Profile" %}"
-                     style="width:64px;height:64px;border-radius:50%;object-fit:cover;border:3px solid rgba(255,255,255,.5);box-shadow:0 2px 12px rgba(0,0,0,.2);">
+                <img src="{{ request.user.photo.url }}" alt="Profile"
+                     style="width:64px;height:64px;border-radius:50%;object-fit:cover;border:3px solid rgba(255,255,255,.5);box-shadow:0 2px 12px rgba(0,0,0,.2);"
+                     onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+                <div style="display:none;width:64px;height:64px;border-radius:50%;background:rgba(255,255,255,.2);color:#fff;align-items:center;justify-content:center;font-size:1.8rem;border:3px solid rgba(255,255,255,.5);box-shadow:0 2px 12px rgba(0,0,0,.2);">
+                  <i class="bi bi-person-fill"></i>
+                </div>
               {% else %}
                 <div style="width:64px;height:64px;border-radius:50%;background:rgba(255,255,255,.2);color:#fff;display:flex;align-items:center;justify-content:center;font-size:1.8rem;border:3px solid rgba(255,255,255,.5);box-shadow:0 2px 12px rgba(0,0,0,.2);">
                   <i class="bi bi-person-fill"></i>
@@ -760,7 +776,7 @@
           </div>
 
           <div class="mini-chat" style="flex:1;" id="miniChat">
-            {% for msg in messages|slice:":6" %}
+            {% for msg in chat_messages|slice:":6" %}
               <div class="chat-bubble {% if msg.sender == 'User' %}user{% else %}admin{% endif %}">
                 <div class="bubble-body">{{ msg.content|linebreaksbr }}</div>
                 <div class="bubble-time">{{ msg.created_at|date:"M d, H:i" }}</div>

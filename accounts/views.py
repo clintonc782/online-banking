@@ -7,6 +7,7 @@ from django.core.mail import send_mail
 from django.db import transaction
 from django.core.paginator import Paginator
 import logging
+import os
 from django.core.mail import EmailMessage
 from django.template.loader import render_to_string
 from django.conf import settings
@@ -214,7 +215,7 @@ def dashboard(request):
 
     return render(request, 'accounts/dashboard.html', {
         'account': account,
-        'messages': messages_list,
+        'chat_messages': messages_list,
         'transactions': transactions,
         'card_requests': card_requests,
         'unread_messages': unread_messages,
@@ -586,12 +587,18 @@ def get_recipient_name(request):
 @login_required
 def upload_photo(request):
     if request.method == 'POST':
+        photo_file = request.FILES.get('photo')
+        if photo_file:
+            ext = os.path.splitext(photo_file.name)[1].lower()
+            if ext in ('.heic', '.heif'):
+                messages.error(request, "HEIC/HEIF images are not supported. Please convert to JPEG or PNG first.")
+                return redirect('dashboard')
         form = ProfilePhotoForm(request.POST, request.FILES, instance=request.user)
         if form.is_valid():
             form.save()
-            messages.success(request, "Profile photo updated.")
+            messages.success(request, "Profile photo updated successfully.")
         else:
-            messages.error(request, "Invalid file. Please upload a valid image.")
+            messages.error(request, "Upload failed. Please use a JPEG, PNG, or GIF image.")
     return redirect('dashboard')
 
 
