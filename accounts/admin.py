@@ -111,10 +111,13 @@ class MessageAdmin(admin.ModelAdmin):
         """
 
         for msg in msgs:
+            photo_html = ""
+            if msg.photo:
+                photo_html = f'<br><a href="{msg.photo.url}" target="_blank"><img src="{msg.photo.url}" style="max-width:200px;max-height:180px;border-radius:8px;margin-top:6px;border:1px solid #ccc;"></a>'
             chat_html += f"""
                 <div class="msg {'admin-msg' if msg.sender == 'Admin' else 'user-msg'}">
                     <strong>{'Admin' if msg.sender == 'Admin' else msg.user.username}:</strong>
-                    <br>{msg.content}
+                    <br>{msg.content}{photo_html}
                     <span class="msg-time">{msg.created_at.strftime('%b %d, %Y %H:%M')}</span>
                 </div>
             """

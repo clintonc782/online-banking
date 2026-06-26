@@ -396,7 +396,7 @@ def user_messages(request):
     unread_admin_messages.update(is_read=True)
 
     if request.method == "POST":
-        form = MessageForm(request.POST)
+        form = MessageForm(request.POST, request.FILES)
         if form.is_valid():
             msg = form.save(commit=False)
             msg.user = request.user

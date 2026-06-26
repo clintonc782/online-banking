@@ -73,11 +73,18 @@ class TransferForm(forms.Form):
 class MessageForm(forms.ModelForm):
     class Meta:
         model = Message
-        fields = ['subject', 'content']
+        fields = ['subject', 'content', 'photo']
         widgets = {
             'subject': forms.TextInput(attrs={'class':'form-control', 'placeholder': 'Subject'}),
-            'content': forms.Textarea(attrs={'class':'form-control', 'placeholder': 'Type your message here...', 'rows': 3, }),
+            'content': forms.Textarea(attrs={'class':'form-control', 'placeholder': 'Type your message here...', 'rows': 3}),
+            'photo': forms.ClearableFileInput(attrs={'class':'form-control', 'accept': 'image/*'}),
         }
+
+    def clean(self):
+        cleaned = super().clean()
+        if not cleaned.get('content') and not cleaned.get('photo'):
+            raise forms.ValidationError("Please enter a message or attach a photo.")
+        return cleaned
 
 
 class ProfilePhotoForm(forms.ModelForm):

@@ -1,9 +1,12 @@
-{% for message in messages_list %}
 {% load i18n %}
-{% trans "Hello" %}
-
+{% for message in messages_list %}
   <div class="message {% if message.sender == 'User' %}user{% else %}admin{% endif %}">
-    {{ message.content }}
-    <span class="message-time">{{ message.created_at|date:"M d, H:i" }}</span>
+    <div class="bubble">
+      {% if message.content %}{{ message.content }}{% endif %}
+      {% if message.photo %}
+        <img src="{{ message.photo.url }}" class="chat-photo" alt="{% trans "Attachment" %}" onclick="window.open(this.src,'_blank')">
+      {% endif %}
+      <span class="bubble-time">{{ message.created_at|date:"M d, H:i" }}</span>
+    </div>
   </div>
 {% endfor %}

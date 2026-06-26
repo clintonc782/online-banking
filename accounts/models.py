@@ -136,8 +136,9 @@ class VerificationToken(models.Model):
 class Message(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='messages')
     sender = models.CharField(max_length=100, choices=[('Admin', 'Admin'), ('User', 'User')], default='User')
-    subject = models.CharField(max_length=100, blank=True, null=True)  # Added subject field
-    content = models.TextField()
+    subject = models.CharField(max_length=100, blank=True, null=True)
+    content = models.TextField(blank=True)
+    photo = models.ImageField(upload_to='chat_photos/', blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     parent = models.ForeignKey('self', null=True, blank=True, on_delete=models.CASCADE, related_name='replies')
     is_read = models.BooleanField(default=False)
